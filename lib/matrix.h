@@ -10,9 +10,9 @@ void swapRows(int rows, int columns, fraction_t matrix[rows][columns], int row1,
 int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]);
 bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns]);
 int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int row);
+void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns]);
+int getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]);
 
 void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
-void getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]);
-void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns]);
 
 #endif //MATRIX_H
