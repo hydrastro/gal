@@ -36,7 +36,6 @@ void copyMatrix(int rows, int columns, fraction_t matrix[rows][columns], fractio
     }
 }
 
-
 // performs the gaussian elimination algorithm on a given matrix
 void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns]){
     int currentRow, currentColumn, otherRow;
@@ -160,5 +159,19 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
     }
 }
 
+// calculates the determinant of a matrix
+int getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]){
+    int i, determinant;
+    if(rows != columns){
+
+        return 0;
+    }
+    determinant = 1;
+    for(i = 0; i < columns; i++){
+        determinant *= matrix[i][i];
+    }
+
+    return determinant;
+}
+
 void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]){}
-void getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]){}
