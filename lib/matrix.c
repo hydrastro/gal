@@ -152,7 +152,7 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
                 // looping every row term after the pivot
                 for(k = pivotColumn; k < columns; k++){
                     // subtracting
-                    matrix[j][k] = subtractFractions(matrix[j][k],multiplyFractions(matrix[i][k], factor));
+                    matrix[j][k] = subtractFractions(matrix[j][k], multiplyFractions(matrix[i][k], factor));
                 }
             }
         }
@@ -160,15 +160,18 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
 }
 
 // calculates the determinant of a matrix
-int getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]){
+fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, determinant;
     if(rows != columns){
 
         return 0;
     }
-    determinant = 1;
+    if(!isMatrixReduced(rows, columns, matrix)){
+        gaussElimination(rows, columns, matrix);
+    }
+    determinant = getFraction(1, 1);
     for(i = 0; i < columns; i++){
-        determinant *= matrix[i][i];
+        determinant = multiplyFractions(determinant, matrix[i][i]);
     }
 
     return determinant;
