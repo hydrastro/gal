@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "matrix.h"
 
-
 // given the number of rows and columns, it reads a matrix, element by element as a fraction type
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j;
@@ -161,10 +160,12 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
 
 // calculates the determinant of a matrix
 fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]){
-    int i, determinant;
+    int i;
+    fraction_t determinant;
     if(rows != columns){
 
-        return 0;
+        // the determinant can't be calculated
+        return getFraction(0, 0);
     }
     if(!isMatrixReduced(rows, columns, matrix)){
         gaussElimination(rows, columns, matrix);
@@ -174,6 +175,7 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
         determinant = multiplyFractions(determinant, matrix[i][i]);
     }
 
+    // todo: multiply the determinant by (-1)^x, where x is the number of times the rows swapped
     return determinant;
 }
 
