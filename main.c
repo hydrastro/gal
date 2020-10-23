@@ -1,6 +1,5 @@
 /*
- * compile command: gcc -o main.exe lib/matrix.c lib/fraction_t.c
- * example imputs: ./main.exe < input1
+ * example imputs: ./main.exe < input
  */
 
 #include <stdio.h>
