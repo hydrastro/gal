@@ -6,7 +6,7 @@
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
 void printMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
 void copyMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t copyMatrix[rows][columns]);
-void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns]);
+void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], int rowSwappingTimes);
 void swapRows(int rows, int columns, fraction_t matrix[rows][columns], int row1, int row2);
 int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]);
 bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns]);

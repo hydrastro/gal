@@ -36,9 +36,10 @@ void copyMatrix(int rows, int columns, fraction_t matrix[rows][columns], fractio
 }
 
 // performs the gaussian elimination algorithm on a given matrix
-void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns]){
+void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], int rowSwappingTimes){
     int currentRow, currentColumn, otherRow;
     fraction_t subtraction, factor;
+    rowSwappingTimes = 0;
     // starts loop for each matrix's row
     for(currentRow = 0; currentRow < rows - 1; currentRow++){
         // starts a loop to compare the current row to the next ones, this first loop just orders the rows of the matrix
@@ -48,6 +49,7 @@ void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns]){
             // rows are swapped and zero(s) are placed down the pivot
             if(subtraction.numerator > 0 && subtraction.denominator > 0){
                 swapRows(rows, columns, matrix, currentRow, otherRow);
+                rowSwappingTimes++;
             }
         }
         // starts a loop to perform the elimination
@@ -78,7 +80,7 @@ int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]){
     bool emptyRow;
     rank = 0;
     if(!isMatrixReduced(rows, columns, matrix)){
-        gaussElimination(rows, columns, matrix);
+        gaussElimination(rows, columns, matrix, 0);
     }
     for(i = 0; i < rows; i++){
         emptyRow = true;
@@ -131,7 +133,7 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
     int i, j, k, pivotColumn;
     fraction_t factor, pivotValue;
     if(!isMatrixReduced(rows, columns, matrix)){
-        gaussElimination(rows, columns, matrix);
+        gaussElimination(rows, columns, matrix, 0);
     }
     // looping every row from the bottom
     for(i = rows - 1; i >= 0; i--) {
@@ -160,7 +162,7 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
 
 // calculates the determinant of a matrix
 fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]){
-    int i;
+    int i, rowSwappingTimes;
     fraction_t determinant;
     if(rows != columns){
 
@@ -168,14 +170,16 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
         return getFraction(0, 0);
     }
     if(!isMatrixReduced(rows, columns, matrix)){
-        gaussElimination(rows, columns, matrix);
+        gaussElimination(rows, columns, matrix, rowSwappingTimes);
     }
     determinant = getFraction(1, 1);
     for(i = 0; i < columns; i++){
         determinant = multiplyFractions(determinant, matrix[i][i]);
     }
+    if(rowSwappingTimes % 2 != 0){
+        determinant = invertFractionSign(determinant);
+    }
 
-    // todo: multiply the determinant by (-1)^x, where x is the number of times the rows swapped
     return determinant;
 }
 
