@@ -14,6 +14,10 @@ int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int 
 void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns]);
 fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]);
 void getMatrixBases(int rows, int columns, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rows][columns - 1]);
+void trasposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]);
+void sumMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]);
+void muliplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]);
+void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows], fraction_t scalar);
 
 void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
 

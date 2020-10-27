@@ -245,4 +245,73 @@ void getMatrixBases(int rows, int columns, fraction_t matrix[rows][columns], fra
     }
 }
 
-void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]){}
+// transposes a matrix
+void trasposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]){
+    int i, j;
+    // emtpying the result matrix
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = getFraction(0, 1);
+        }
+    }
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = matrix[j][i];
+        }
+    }
+}
+
+// adds two matrix
+void addMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]){
+    int i, j;
+    // emtpying the result matrix
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = getFraction(0, 1);
+        }
+    }
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = addFractions(matrix1[i][j], matrix2[i][j]);
+        }
+    }
+}
+
+// multiplies two matrix
+void muliplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]){
+    int i, j, k;
+    fraction_t product;
+    // emtpying the result matrix
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < resultColumns; j++){
+            resultMatrix[i][j] = getFraction(0, 1);
+        }
+    }
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < resultColumns; j++){
+            for(k = 0; k < columns; k++){
+                product = multiplyFractions(matrix1[i][k], matrix2[k][j]);
+                resultMatrix[i][j] = addFractions(resultMatrix[i][j], product);
+            }
+        }
+    }
+}
+
+// multiplies a matrxi by a scalar
+void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows], fraction_t scalar){
+    int i, j;
+    // emtpying the result matrix
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = getFraction(0, 1);
+        }
+    }
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = multiplyFractions(matrix[i][j], scalar);
+        }
+    }
+}
+
+void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
+}
