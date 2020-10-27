@@ -113,8 +113,16 @@ struct fraction_t invertFractionSign(fraction_t x){
 // prints a fraction on the screen
 void printFraction(fraction_t x){
     if(x.numerator == 0 || x.denominator == 1){
-        printf("%d", x.numerator);
+        if(x.denominator == 0){
+            printf("undefined");
+        } else {
+            printf("%d", x.numerator);
+        }
     } else {
-        printf("%d/%d", x.numerator, x.denominator);
+        if(x.denominator == 0){
+            printf("impossible");
+        } else {
+            printf("%d/%d", x.numerator, x.denominator);
+        }
     }
 }

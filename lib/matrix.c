@@ -148,7 +148,7 @@ int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int 
         }
     }
 
-    return 0;
+    return columns;
 }
 
 // performs the Gauss-Jordan elimination on a given matrix
@@ -211,14 +211,14 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
 }
 
 // calculates the bases of a given matrix
-void getMatrixBases(int rows, int columns, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rows][columns - 1]){
+void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rank][columns - 1]){
     int i, j, k, previousPivotColumn, currentPivotColumn, difference, baseNumber;
     // checking if the matrix is in reduced row echelon form
     if(!isMatrixReduced(rows, columns, matrix, true)){
         gaussJordanElimination(rows, columns, matrix);
     }
     // emptying the bases array
-    for(i = 0; i < columns - 1 - rows; i++){
+    for(i = 0; i < columns - 1 - rank; i++){
         for(j = 0; j < columns - 1; j++){
             bases[i][j] = getFraction(0, 1);
         }
@@ -227,14 +227,18 @@ void getMatrixBases(int rows, int columns, fraction_t matrix[rows][columns], fra
     // looping every matrix row
     for(i = 1; i < rows; i++){
         previousPivotColumn = getPivotColumn(rows, columns, matrix, i - 1);
-        currentPivotColumn = getPivotColumn(rows, columns, matrix, i);
+        if(isRowEmpty(rows, columns, matrix, i)){
+            currentPivotColumn = columns - 1;
+        } else {
+            currentPivotColumn = getPivotColumn(rows, columns, matrix, i);
+        }
         difference = currentPivotColumn - previousPivotColumn;
         // checking if there are free parameters
         if(difference > 1){
             // looping for all the free parameters found
             for(j = previousPivotColumn + 1; j < currentPivotColumn; j++){
                 // getting all the values of the parameter in the previous rows
-                for(k = 0; k < i - 1; k++){
+                for(k = 0; k < i; k++){
                     bases[baseNumber][k] = matrix[k][j];
                 }
                 // setting the actual parameter value to 1
@@ -311,6 +315,17 @@ void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][colum
             resultMatrix[i][j] = multiplyFractions(matrix[i][j], scalar);
         }
     }
+}
+
+bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row){
+    int i;
+    for(i = 0; i < columns; i++){
+        if(matrix[row][i].numerator != 0){
+
+            return false;
+        }
+    }
+    return true;
 }
 
 void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]){

@@ -9,7 +9,7 @@ int main(void){
     setbuf(stdout, NULL);
     // declarations
     unsigned int rows, columns;
-    int completeMatrixRank, reducedMatrixRank;
+    int matrixRank;
     fraction_t determinant;
 
     // getting the matrix size
@@ -36,9 +36,8 @@ int main(void){
     printMatrix(rows, columns, upperTriangularMatrix);
 
     // getting and displaying the matrix rank
-    completeMatrixRank = getMatrixRank(rows, columns, matrix);
-    reducedMatrixRank = getMatrixRank(rows, columns, upperTriangularMatrix);
-    printf("\nComplete matrix rank: %d\nReduced matrix rank: %d\n", completeMatrixRank, reducedMatrixRank);
+    matrixRank = getMatrixRank(rows, columns, matrix);
+    printf("\nMatrix rank: %d\n", matrixRank);
 
     // performing and displaying the reduced row echelon form
     gaussJordanElimination(rows, columns, upperTriangularMatrix);
@@ -53,9 +52,9 @@ int main(void){
 
     // getting the marix bases
     fraction_t bases[columns][columns];
-    getMatrixBases(rows, columns, matrix, bases);
+    getMatrixBases(rows, columns, matrixRank, matrix, bases);
     printf("\nMatrix bases (by row):\n");
-    printMatrix(columns - 1 - rows, columns - 1, bases);
+    printMatrix(columns - 1 - matrixRank, columns - 1, bases);
     printf("\n");
 
     return(0);
