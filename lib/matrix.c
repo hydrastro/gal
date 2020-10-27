@@ -154,7 +154,7 @@ int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int 
 // performs the Gauss-Jordan elimination on a given matrix
 void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j, k, pivotColumn;
-    fraction_t factor, pivotValue;
+    fraction_t factor, pivotValue, product;
     // check if matrix is in row echelon form, otherwise performs the gaussian elimination
     if(!isMatrixReduced(rows, columns, matrix, false)){
         gaussElimination(rows, columns, matrix, 0);
@@ -176,8 +176,10 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
                 factor = matrix[j][pivotColumn];
                 // looping every row term after the pivot
                 for(k = pivotColumn; k < columns; k++){
+                    // multiplying
+                    product = multiplyFractions(matrix[i][k], factor);
                     // subtracting
-                    matrix[j][k] = subtractFractions(matrix[j][k], multiplyFractions(matrix[i][k], factor));
+                    matrix[j][k] = subtractFractions(matrix[j][k], product);
                 }
             }
         }
@@ -243,8 +245,8 @@ void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][col
                 }
                 // setting the actual parameter value to 1
                 bases[baseNumber][j] = getFraction(1, 1);
+                baseNumber++;
             }
-            baseNumber++;
         }
     }
 }
