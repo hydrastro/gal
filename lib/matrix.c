@@ -79,9 +79,11 @@ int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]){
     int rank, i, j;
     bool emptyRow;
     rank = 0;
-    if(!isMatrixReduced(rows, columns, matrix)){
+    // check if matrix is in row echelon form, otherwise performs the gaussian elimination
+    if(!isMatrixReduced(rows, columns, matrix, false)){
         gaussElimination(rows, columns, matrix, 0);
     }
+    // counting the pivots
     for(i = 0; i < rows; i++){
         emptyRow = true;
         for(j = 0; j < columns; j++){
@@ -97,15 +99,35 @@ int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]){
     return rank;
 }
 
-// checks if the matrix is upper triangular
-bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns]){
-    int i, j;
-    for(i = 0; i < columns; i++){
-        for(j = i + 1; j < rows; j++){
-            if(matrix[j][i].numerator != 0){
+// checks if a given matrix is in row echelon form (reducedFrom is false), or in reduced row echelon form (reducedForm is true)
+bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns], bool reducedRowEchelonForm){
+    int i, j, previousPivotColumn, currentPivotColumn, difference;
+    // looping every matrix row
+    for(i = 1; i < rows; i++){
+        previousPivotColumn = getPivotColumn(rows, columns, matrix, i - 1);
+        currentPivotColumn = getPivotColumn(rows, columns, matrix, i);
+        difference = currentPivotColumn - previousPivotColumn;
+        // checking if the current pivot is placed below or before the previous one
+        if(difference <= 0){
+
+            return false;
+        }
+        // checking all the values below the pivot
+        for(j = i + 1; i < rows; i++){
+            if(matrix[i][j].numerator != 0){
 
                 return false;
             }
+        }
+        if(reducedRowEchelonForm){
+            // checking all the values upward the pivot	
+            for(j = i -1; j >= 0; j--){
+                if(matrix[j][i].numerator != 0){
+
+                    return false;
+                }
+            }
+
         }
     }
 
@@ -129,10 +151,12 @@ int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int 
     return 0;
 }
 
+// performs the Gauss-Jordan elimination on a given matrix
 void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j, k, pivotColumn;
     fraction_t factor, pivotValue;
-    if(!isMatrixReduced(rows, columns, matrix)){
+    // check if matrix is in row echelon form, otherwise performs the gaussian elimination
+    if(!isMatrixReduced(rows, columns, matrix, false)){
         gaussElimination(rows, columns, matrix, 0);
     }
     // looping every row from the bottom
@@ -169,18 +193,56 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
         // the determinant can't be calculated
         return getFraction(0, 0);
     }
-    if(!isMatrixReduced(rows, columns, matrix)){
+    // check if matrix is in row echelon form, otherwise performs the gaussian elimination
+    if(!isMatrixReduced(rows, columns, matrix, false)){
         gaussElimination(rows, columns, matrix, rowSwappingTimes);
     }
     determinant = getFraction(1, 1);
+    // multiplying the pivots
     for(i = 0; i < columns; i++){
         determinant = multiplyFractions(determinant, matrix[i][i]);
     }
+    // changing the sign due the rows swapping occured during the gaussian elimination
     if(rowSwappingTimes % 2 != 0){
         determinant = invertFractionSign(determinant);
     }
 
     return determinant;
+}
+
+// calculates the bases of a given matrix
+void getMatrixBases(int rows, int columns, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rows][columns - 1]){
+    int i, j, k, previousPivotColumn, currentPivotColumn, difference, baseNumber;
+    // checking if the matrix is in reduced row echelon form
+    if(!isMatrixReduced(rows, columns, matrix, true)){
+        gaussJordanElimination(rows, columns, matrix);
+    }
+    // emptying the bases array
+    for(i = 0; i < columns - 1 - rows; i++){
+        for(j = 0; j < columns - 1; j++){
+            bases[i][j] = getFraction(0, 1);
+        }
+    }
+    baseNumber = 0;
+    // looping every matrix row
+    for(i = 1; i < rows; i++){
+        previousPivotColumn = getPivotColumn(rows, columns, matrix, i - 1);
+        currentPivotColumn = getPivotColumn(rows, columns, matrix, i);
+        difference = currentPivotColumn - previousPivotColumn;
+        // checking if there are free parameters
+        if(difference > 1){
+            // looping for all the free parameters found
+            for(j = previousPivotColumn + 1; j < currentPivotColumn; j++){
+                // getting all the values of the parameter in the previous rows
+                for(k = 0; k < i - 1; k++){
+                    bases[baseNumber][k] = matrix[k][j];
+                }
+                // setting the actual parameter value to 1
+                bases[baseNumber][j] = getFraction(1, 1);
+            }
+            baseNumber++;
+        }
+    }
 }
 
 void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]){}

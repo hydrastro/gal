@@ -47,8 +47,16 @@ int main(void){
 
     // getting the matrix determinant
     determinant = getDeterminant(rows, columns, matrix);
-    printf("\nMatrix determinant:");
+    printf("\nMatrix determinant: ");
     printFraction(determinant);
+    printf("\n");
+
+    // getting the marix bases
+    fraction_t bases[columns][columns];
+    getMatrixBases(rows, columns, matrix, bases);
+    printf("\nMatrix bases (by row):\n");
+    printMatrix(columns - 1 - rows, columns - 1, bases);
+    printf("\n");
 
     return(0);
 }

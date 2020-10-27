@@ -9,10 +9,11 @@ void copyMatrix(int rows, int columns, fraction_t matrix[rows][columns], fractio
 void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], int rowSwappingTimes);
 void swapRows(int rows, int columns, fraction_t matrix[rows][columns], int row1, int row2);
 int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]);
-bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns]);
+bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns], bool reducedRowEchelonForm);
 int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int row);
 void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns]);
 fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]);
+void getMatrixBases(int rows, int columns, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rows][columns - 1]);
 
 void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
 
