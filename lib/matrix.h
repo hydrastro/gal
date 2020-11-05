@@ -1,7 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 #include <stdbool.h>
-#include "fraction_t.h"
+#include "fraction.h"
 
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
 void printMatrix(int rows, int columns, fraction_t matrix[rows][columns]);

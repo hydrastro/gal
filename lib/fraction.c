@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdio.h>
-#include "fraction_t.h"
+#include "fraction.h"
 
 // calculates the greatest common divisor between two integers
 int gcd(int x, int y){

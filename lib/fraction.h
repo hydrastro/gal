@@ -1,5 +1,5 @@
-#ifndef FRACTION_T_H
-#define FRACTION_T_H
+#ifndef FRACTION_T
+#define FRACTION_T
 
 // defines a new type for fractions
 typedef struct fraction_t{
@@ -22,4 +22,4 @@ struct fraction_t readFraction();
 struct fraction_t invertFractionSign(fraction_t x);
 void printFraction(fraction_t x);
 
-#endif
+#endif //FRACTION_T

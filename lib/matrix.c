@@ -332,3 +332,5 @@ bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row
 
 void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
 }
+
+// todo: division, power, n root
