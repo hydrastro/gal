@@ -213,6 +213,8 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
 }
 
 // calculates the bases of a given matrix
+// todo: important (bug fix): invert the sign of the parameters in the equations (NB: the value of the
+// parameter itself mustn't be changed; it should be 1). See the commented line
 void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rank][columns - 1]){
     int i, j, k, previousPivotColumn, currentPivotColumn, difference, baseNumber;
     // checking if the matrix is in reduced row echelon form
@@ -241,6 +243,7 @@ void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][col
             for(j = previousPivotColumn + 1; j < currentPivotColumn; j++){
                 // getting all the values of the parameter in the previous rows
                 for(k = 0; k < i; k++){
+                    // bases[baseNumber][k] = invertFractionSign(matrix[k][j]);
                     bases[baseNumber][k] = matrix[k][j];
                 }
                 // setting the actual parameter value to 1
