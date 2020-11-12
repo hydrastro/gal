@@ -1,5 +1,6 @@
 #ifndef R3GEOMETRY_H
 #define R3GEOMETRY_H
+#include "fraction.h"
 
 // defining new types
 typedef struct Point_t{
@@ -30,5 +31,8 @@ typedef struct lineCartesianForm_t{
     Plane_t firstPlane;
     Plane_t secondPlane;
 } lineCartesianForm_t;
+
+Plane_t readPlane(Plane_t plane);
+void printPlane(Plane_t plane);
 
 #endif //R3GEOMETRY_H
