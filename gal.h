@@ -3,5 +3,6 @@
 
 #include "lib/fraction.h"
 #include "lib/matrix.h"
+#include "lib/r3geometry.h"
 
 #endif //GAL_H
