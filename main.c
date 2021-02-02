@@ -31,7 +31,7 @@ int main(void){
     printMatrix(rows, columns, matrix);
 
     // performing and displaying the row echelon form
-    gaussElimination(rows, columns, upperTriangularMatrix, 0);
+    gaussElimination(rows, columns, matrix, upperTriangularMatrix, 0);
     printf("\nRow echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
@@ -40,7 +40,7 @@ int main(void){
     printf("\nMatrix rank: %d\n", matrixRank);
 
     // performing and displaying the reduced row echelon form
-    gaussJordanElimination(rows, columns, upperTriangularMatrix);
+    gaussJordanElimination(rows, columns, matrix, upperTriangularMatrix);
     printf("\nReduced row echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
@@ -57,11 +57,9 @@ int main(void){
     printMatrix(columns - 1 - matrixRank, columns - 1, bases);
     printf("\n");
 
-
-printf("\n\n\nMATRIX:\n");printMatrix(rows,columns,matrix);printf("\n\n\n");
     // calculates the inverse
     fraction_t inverse[rows][columns];
-    getInverseMatrix(rows, columns, matrix, inverse);
+    getInverseMatrix(rows, matrix, inverse);
     printf("\nInverse matrix:\n");
     printMatrix(rows, columns, inverse);
     printf("\n");

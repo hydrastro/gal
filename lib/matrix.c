@@ -36,28 +36,29 @@ void copyMatrix(int rows, int columns, fraction_t matrix[rows][columns], fractio
 }
 
 // performs the gaussian elimination algorithm on a given matrix
-void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], int rowSwappingTimes){
+void gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns], int rowSwappingTimes){
     int currentRow, currentColumn, otherRow;
     fraction_t subtraction, factor;
     rowSwappingTimes = 0;
+    copyMatrix(rows, columns, matrix, resultMatrix);
     // starts loop for each matrix's row
     for(currentRow = 0; currentRow < rows - 1; currentRow++){
         // starts a loop to compare the current row to the next ones, this first loop just orders the rows of the matrix
         for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
             // calculates the difference between the the pivot of the current rows and the elements below the pivot
-            subtraction = subtractFractions(fractionAbsoluteValue(matrix[otherRow][currentRow]), fractionAbsoluteValue(matrix[currentRow][currentRow]));
+            subtraction = subtractFractions(fractionAbsoluteValue(resultMatrix[otherRow][currentRow]), fractionAbsoluteValue(resultMatrix[currentRow][currentRow]));
             // rows are swapped and zero(s) are placed down the pivot
             if(subtraction.numerator > 0 && subtraction.denominator > 0){
-                swapRows(rows, columns, matrix, currentRow, otherRow);
+                swapRows(rows, columns, resultMatrix, currentRow, otherRow);
                 rowSwappingTimes++;
             }
         }
         // starts a loop to perform the elimination
         for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
-            factor = divideFractions(matrix[otherRow][currentRow], matrix[currentRow][currentRow]);
+            factor = divideFractions(resultMatrix[otherRow][currentRow], resultMatrix[currentRow][currentRow]);
             for(currentColumn = 0; currentColumn < columns; currentColumn++){
                 // each element of each row below the pivot is replaced
-                matrix[otherRow][currentColumn] = subtractFractions(matrix[otherRow][currentColumn], multiplyFractions(factor, matrix[currentRow][currentColumn]));
+                resultMatrix[otherRow][currentColumn] = subtractFractions(resultMatrix[otherRow][currentColumn], multiplyFractions(factor, resultMatrix[currentRow][currentColumn]));
             }
         }
     }
@@ -78,10 +79,12 @@ void swapRows(int rows, int columns, fraction_t matrix[rows][columns], int row1,
 int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]){
     int rank, i, j;
     bool emptyRow;
+    fraction_t tempMatrix[rows][columns];
+    copyMatrix(rows, columns, matrix, tempMatrix);
     rank = 0;
     // check if matrix is in row echelon form, otherwise performs the gaussian elimination
-    if(!isMatrixReduced(rows, columns, matrix, false)){
-        gaussElimination(rows, columns, matrix, 0);
+    if(!isMatrixReduced(rows, columns, tempMatrix, false)){
+        gaussElimination(rows, columns, matrix, tempMatrix, 0);
     }
     // counting the pivots
     for(i = 0; i < rows; i++){
@@ -142,7 +145,7 @@ int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int 
         return columns;
     }
     for(column = 0; column < columns; column++){
-        if(matrix[row][column].numerator != 0) {
+        if(matrix[row][column].numerator != 0){
 
             return column;
         }
@@ -152,34 +155,34 @@ int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int 
 }
 
 // performs the Gauss-Jordan elimination on a given matrix
-void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns]){
+void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
     int i, j, k, pivotColumn;
     fraction_t factor, pivotValue, product;
     // check if matrix is in row echelon form, otherwise performs the gaussian elimination
     if(!isMatrixReduced(rows, columns, matrix, false)){
-        gaussElimination(rows, columns, matrix, 0);
+        gaussElimination(rows, columns, matrix, resultMatrix, 0);
     }
     // looping every row from the bottom
-    for(i = rows - 1; i >= 0; i--) {
-        pivotColumn = getPivotColumn(rows, columns, matrix, i);
-        pivotValue = matrix[i][pivotColumn];
+    for(i = rows - 1; i >= 0; i--){
+        pivotColumn = getPivotColumn(rows, columns, resultMatrix, i);
+        pivotValue = resultMatrix[i][pivotColumn];
         // looping for every other value in the row
-        for (j = pivotColumn; j < columns ; j++) {
+        for (j = pivotColumn; j < columns ; j++){
             // dividing each row by their pivot
-            matrix[i][j] = divideFractions(matrix[i][j], pivotValue);
+            resultMatrix[i][j] = divideFractions(resultMatrix[i][j], pivotValue);
         }
         // the first column doesn't need to go in the substitution loop
         if(i != 0){
             // looping every other remaining row
             for(j = i - 1; j >= 0; j--){
                 // it would have also been divided by matrix[i][pivotColumn] but it's 1
-                factor = matrix[j][pivotColumn];
+                factor = resultMatrix[j][pivotColumn];
                 // looping every row term after the pivot
                 for(k = pivotColumn; k < columns; k++){
                     // multiplying
-                    product = multiplyFractions(matrix[i][k], factor);
+                    product = multiplyFractions(resultMatrix[i][k], factor);
                     // subtracting
-                    matrix[j][k] = subtractFractions(matrix[j][k], product);
+                    resultMatrix[j][k] = subtractFractions(resultMatrix[j][k], product);
                 }
             }
         }
@@ -189,7 +192,9 @@ void gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][colum
 // calculates the determinant of a matrix
 fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, rowSwappingTimes;
-    fraction_t determinant;
+    fraction_t determinant, tempMatrix[rows][columns];
+    rowSwappingTimes = 0;
+    copyMatrix(rows, columns, matrix, tempMatrix);
     if(rows != columns){
 
         // the determinant can't be calculated
@@ -197,15 +202,17 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
     }
     // check if matrix is in row echelon form, otherwise performs the gaussian elimination
     if(!isMatrixReduced(rows, columns, matrix, false)){
-        gaussElimination(rows, columns, matrix, rowSwappingTimes);
+        gaussElimination(rows, columns, matrix, tempMatrix, rowSwappingTimes);
     }
+printMatrix(rows,rows,matrix);printf("\n");printMatrix(rows,rows,tempMatrix);
+printf("\n ROW SWAPPING %d", rowSwappingTimes);
     determinant = getFraction(1, 1);
     // multiplying the pivots
     for(i = 0; i < columns; i++){
-        determinant = multiplyFractions(determinant, matrix[i][i]);
+        determinant = multiplyFractions(determinant, tempMatrix[i][i]);
     }
     // changing the sign due the rows swapping occured during the gaussian elimination
-    if(rowSwappingTimes % 2 != 0){
+    if(*rowSwappingTimes % 2 != 0){
         determinant = invertFractionSign(determinant);
     }
 
@@ -219,9 +226,10 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
 // todo: do not edid the starting matrix
 void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rank][columns - 1]){
     int i, j, k, previousPivotColumn, currentPivotColumn, difference, baseNumber;
+    fraction_t tempMatrix[rows][columns];
     // checking if the matrix is in reduced row echelon form
     if(!isMatrixReduced(rows, columns, matrix, true)){
-        gaussJordanElimination(rows, columns, matrix);
+        gaussJordanElimination(rows, columns, matrix, tempMatrix);
     }
     // emptying the bases array
     for(i = 0; i < columns - 1 - rank; i++){
@@ -246,7 +254,7 @@ void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][col
                 // getting all the values of the parameter in the previous rows
                 for(k = 0; k < i; k++){
                     // bases[baseNumber][k] = invertFractionSign(matrix[k][j]);
-                    bases[baseNumber][k] = matrix[k][j];
+                    bases[baseNumber][k] = tempMatrix[k][j];
                 }
                 // setting the actual parameter value to 1
                 bases[baseNumber][j] = getFraction(1, 1);
@@ -338,17 +346,17 @@ bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row
 }
 
 // computes the inverse of a matrix
-void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
+void getInverseMatrix(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]){
     int i, j;
     fraction_t determinantReciprocal;
-    determinantReciprocal = invertFraction(getDeterminant(rows, columns, matrix));
-    for(i = 0; i < rows; i++) {
-        for(j = 0; j < columns; j++) {
-            resultMatrix[i][j] = getAlgebricComplement(rows, columns, matrix, i, j);
-            if((i + j) % 2 == 1) {
-                resultMatrix[i][j] = invertFractionSign(resultMatrix[i][j]);
+    determinantReciprocal = invertFraction(getDeterminant(rows, rows, matrix));
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < rows; j++){
+            resultMatrix[j][i] = getAlgebricComplement(rows, rows, matrix, i, j);
+            if((i + j) % 2 == 1){
+                resultMatrix[j][i] = invertFractionSign(resultMatrix[j][i]);
             }
-printFraction(resultMatrix[i][j]);
+            resultMatrix[j][i] = multiplyFractions(matrix[j][i], determinantReciprocal);
         }
     }
 }
@@ -357,27 +365,22 @@ printFraction(resultMatrix[i][j]);
 fraction_t getAlgebricComplement(int rows, int columns, fraction_t matrix[rows][columns], int row, int column){
     fraction_t submatrix[rows - 1][columns - 1];
     getSubmatrix(rows, columns, matrix, row, column, submatrix);
-
+printf("\n\nMATRIX\n");printMatrix(rows-1,columns-1,submatrix);printf("\ndet:\t");printFraction(getDeterminant(rows-1,rows-1,submatrix));
     return getDeterminant(rows - 1, columns - 1, submatrix);
 }
 
 // gets the submatrix by eliminating a row and a column of the given one
 void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]){
-    int i, j;
-    bool flag;
-    for(i = 0; i < rows; i++){
-        flag = false;
-        for(j = 0; j < columns; j++){
-            if(i >= row){
-                flag = true;
+    int i, j, k, l;
+    for(i = 0, j = 0; i < rows; i++, j++){
+        if(i == row){
+            i++;
+        }
+        for(k = 0, l = 0; k < columns; k++, l++){
+            if(k == column){
+                k++;
             }
-            if(i != row && j != column){
-                if(flag){
-                    resultMatrix[i][j] = matrix[i][j + 1];
-                } else {
-                    resultMatrix[i][j] = matrix[i][j];
-                }
-            }
+            resultMatrix[j][l] = matrix[i][k];
         }
     }
 }
