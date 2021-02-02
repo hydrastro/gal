@@ -215,6 +215,8 @@ fraction_t getDeterminant(int rows, int columns, fraction_t matrix[rows][columns
 // calculates the bases of a given matrix
 // todo: important (bug fix): invert the sign of the parameters in the equations (NB: the value of the
 // parameter itself mustn't be changed; it should be 1). See the commented line
+
+// todo: do not edid the starting matrix
 void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rank][columns - 1]){
     int i, j, k, previousPivotColumn, currentPivotColumn, difference, baseNumber;
     // checking if the matrix is in reduced row echelon form
@@ -322,6 +324,7 @@ void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][colum
     }
 }
 
+// check if a matrix row is filled with zeroes
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row){
     int i;
     for(i = 0; i < columns; i++){
@@ -330,10 +333,53 @@ bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row
             return false;
         }
     }
+
     return true;
 }
 
-void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
+// computes the inverse of a matrix
+void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
+    int i, j;
+    fraction_t determinantReciprocal;
+    determinantReciprocal = invertFraction(getDeterminant(rows, columns, matrix));
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < columns; j++) {
+            resultMatrix[i][j] = getAlgebricComplement(rows, columns, matrix, i, j);
+            if((i + j) % 2 == 1) {
+                resultMatrix[i][j] = invertFractionSign(resultMatrix[i][j]);
+            }
+printFraction(resultMatrix[i][j]);
+        }
+    }
+}
+
+// calculates the algebric component of a matrix element
+fraction_t getAlgebricComplement(int rows, int columns, fraction_t matrix[rows][columns], int row, int column){
+    fraction_t submatrix[rows - 1][columns - 1];
+    getSubmatrix(rows, columns, matrix, row, column, submatrix);
+
+    return getDeterminant(rows - 1, columns - 1, submatrix);
+}
+
+// gets the submatrix by eliminating a row and a column of the given one
+void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]){
+    int i, j;
+    bool flag;
+    for(i = 0; i < rows; i++){
+        flag = false;
+        for(j = 0; j < columns; j++){
+            if(i >= row){
+                flag = true;
+            }
+            if(i != row && j != column){
+                if(flag){
+                    resultMatrix[i][j] = matrix[i][j + 1];
+                } else {
+                    resultMatrix[i][j] = matrix[i][j];
+                }
+            }
+        }
+    }
 }
 
 // todo: division, power, n root

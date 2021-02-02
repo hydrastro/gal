@@ -20,6 +20,8 @@ void muliplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[
 void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows], fraction_t scalar);
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row);
 
-void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
+void getInverseMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
+fraction_t getAlgebricComplement(int rows, int columns, fraction_t matrix[rows][columns], int row, int column);
+void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]);
 
 #endif //MATRIX_H

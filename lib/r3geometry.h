@@ -32,7 +32,7 @@ typedef struct lineCartesianForm_t{
     Plane_t secondPlane;
 } lineCartesianForm_t;
 
-Plane_t readPlane(Plane_t plane);
-void printPlane(Plane_t plane);
+//Plane_t readPlane(Plane_t plane);
+//void printPlane(Plane_t plane);
 
 #endif //R3GEOMETRY_H

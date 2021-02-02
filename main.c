@@ -57,5 +57,14 @@ int main(void){
     printMatrix(columns - 1 - matrixRank, columns - 1, bases);
     printf("\n");
 
+
+printf("\n\n\nMATRIX:\n");printMatrix(rows,columns,matrix);printf("\n\n\n");
+    // calculates the inverse
+    fraction_t inverse[rows][columns];
+    getInverseMatrix(rows, columns, matrix, inverse);
+    printf("\nInverse matrix:\n");
+    printMatrix(rows, columns, inverse);
+    printf("\n");
+
     return(0);
 }
