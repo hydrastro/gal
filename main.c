@@ -31,7 +31,7 @@ int main(void){
     printMatrix(rows, columns, matrix);
 
     // performing and displaying the row echelon form
-    gaussElimination(rows, columns, matrix, upperTriangularMatrix, 0);
+    gaussElimination(rows, columns, matrix, upperTriangularMatrix);
     printf("\nRow echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
