@@ -21,7 +21,7 @@ void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][colum
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row);
 
 void getInverseMatrix(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
-fraction_t getAlgebricComplement(int rows, int columns, fraction_t matrix[rows][columns], int row, int column);
+fraction_t getMatrixMinor(int rows, int columns, fraction_t matrix[rows][columns], int row, int column);
 void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]);
 
 #endif //MATRIX_H

@@ -355,7 +355,7 @@ void getInverseMatrix(int rows, fraction_t matrix[rows][rows], fraction_t result
     determinantReciprocal = invertFraction(getDeterminant(rows, rows, matrix));
     for(i = 0; i < rows; i++){
         for(j = 0; j < rows; j++){
-            resultMatrix[j][i] = getAlgebricComplement(rows, rows, matrix, i, j);
+            resultMatrix[j][i] = getMatrixMinor(rows, rows, matrix, i, j);
             if((i + j) % 2 == 1){
                 resultMatrix[j][i] = invertFractionSign(resultMatrix[j][i]);
             }
@@ -364,8 +364,8 @@ void getInverseMatrix(int rows, fraction_t matrix[rows][rows], fraction_t result
     }
 }
 
-// calculates the algebric component of a matrix element
-fraction_t getAlgebricComplement(int rows, int columns, fraction_t matrix[rows][columns], int row, int column){
+// calculates the minor of a matrix element
+fraction_t getMatrixMinor(int rows, int columns, fraction_t matrix[rows][columns], int row, int column){
     fraction_t submatrix[rows - 1][columns - 1];
     getSubmatrix(rows, columns, matrix, row, column, submatrix);
 
