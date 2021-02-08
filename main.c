@@ -1,7 +1,3 @@
-/*
- * example imputs: ./main.exe < input
- */
-
 #include <stdio.h>
 #include "gal.h"
 
@@ -44,17 +40,22 @@ int main(void){
     printf("\nReduced row echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
-    // getting the matrix determinant
-    determinant = getDeterminant(rows, columns, matrix);
-    printf("\nMatrix determinant: ");
-    printFraction(determinant);
-    printf("\n");
-
     // getting the marix bases
     fraction_t bases[columns][columns];
     getMatrixBases(rows, columns, matrixRank, matrix, bases);
     printf("\nMatrix bases (by row):\n");
-    printMatrix(columns - 1 - matrixRank, columns - 1, bases);
+    printMatrix(columns - matrixRank, columns, bases);
+    printf("\n");
+
+    if(rows != columns){
+
+        return(0);
+    }
+
+    // getting the matrix determinant
+    determinant = getMatrixDeterminant(rows, matrix);
+    printf("\nMatrix determinant: ");
+    printFraction(determinant);
     printf("\n");
 
     // calculates the inverse
@@ -63,6 +64,16 @@ int main(void){
     printf("\nInverse matrix:\n");
     printMatrix(rows, columns, inverse);
     printf("\n");
+
+    // classifying its type if it's a conic or a quadric
+    switch(rows){
+        case 4:
+           // printQuadricType(matrix);
+           break;
+        case 3:
+           printConicType(matrix);
+           break;
+    }
 
     return(0);
 }

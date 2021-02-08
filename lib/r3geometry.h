@@ -35,4 +35,12 @@ typedef struct lineCartesianForm_t{
 //Plane_t readPlane(Plane_t plane);
 //void printPlane(Plane_t plane);
 
+fraction_t getQuarticInvariant(int rows, fraction_t matrix[rows][rows]);
+fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]);
+fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]);
+fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]);
+
+void printConicType(fraction_t matrix[3][3]);
+void printQuadraticType(fraction_t matrix[4][4]);
+
 #endif //R3GEOMETRY_H

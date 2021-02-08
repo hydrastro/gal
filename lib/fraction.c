@@ -168,23 +168,23 @@ stringElement_t *parseString(char *expression){
         if(expression[i] <= '9' && expression[i] >= '0'){
              currentElement->type = number;
 
-			 currentElement->value = getFraction(expression[i] - '0', 1);
+             currentElement->value = getFraction(expression[i] - '0', 1);
 
-			 while(expression[i - 1] <= '9' && expression[i - 1] >= '0' && i > 0) {
-						i--;
-				 numberCount++;
-				 numberDigit = getFraction((expression[i] - '0'), 1);
-   				numberDigit = multiplyFractionByInteger(numberDigit, pow(10, numberCount));
-    			 currentElement->value = addFractions(currentElement->value, numberDigit);
-			 }
-			 numberCount = 0;
+             while(expression[i - 1] <= '9' && expression[i - 1] >= '0' && i > 0){
+                        i--;
+                 numberCount++;
+                 numberDigit = getFraction((expression[i] - '0'), 1);
+                   numberDigit = multiplyFractionByInteger(numberDigit, pow(10, numberCount));
+                 currentElement->value = addFractions(currentElement->value, numberDigit);
+             }
+             numberCount = 0;
         } else {
              currentElement->type = symbol;
              currentElement->symbol = expression[i];
-	}
-			
-		/*this is useless
-		else if(expression[i] == '+'){
+    }
+            
+        /*this is useless
+        else if(expression[i] == '+'){
              currentElement->type = addition;
              currentElement->symbol = '+';
         } else if(expression[i] == '-'){
@@ -206,11 +206,11 @@ stringElement_t *parseString(char *expression){
              currentElement->type = closedBracket;
              currentElement->symbol = ')';
         } else {
-//			if(!(&currentCharacter == "\0" && i >= 0)){
+//            if(!(&currentCharacter == "\0" && i >= 0)){
 
                  // invalid characters
                 //return NULL;
-//			}
+//            }
         }*/
         previousElement = currentElement;
     }
@@ -231,24 +231,28 @@ bool in_array(void *lookfor, void *array[], int arraySize){
 }
 
 void printStringChain(stringElement_t *start){
-	stringElement_t *cursor;
-	cursor = start;
-	while(cursor->nextElement != NULL)
-	{
-		if(cursor->type == number){
-			printFraction(cursor->value);
-		} else{
-			printf("%c", cursor->symbol);
-		}
-		cursor = cursor->nextElement;
-	}
-		if(cursor->type == number){
-			printFraction(cursor->value);
-		} else{
-			printf("%c", cursor->symbol);
-		}
+    stringElement_t *cursor;
+    cursor = start;
+    while(cursor->nextElement != NULL){
+        if(cursor->type == number){
+            printFraction(cursor->value);
+        } else{
+            printf("%c", cursor->symbol);
+        }
+        cursor = cursor->nextElement;
+    }
+        if(cursor->type == number){
+            printFraction(cursor->value);
+        } else{
+            printf("%c", cursor->symbol);
+        }
 }
 
+// compares two fractions
+int compareFractions(fraction_t x, fraction_t y){
+    fraction_t reducedX, reducedY;
+    reducedX = reduceFraction(x);
+    reducedY = reduceFraction(y);
 
-// todo: expand matrix: add row/s, add column/s
-// todo: reduce matrix: remove row/s, remove column/s
+    return (reducedX.numerator * reducedY.denominator * reducedX.denominator) - (reducedY.numerator * reducedX.denominator * reducedX.denominator);
+}

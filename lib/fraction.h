@@ -38,4 +38,6 @@ stringElement_t *parseString(char *expression);
 bool in_array(void *lookfor, void *array[], int arraySize);
 void printStringChain(stringElement_t *start);
 
+int compareFractions(fraction_t x, fraction_t y);
+
 #endif //FRACTION_T
