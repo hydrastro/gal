@@ -291,7 +291,7 @@ void addMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fractio
 }
 
 // multiplies two matrix
-void muliplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]){
+void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]){
     int i, j, k;
     fraction_t product;
     // emtpying the result matrix
@@ -415,11 +415,11 @@ void getMatrixPower(int rows, fraction_t matrix[rows][rows], int power, fraction
 void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]){
     int i, j;
     for(i = 0; i < rows; i++){
-        if(i = 0; i < rows; i++){
+        for(i = 0; i < rows; i++){
             if(i == j){
-                resultMatrix[i][j] = 1;
+                resultMatrix[i][j] = getFraction(1, 1);
             } else {
-                resultMatrix[i][j] = 0;
+                resultMatrix[i][j] = getFraction(0, 1);
             }
         }
     }

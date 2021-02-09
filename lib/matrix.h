@@ -16,7 +16,7 @@ fraction_t getMatrixDeterminant(int rows, fraction_t matrix[rows][rows]);
 void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rank][columns - 1]);
 void trasposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]);
 void sumMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]);
-void muliplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]);
+void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]);
 void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows], fraction_t scalar);
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row);
 
@@ -25,6 +25,6 @@ fraction_t getMatrixMinor(int rows, fraction_t matrix[rows][rows], int row, int 
 void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]);
 
 fraction_t getMatrixTrace(int rows, fraction_t matrix[rows][rows]);
-void getMatrixPower(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
+void getMatrixPower(int rows, fraction_t matrix[rows][rows], int power, fraction_t resultMatrix[rows][rows]);
 void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]);
 #endif //MATRIX_H
