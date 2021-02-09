@@ -380,16 +380,50 @@ void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int r
     }
 }
 
-fraction_t getMatrixTrace(int rows, fraction_t matrix[rows][rows]) {
+// calculates the matrix's trace
+fraction_t getMatrixTrace(int rows, fraction_t matrix[rows][rows]){
     int i;
     fraction_t trace;
     trace = getFraction(0, 1);
-    for(i = 0; i < rows; i++) {
+    for(i = 0; i < rows; i++){
         trace = addFractions(trace, matrix[i][i]);
     }
 
     return trace;
 }
 
-// TODO: division, power, n root
+// calculates the matrix's power
+void getMatrixPower(int rows, fraction_t matrix[rows][rows], int power, fraction_t resultMatrix[rows][rows]){
+    if(power == 0){
+        getIdentityMatrix(rows, resultMatrix);
+
+        return;
+    }
+    if(power > 0){
+        copyMatrix(rows, rows, matrix, resultMatrix);
+    } else {
+        getInverseMatrix(rows, matrix, resultMatrix);
+        power = -power;
+    }
+    while(power > 0){
+        multiplyMatrix(rows, rows, rows, matrix, resultMatrix, resultMatrix);
+        power--;
+    }
+}
+
+// given a size, gets the identity matrix
+void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        if(i = 0; i < rows; i++){
+            if(i == j){
+                resultMatrix[i][j] = 1;
+            } else {
+                resultMatrix[i][j] = 0;
+            }
+        }
+    }
+}
+
+// TODO: n root
 // TODO: expand matrix (add rows and columns)

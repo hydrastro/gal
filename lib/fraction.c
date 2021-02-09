@@ -182,7 +182,7 @@ stringElement_t *parseString(char *expression){
              currentElement->type = symbol;
              currentElement->symbol = expression[i];
     }
-            
+
         /*this is useless
         else if(expression[i] == '+'){
              currentElement->type = addition;

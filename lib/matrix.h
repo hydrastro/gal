@@ -25,4 +25,6 @@ fraction_t getMatrixMinor(int rows, fraction_t matrix[rows][rows], int row, int 
 void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]);
 
 fraction_t getMatrixTrace(int rows, fraction_t matrix[rows][rows]);
+void getMatrixPower(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
+void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]);
 #endif //MATRIX_H
