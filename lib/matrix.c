@@ -92,7 +92,7 @@ int getMatrixRank(int rows, int columns, fraction_t matrix[rows][columns]){
     for(i = 0; i < rows; i++){
         emptyRow = true;
         for(j = 0; j < columns; j++){
-            if(matrix[i][j].numerator != 0){
+            if(tempMatrix[i][j].numerator != 0){
                 emptyRow = false;
             }
         }
@@ -234,18 +234,18 @@ void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][col
     baseNumber = 0;
     // looping every matrix row
     for(i = 1; i <= rows; i++){
-        previousPivotColumn = getPivotColumn(rows, columns, matrix, i - 1);
+        previousPivotColumn = getPivotColumn(rows, columns, tempMatrix, i - 1);
         // setting the current pivot column
-        if(isRowEmpty(rows, columns, matrix, i)){
+        if(isRowEmpty(rows, columns, tempMatrix, i)){
             currentPivotColumn = columns - 1;
         } else {
-            currentPivotColumn = getPivotColumn(rows, columns, matrix, i);
+            currentPivotColumn = getPivotColumn(rows, columns, tempMatrix, i);
         }
         difference = currentPivotColumn - previousPivotColumn;
         // checking if there are free parameters
         if(difference > 1){
             // looping for all the free parameters found
-            for(j = previousPivotColumn + 1; j < currentPivotColumn; j++){
+            for(j = previousPivotColumn + 1; j <= currentPivotColumn; j++){
                 // getting all the values of the parameter in the previous rows
                 for(k = 0; k < i; k++){
                      bases[baseNumber][k] = invertFractionSign(tempMatrix[k][j]);

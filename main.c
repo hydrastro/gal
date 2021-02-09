@@ -22,6 +22,7 @@ int main(void){
     readMatrix(rows, columns, matrix);
     copyMatrix(rows, columns, matrix, upperTriangularMatrix);
 
+    // TODO: put all of this code outside of the main method
     // displaying the input matrix
     printf("\nStarting matrix:\n");
     printMatrix(rows, columns, matrix);
@@ -59,6 +60,7 @@ int main(void){
     printf("\n");
 
     // calculates the inverse
+    // TODO: check that the determinant is not zero
     fraction_t inverse[rows][columns];
     getInverseMatrix(rows, matrix, inverse);
     printf("\nInverse matrix:\n");
