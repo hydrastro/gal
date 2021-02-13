@@ -3,6 +3,32 @@
 #include "fraction.h"
 #include "r3geometry.h"
 
+// code from the old side repository
+Plane_t readPlane(Plane_t plane){
+        printf("ax + by + cz + d = 0\n");
+        printf("a: ");
+        plane.x = readFraction();
+        printf("b: ");
+        plane.y = readFraction();
+        printf("c: ");
+        plane.z = readFraction();
+        printf("d: ");
+        plane.d = readFraction();
+
+        return plane;
+}
+
+void printPlane(Plane_t plane){
+        printFraction(plane.x);
+        printf("x + ");
+        printFraction(plane.y);
+        printf("y + ");
+        printFraction(plane.z);
+        printf("z + ");
+        printFraction(plane.d);
+        printf(" = 0\n");
+}
+
 // TODO: important: unify the getInvariant functions.....
 
 fraction_t getConicCubicInvariant(fraction_t matrix[3][3]) {
