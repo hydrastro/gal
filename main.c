@@ -41,11 +41,18 @@ int main(void){
     printf("\nReduced row echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
-    // getting the marix bases
-    fraction_t bases[columns][columns];
-    getMatrixBases(rows, columns, matrixRank, matrix, bases);
-    printf("\nMatrix bases (by row):\n");
-    printMatrix(columns - matrixRank, columns, bases);
+    // getting the marix kernel basis
+    fraction_t kernelBasis[columns - matrixRank][columns];
+    getMatrixKernelBasis(rows, columns, matrixRank, matrix, kernelBasis);
+    printf("\nMatrix kernel basis (by row, transposed):\n");
+    printMatrix(columns - matrixRank, columns, kernelBasis);
+    printf("\n");
+
+    // getting the matrix image basis
+    fraction_t imageBasis[matrixRank][rows];
+    getMatrixImageBasis(rows, columns, matrixRank, matrix, imageBasis);
+    printf("\nMatrix image basis (by row, transposed):\n");
+    printMatrix(matrixRank, rows, imageBasis);
     printf("\n");
 
     if(rows != columns){

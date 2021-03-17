@@ -217,21 +217,21 @@ fraction_t getMatrixDeterminant(int rows, fraction_t matrix[rows][rows]){
     return determinant;
 }
 
-// calculates the bases of a given matrix
-void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - rank][columns]){
-    int i, j, k, previousPivotColumn, currentPivotColumn, difference, baseNumber;
+// calculates the basis of the kernel of a given matrix
+void getMatrixKernelBasis(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t basis[columns - rank][columns]){
+    int i, j, k, previousPivotColumn, currentPivotColumn, difference, basisNumber;
     fraction_t tempMatrix[rows][columns];
     // checking if the matrix is in reduced row echelon form
     if(!isMatrixReduced(rows, columns, matrix, true)){
         gaussJordanElimination(rows, columns, matrix, tempMatrix);
     }
-    // emptying the bases array
+    // emptying the basis array
     for(i = 0; i < columns - rank; i++){
         for(j = 0; j < columns; j++){
-            bases[i][j] = getFraction(0, 1);
+            basis[i][j] = getFraction(0, 1);
         }
     }
-    baseNumber = 0;
+    basisNumber = 0;
     // looping every matrix row
     for(i = 1; i <= rows; i++){
         previousPivotColumn = getPivotColumn(rows, columns, tempMatrix, i - 1);
@@ -248,13 +248,39 @@ void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][col
             for(j = previousPivotColumn + 1; j < currentPivotColumn; j++){
                 // getting all the values of the parameter in the previous rows
                 for(k = 0; k < i; k++){
-                     bases[baseNumber][k] = invertFractionSign(tempMatrix[k][j]);
+                     basis[basisNumber][k] = invertFractionSign(tempMatrix[k][j]);
                 }
                 // setting the actual parameter value to 1
-                bases[baseNumber][j] = getFraction(1, 1);
-                baseNumber++;
+                basis[basisNumber][j] = getFraction(1, 1);
+                basisNumber++;
             }
         }
+    }
+}
+
+void getMatrixImageBasis(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t basis[rank][rows]){
+    int i, j, pivotColumn, basisNumber;
+    fraction_t tempMatrix[rows][columns];
+    // checking if the matrix is in reduced row echelon form
+    if(!isMatrixReduced(rows, columns, matrix, true)){
+        gaussJordanElimination(rows, columns, matrix, tempMatrix);
+    }
+    // emptying the basis array
+    for(i = 0; i < rank; i++){
+        for(j = 0; j < rows; j++){
+            basis[i][j] = getFraction(0, 1);
+        }
+    }
+    basisNumber = 0;
+    // looping the reduced matrix rows
+    for(i = 0; i < rows; i++){
+        // getting the pivot column
+        pivotColumn = getPivotColumn(rows, columns, tempMatrix, i);
+        // copying the corresponding matrix column to the basis array
+        for(j = 0; j < rows; j++){
+            basis[basisNumber][j] = matrix[j][pivotColumn];
+        }
+        basisNumber++;
     }
 }
 
