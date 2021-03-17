@@ -22,7 +22,7 @@ void printMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
             printf("\t");
         }
         printf("\n");
-    }
+    }printf("\n\n");
 }
 
 // copies a bi-dimensional array into another variable
@@ -425,5 +425,27 @@ void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]){
     }
 }
 
-// TODO: n root
-// TODO: expand matrix (add rows and columns)
+// adds a row to a given matrix
+void addMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], fraction_t row[1][columns], fraction_t resultMatrix[rows + 1][columns]){
+    int i;printMatrix(1,columns,row);
+    copyMatrix(rows, columns, matrix, resultMatrix);
+    for(i = 0; i < columns; i++){
+        resultMatrix[rows][i] = row[0][i];
+    }
+}
+
+// adds a column to a given matrix
+void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], fraction_t column[rows][1], fraction_t resultMatrix[rows][columns + 1]){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j <= columns; j++){
+            if(j == columns){
+                resultMatrix[i][j] = column[i][0];
+            } else {
+                resultMatrix[i][j] = matrix[i][j];
+            }
+        }
+    }
+}
+
+//TODO: n root

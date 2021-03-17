@@ -1,5 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef GAL_MATRIX_H
+#define GAL_MATRIX_H
 #include <stdbool.h>
 #include "fraction.h"
 
@@ -27,4 +27,7 @@ void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int r
 fraction_t getMatrixTrace(int rows, fraction_t matrix[rows][rows]);
 void getMatrixPower(int rows, fraction_t matrix[rows][rows], int power, fraction_t resultMatrix[rows][rows]);
 void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]);
-#endif //MATRIX_H
+
+void addMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], fraction_t row[1][columns], fraction_t resultMatrix[rows + 1][columns]);
+void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], fraction_t column[rows][1], fraction_t resultMatrix[rows][columns + 1]);
+#endif //GAL_MATRIX_H

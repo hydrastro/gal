@@ -1,5 +1,5 @@
-#ifndef FRACTION_T
-#define FRACTION_T
+#ifndef GAL_FRACTION_H
+#define GAL_FRACTION_H
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -32,12 +32,16 @@ struct fraction_t reduceFraction(fraction_t x);
 struct fraction_t readFraction();
 struct fraction_t invertFractionSign(fraction_t x);
 void printFraction(fraction_t x);
+
+// expression functions:
 char *readString(size_t size);
-stringElement_t *parseString(char *expression);
 stringElement_t *parseString(char *expression);
 bool in_array(void *lookfor, void *array[], int arraySize);
 void printStringChain(stringElement_t *start);
 
+// TODO: float to fraction, fraction to float
+// TODO: power fraction
+
 int compareFractions(fraction_t x, fraction_t y);
 
-#endif //FRACTION_T
+#endif //GAL_FRACTION_H

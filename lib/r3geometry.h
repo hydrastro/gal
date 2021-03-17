@@ -1,5 +1,5 @@
-#ifndef R3GEOMETRY_H
-#define R3GEOMETRY_H
+#ifndef GAL_R3GEOMETRY_H
+#define GAL_R3GEOMETRY_H
 #include "fraction.h"
 
 // defining new types
@@ -43,4 +43,4 @@ fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]);
 void printConicType(fraction_t matrix[3][3]);
 void printQuadraticType(fraction_t matrix[4][4]);
 
-#endif //R3GEOMETRY_H
+#endif //GaL_R3GEOMETRY_H
