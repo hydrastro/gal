@@ -218,7 +218,7 @@ fraction_t getMatrixDeterminant(int rows, fraction_t matrix[rows][rows]){
 }
 
 // calculates the bases of a given matrix
-void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - 1 - rank][columns]){
+void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - rank][columns]){
     int i, j, k, previousPivotColumn, currentPivotColumn, difference, baseNumber;
     fraction_t tempMatrix[rows][columns];
     // checking if the matrix is in reduced row echelon form
@@ -237,7 +237,7 @@ void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][col
         previousPivotColumn = getPivotColumn(rows, columns, tempMatrix, i - 1);
         // setting the current pivot column
         if(isRowEmpty(rows, columns, tempMatrix, i)){
-            currentPivotColumn = columns - 1;
+            currentPivotColumn = columns;
         } else {
             currentPivotColumn = getPivotColumn(rows, columns, tempMatrix, i);
         }
