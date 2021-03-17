@@ -39,9 +39,8 @@ stringElement_t *parseString(char *expression);
 bool in_array(void *lookfor, void *array[], int arraySize);
 void printStringChain(stringElement_t *start);
 
-// TODO: float to fraction, fraction to float
-// TODO: power fraction
-
 int compareFractions(fraction_t x, fraction_t y);
-
+struct fraction_t floatToFraction(float f);
+struct fraction_t doubleToFraction(double d);
+struct fraction_t powerFraction(fraction_t x, int r);
 #endif //GAL_FRACTION_H

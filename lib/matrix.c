@@ -336,7 +336,7 @@ void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1
     }
 }
 
-// multiplies a matrxi by a scalar
+// multiplies a matrix by a scalar
 void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows], fraction_t scalar){
     int i, j;
     // emtpying the result matrix
@@ -474,4 +474,34 @@ void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], fr
     }
 }
 
-//TODO: n root
+// calculates the scalar product of two vectors
+fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1]){
+    int i, j;
+    fraction_t result, product;
+    result = getFraction(0, 1);
+    for(i = 0; i < rows; i++){
+        result = addFractions(result, multiplyFractions(vector1[i][1], vector2[i][1]));
+    }
+
+    return result;
+}
+
+// TODO: these functions
+// calculates the orthogoal projection of vector1 on vector2
+void projectVector(int rows, fraction_t vector[rows][1], fraction_t matrix2[rows][1]){
+// ( v2( ( v1 * v2 ) / ( || v2 || ) ^ 2 ) )
+
+    fraction_t temp;
+}
+
+void getVectorNorm(){
+// || v ||
+// *returns the n-root of the sum of the square of the n-elements of the vector (= d(O, P))*
+}
+
+void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
+// (v1 - projection(v1, v2)), etc ...
+}
+
+// TODO: n root
+// TODO: put basis in an array of vectors ( + vector definition ? )

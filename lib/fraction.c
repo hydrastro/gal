@@ -256,3 +256,53 @@ int compareFractions(fraction_t x, fraction_t y){
 
     return (reducedX.numerator * reducedY.denominator * reducedX.denominator) - (reducedY.numerator * reducedX.denominator * reducedX.denominator);
 }
+
+// gets the fraction from a given float
+struct fraction_t floatToFraction(float f){
+    int numerator, denominator;
+    denominator = 1;
+    while(f - (int)f != 0.0f || (int)(f * 10.0f) < 0 ){
+        f *= 10.0f;
+        numerator = (int)f;
+        denominator *= 10;
+    }
+
+    return getFraction(numerator, denominator);
+}
+
+// gets the fraction from a given double
+struct fraction_t doubleToFraction(double d){
+    int numerator, denominator;
+    denominator = 1;
+    while(d - (int)d != 0.0 || (int)(d * 10.0) < 0 ){
+        d *= 10.0;
+        numerator = (int)d;
+        denominator *= 10;
+    }
+
+    return getFraction(numerator, denominator);
+}
+
+// calculates the power of a given fraction
+struct fraction_t powerFraction(fraction_t x, int r){
+    fraction_t result;
+    result = x;
+    if(r == 0){
+        if(x.numerator == 0){
+
+            return getFraction(0, 0);
+        }
+
+        return getFraction(1, 1);
+    }
+    if(r < 0){
+        result = invertFraction(x);
+        r = -r;
+    }
+    while(r > 0){
+        result = multiplyFractions(result, x);
+        r--;
+    }
+
+    return result;
+}
