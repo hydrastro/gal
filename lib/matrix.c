@@ -245,7 +245,7 @@ void getMatrixBases(int rows, int columns, int rank, fraction_t matrix[rows][col
         // checking if there are free parameters
         if(difference > 1){
             // looping for all the free parameters found
-            for(j = previousPivotColumn + 1; j <= currentPivotColumn; j++){
+            for(j = previousPivotColumn + 1; j < currentPivotColumn; j++){
                 // getting all the values of the parameter in the previous rows
                 for(k = 0; k < i; k++){
                      bases[baseNumber][k] = invertFractionSign(tempMatrix[k][j]);
