@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "matrix.h"
 
 // given the number of rows and columns, it reads a matrix, element by element as a fraction type
@@ -486,22 +487,33 @@ fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t
     return result;
 }
 
-// TODO: these functions
-// calculates the orthogoal projection of vector1 on vector2
-void projectVector(int rows, fraction_t vector[rows][1], fraction_t matrix2[rows][1]){
-// ( v2( ( v1 * v2 ) / ( || v2 || ) ^ 2 ) )
-
-    fraction_t temp;
+//calculates the orthogoal projection of vector1 on vector2
+void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1], fraction_t resultVector[rows][1]){
+    fraction_t scalar;
+    scalar = vectorScalarProduct(rows, vector1, vector2);
+    scalar = divideFractions(scalar, powerFractionByDouble(getVectorNorm(rows, vector2), 2.0));
+    multiplyMatrixByScalar(rows, 1, vector2, resultVector, scalar);
 }
 
-void getVectorNorm(){
-// || v ||
-// *returns the n-root of the sum of the square of the n-elements of the vector (= d(O, P))*
+// calculates the norm of a given vector
+fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]){
+    fraction_t result;
+    int i;
+    result = getFraction(1, 1);
+    for(i = 0; i < rows; i++){
+        result = addFractions(result, multiplyFractions(vector[i][1], vector[i][1]));
+    }
+
+    return sqrtFraction(result);
 }
 
 void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
-// (v1 - projection(v1, v2)), etc ...
+/*
+v1 = u1
+v2 = u2 - proj(u2, v1)
+v3 = u3 - proj(u3, v1) - proj(u3, v2)
+vn = un - proj(un, v1) - ... - proj(un, vn-1)
+*/
 }
 
 // TODO: n root
-// TODO: put basis in an array of vectors ( + vector definition ? )

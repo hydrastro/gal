@@ -308,3 +308,8 @@ fraction_t rootFractionByInteger(fraction_t x, int y){
 
     return powerFractionByDouble(x, 1.0 / (float)y);
 }
+
+fraction_t sqrtFraction(fraction_t x){
+
+    return rootFractionByInteger(x, 2);
+}

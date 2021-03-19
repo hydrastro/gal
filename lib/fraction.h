@@ -45,4 +45,5 @@ fraction_t doubleToFraction(double d);
 fraction_t powerFractionByDouble(fraction_t x, double y);
 fraction_t powerFraction(fraction_t x, fraction_t y);
 fraction_t rootFractionByInteger(fraction_t x, int y);
+fraction_t sqrtFraction(fraction_t x);
 #endif //GAL_FRACTION_H

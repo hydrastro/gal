@@ -31,4 +31,8 @@ void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]);
 
 void addMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], fraction_t row[1][columns], fraction_t resultMatrix[rows + 1][columns]);
 void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], fraction_t column[rows][1], fraction_t resultMatrix[rows][columns + 1]);
+fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1]);
+void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1], fraction_t resultVector[rows][1]);
+fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]);
+void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
 #endif //GAL_MATRIX_H
