@@ -15,10 +15,11 @@ int gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][column
 fraction_t getMatrixDeterminant(int rows, fraction_t matrix[rows][rows]);
 void getMatrixKernelBasis(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - rank][columns]);
 void getMatrixImageBasis(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t basis[rank][rows]);
-void trasposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]);
+void transposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]);
 void sumMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]);
+void subtractMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]);
 void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]);
-void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows], fraction_t scalar);
+void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns], fraction_t scalar);
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row);
 
 void getInverseMatrix(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);

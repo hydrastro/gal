@@ -23,7 +23,7 @@ void printMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
             printf("\t");
         }
         printf("\n");
-    }
+    }printf("\n");//TODO remove this
 }
 
 // copies a bi-dimensional array into another variable
@@ -126,7 +126,7 @@ bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns], bo
             }
         }
         if(reducedRowEchelonForm){
-            // checking all the values upward the pivot	
+            // checking all the values upward the pivot
             for(j = i -1; j >= 0; j--){
                 if(matrix[j][i].numerator != 0){
 
@@ -286,7 +286,7 @@ void getMatrixImageBasis(int rows, int columns, int rank, fraction_t matrix[rows
 }
 
 // transposes a matrix
-void trasposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]){
+void transposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]){
     int i, j;
     // emtpying the result matrix
     for(i = 0; i < rows; i++){
@@ -317,6 +317,23 @@ void addMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fractio
     }
 }
 
+// subtracts two matrix
+void subtractMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]){
+    int i, j;
+    // emtpying the result matrix
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = getFraction(0, 1);
+        }
+    }
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = subtractFractions(matrix1[i][j], matrix2[i][j]);
+        }
+    }
+
+}
+
 // multiplies two matrix
 void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]){
     int i, j, k;
@@ -338,7 +355,7 @@ void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1
 }
 
 // multiplies a matrix by a scalar
-void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows], fraction_t scalar){
+void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns], fraction_t scalar){
     int i, j;
     // emtpying the result matrix
     for(i = 0; i < rows; i++){
@@ -481,7 +498,7 @@ fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t
     fraction_t result, product;
     result = getFraction(0, 1);
     for(i = 0; i < rows; i++){
-        result = addFractions(result, multiplyFractions(vector1[i][1], vector2[i][1]));
+        result = addFractions(result, multiplyFractions(vector1[i][0], vector2[i][0]));
     }
 
     return result;
@@ -489,9 +506,15 @@ fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t
 
 //calculates the orthogoal projection of vector1 on vector2
 void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1], fraction_t resultVector[rows][1]){
-    fraction_t scalar;
+    int i;
+    fraction_t scalar, temp;
     scalar = vectorScalarProduct(rows, vector1, vector2);
-    scalar = divideFractions(scalar, powerFractionByDouble(getVectorNorm(rows, vector2), 2.0));
+    // adding togheter the vector's components instead of getting the norm and squaring it
+    temp = getFraction(0, 1);
+    for(i = 0; i < rows; i++){
+        temp = addFractions(temp, vector2[i][0]);
+    }
+    scalar = divideFractions(scalar, temp);
     multiplyMatrixByScalar(rows, 1, vector2, resultVector, scalar);
 }
 
@@ -508,12 +531,34 @@ fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]){
 }
 
 void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
+// TODO: this
 /*
 v1 = u1
 v2 = u2 - proj(u2, v1)
 v3 = u3 - proj(u3, v1) - proj(u3, v2)
 vn = un - proj(un, v1) - ... - proj(un, vn-1)
 */
+    int i, j;
+    fraction_t tempMatrix[columns][rows][1], tempResultMatrix[columns][rows][1], tempProjection[rows][1];
+    for(i = 0; i < columns; i++){
+        for(j = 0; j < rows; j++){
+            tempMatrix[i][j][1] = matrix[j][i];
+            tempResultMatrix[i][j][1] = matrix[j][i];
+        }
+    }
+    for(i = 0; i < columns; i++){
+        for(j = 0; j < i; j++){
+              projectVector(rows, tempMatrix[i], tempResultMatrix[j], tempProjection);
+              subtractMatrix(rows, 1, tempResultMatrix[i], tempProjection, tempResultMatrix[i]);
+        }
+    }
+    for(i = 0; i < columns; i++){
+        for(j = 0; j < rows; j++){
+            resultMatrix[j][i] = tempResultMatrix[i][j][1];
+        }
+    }
+    transposeMatrix(rows, columns, resultMatrix, resultMatrix);
 }
 
 // TODO: n root
+// TODO: large fraction approximation
