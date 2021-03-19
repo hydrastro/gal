@@ -23,7 +23,7 @@ void printMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
             printf("\t");
         }
         printf("\n");
-    }printf("\n");//TODO remove this
+    }printf("\n");
 }
 
 // copies a bi-dimensional array into another variable
