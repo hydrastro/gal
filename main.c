@@ -3,52 +3,52 @@
 
 int main(void){
     setbuf(stdout, NULL);
-    // declarations
+    /* declarations */
     unsigned int rows, columns;
     int matrixRank;
     fraction_t determinant;
 
-    // getting the matrix size
+    /* getting the matrix size */
     printf("Matrix rows: ");
     scanf("%u", &rows);
     printf("Matrix columns: ");
     scanf("%u", &columns);
 
-    // dynamic matrix declaration
+    /* dynamic matrix declaration */
     fraction_t matrix[rows][columns];
     fraction_t upperTriangularMatrix[rows][columns];
 
-    // getting  the matrix values
+    /* getting  the matrix values */
     readMatrix(rows, columns, matrix);
     copyMatrix(rows, columns, matrix, upperTriangularMatrix);
 
-    // TODO: put all of this code outside of the main method
-    // displaying the input matrix
+    /* TODO: put all of this code outside of the main method */
+    /* displaying the input matrix */
     printf("\nStarting matrix:\n");
     printMatrix(rows, columns, matrix);
 
-    // performing and displaying the row echelon form
+    /* performing and displaying the row echelon form */
     gaussElimination(rows, columns, matrix, upperTriangularMatrix);
     printf("\nRow echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
-    // getting and displaying the matrix rank
+    /* getting and displaying the matrix rank */
     matrixRank = getMatrixRank(rows, columns, matrix);
     printf("\nMatrix rank: %d\n", matrixRank);
 
-    // performing and displaying the reduced row echelon form
+    /* performing and displaying the reduced row echelon form */
     gaussJordanElimination(rows, columns, matrix, upperTriangularMatrix);
     printf("\nReduced row echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
-    // getting the marix kernel basis
+    /* getting the marix kernel basis */
     fraction_t kernelBasis[columns - matrixRank][columns];
     getMatrixKernelBasis(rows, columns, matrixRank, matrix, kernelBasis);
     printf("\nMatrix kernel basis (by row, transposed):\n");
     printMatrix(columns - matrixRank, columns, kernelBasis);
     printf("\n");
 
-    // getting the matrix image basis
+    /* getting the matrix image basis */
     fraction_t imageBasis[matrixRank][rows];
     getMatrixImageBasis(rows, columns, matrixRank, matrix, imageBasis);
     printf("\nMatrix image basis (by row, transposed):\n");
@@ -60,24 +60,37 @@ int main(void){
         return(0);
     }
 
-    // getting the matrix determinant
+    /* getting the matrix determinant */
     determinant = getMatrixDeterminant(rows, matrix);
     printf("\nMatrix determinant: ");
     printFraction(determinant);
     printf("\n");
 
-    // calculates the inverse
-    // TODO: check that the determinant is not zero
-    fraction_t inverse[rows][columns];
-    getInverseMatrix(rows, matrix, inverse);
-    printf("\nInverse matrix:\n");
-    printMatrix(rows, columns, inverse);
+    /* calculates the inverse */
+    if(determinant.numerator != 0){
+        fraction_t inverse[rows][columns];
+        invertMatrix(rows, matrix, inverse);
+        printf("\nInverse matrix:\n");
+        printMatrix(rows, columns, inverse);
+        printf("\n");
+    }
+
+    fraction_t orthogonalMatrix[rows][columns];
+    printf("\nGrahm-Schmidt orthogonal matrix:\n");
+    grahmSchmidtOrthogonalization(rows, columns, matrix, orthogonalMatrix);
+    printMatrix(rows, columns, orthogonalMatrix);
     printf("\n");
 
-    // classifying its type if it's a conic or a quadric
+    fraction_t pseudoinverse[rows][columns];
+    printf("\nMoore-Penorse pseudoinverse matrix:\n");
+    moorePenrosePseudoinverse(rows, matrix, pseudoinverse);
+    printMatrix(rows, columns, pseudoinverse);
+    printf("\n");
+
+    /* classifying its type if it's a conic or a quadric */
     switch(rows){
         case 4:
-           // printQuadricType(matrix);
+           /* printQuadricType(matrix); */
            break;
         case 3:
            printConicType(matrix);

@@ -2,7 +2,7 @@
 #define GAL_EQUATION_H
 #include "fraction.h"
 
-// TODO: functions for this structure
+/* TODO: functions for this structure */
 typedef struct equationTerm_t{
     char variableName;
     fraction_t realCoefficient;
@@ -26,4 +26,4 @@ void divideEquations();
 void solveEquation();
 
 
-#endif //GAL_EQUATION_H
+#endif /* GAL_EQUATION_H */

@@ -22,7 +22,7 @@ void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1
 void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns], fraction_t scalar);
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row);
 
-void getInverseMatrix(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
+void invertMatrix(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
 fraction_t getMatrixMinor(int rows, fraction_t matrix[rows][rows], int row, int column);
 void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]);
 
@@ -36,4 +36,5 @@ fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t
 void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1], fraction_t resultVector[rows][1]);
 fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]);
 void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
-#endif //GAL_MATRIX_H
+void moorePenrosePseudoinverse(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
+#endif /* GAL_MATRIX_H */

@@ -5,4 +5,4 @@
 #include "lib/matrix.h"
 #include "lib/r3geometry.h"
 
-#endif //GAL_H
+#endif /* GAL_H */

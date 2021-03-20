@@ -6,7 +6,7 @@
 #include <string.h>
 #include "fraction.h"
 
-// calculates the greatest common divisor between two integers
+/* calculates the greatest common divisor between two integers */
 int gcd(int x, int y){
     int gcd, remainder;
     while(x != 0){
@@ -19,7 +19,7 @@ int gcd(int x, int y){
     return gcd;
 }
 
-// returns a fraction type, reduced to the lowest terms, from two integers, a numerator and a denominator
+/* returns a fraction type, reduced to the lowest terms, from two integers, a numerator and a denominator */
 fraction_t getFraction(int numerator, int denominator){
     fraction_t x;
     denominator = (denominator == 0) ? 1 : denominator;
@@ -31,57 +31,57 @@ fraction_t getFraction(int numerator, int denominator){
     return x;
 }
 
-// adds two fraction types and returns the result reduced to the lowest terms
+/* adds two fraction types and returns the result reduced to the lowest terms */
 fraction_t addFractions(fraction_t x, fraction_t y){
     int c = gcd(x.denominator, y.denominator);
 
     return getFraction(x.denominator / c * y.numerator + y.denominator / c * x.numerator, x.denominator / c * y.denominator);
 }
 
-// multiplies a fraction by an integer number and returns the result reduced to the lowest terms
+/* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
 
     return getFraction(y * x.numerator, x.denominator);
 }
 
-// performs the subtraction between two fractions and returns the result reduced to the lowest terms
+/* performs the subtraction between two fractions and returns the result reduced to the lowest terms */
 fraction_t subtractFractions(fraction_t x, fraction_t y){
 
     return addFractions(x, multiplyFractionByInteger(y, -1));
 }
 
-// performs the multiplication between two fractions and returns the result reduced to the lowest terms
+/* performs the multiplication between two fractions and returns the result reduced to the lowest terms */
 fraction_t multiplyFractions(fraction_t x, fraction_t y){
 
     return getFraction(x.numerator * y.numerator, x.denominator * y.denominator);
 }
 
-// performs the division between two fractions and returns the result reduced to the lowest terms
+/* performs the division between two fractions and returns the result reduced to the lowest terms */
 fraction_t divideFractions(fraction_t x, fraction_t y){
 
     return multiplyFractions(x, invertFraction(y));
 }
 
-// divides a fraction by an integer
+/* divides a fraction by an integer */
 fraction_t divideFractionByInteger(fraction_t x, int y){
 
     return getFraction(y / x.numerator, x.denominator);
 }
 
 
-// returns, reduced to the lowest terms, the inverted fraction
+/* returns, reduced to the lowest terms, the inverted fraction */
 fraction_t invertFraction(fraction_t x){
 
     return getFraction(x.denominator, x.numerator);
 }
 
-// returns, reduced to the lowest terms, the absolute value of the fraction
+/* returns, reduced to the lowest terms, the absolute value of the fraction */
 fraction_t fractionAbsoluteValue(fraction_t x){
 
     return getFraction(abs(x.numerator), abs(x.denominator));
 }
 
-// reduces a fraction to its minimal terms
+/* reduces a fraction to its minimal terms */
 fraction_t reduceFraction(fraction_t x){
     int c = gcd(x.numerator, x.denominator);
     if(abs(c) != 1){
@@ -99,7 +99,7 @@ fraction_t reduceFraction(fraction_t x){
     return x;
 }
 
-// reads a fraction, reduced to the lowest terms, from the user input ("numerator/denominator"), and returns it as a fraction type. The default denominator value is 1
+/* reads a fraction, reduced to the lowest terms, from the user input ("numerator/denominator"), and returns it as a fraction type. The default denominator value is 1 */
 fraction_t readFraction(){
     int x, y;
     if(scanf("%d/%d", &x, &y) == 1){
@@ -109,13 +109,13 @@ fraction_t readFraction(){
     return getFraction(x, y);
 }
 
-// inverts the sign of a fraction
+/* inverts the sign of a fraction */
 fraction_t invertFractionSign(fraction_t x){
 
     return getFraction(-x.numerator, x.denominator);
 }
 
-// prints a fraction on the screen
+/* prints a fraction on the screen */
 void printFraction(fraction_t x){
     if(x.numerator == 0 || x.denominator == 1){
         if(x.denominator == 0){
@@ -156,7 +156,7 @@ char *readString(size_t size){
     return realloc(string, sizeof(char)*length);
 }
 
-// creates the string chain
+/* creates the string chain */
 stringElement_t *parseString(char *expression){
     int i, numberCount = 0,di;
     stringElement_t *currentElement, *previousElement;
@@ -207,11 +207,11 @@ stringElement_t *parseString(char *expression){
              currentElement->type = closedBracket;
              currentElement->symbol = ')';
         } else {
-//            if(!(&currentCharacter == "\0" && i >= 0)){
+/*            if(!(&currentCharacter == "\0" && i >= 0)){
 
-                 // invalid characters
-                //return NULL;
-//            }
+                 /* invalid characters
+                /*return NULL;
+/*            }
         }*/
         previousElement = currentElement;
     }
@@ -249,7 +249,7 @@ void printStringChain(stringElement_t *start){
         }
 }
 
-// compares two fractions
+/* compares two fractions */
 int compareFractions(fraction_t x, fraction_t y){
     fraction_t reducedX, reducedY;
     reducedX = reduceFraction(x);
@@ -258,7 +258,7 @@ int compareFractions(fraction_t x, fraction_t y){
     return (reducedX.numerator * reducedY.denominator * reducedX.denominator) - (reducedY.numerator * reducedX.denominator * reducedX.denominator);
 }
 
-// gets the fraction from a given float
+/* gets the fraction from a given float */
 fraction_t floatToFraction(float f){
     int numerator, denominator;
     denominator = 1;
@@ -272,7 +272,7 @@ fraction_t floatToFraction(float f){
     return getFraction(numerator, denominator);
 }
 
-// gets the fraction from a given double
+/* gets the fraction from a given double */
 fraction_t doubleToFraction(double d){
     int numerator, denominator;
     denominator = 1;
@@ -286,7 +286,7 @@ fraction_t doubleToFraction(double d){
     return getFraction(numerator, denominator);
 }
 
-// calculates the power of a given fraction
+/* calculates the power of a given fraction */
 fraction_t powerFractionByDouble(fraction_t x, double y){
     double temp;
     temp = (double)x.numerator / (double)x.denominator;
@@ -295,7 +295,7 @@ fraction_t powerFractionByDouble(fraction_t x, double y){
     return doubleToFraction(temp);
 }
 
-// calcualtes the fractional power of a given fraction
+/* calcualtes the fractional power of a given fraction */
 fraction_t powerFraction(fraction_t x, fraction_t y){
     double temp;
     temp = (double)y.numerator / (double)y.denominator;
@@ -303,12 +303,13 @@ fraction_t powerFraction(fraction_t x, fraction_t y){
     return powerFractionByDouble(x, temp);
 }
 
-// returns the n-root of a given fraction
+/* returns the n-root of a given fraction */
 fraction_t rootFractionByInteger(fraction_t x, int y){
 
     return powerFractionByDouble(x, 1.0 / (float)y);
 }
 
+/* returns the square root of a given fraction */
 fraction_t sqrtFraction(fraction_t x){
 
     return rootFractionByInteger(x, 2);

@@ -3,7 +3,7 @@
 #include "fraction.h"
 #include "r3geometry.h"
 
-// code from the old side repository
+/* code from the old side repository */
 Plane_t readPlane(Plane_t plane){
         printf("ax + by + cz + d = 0\n");
         printf("a: ");
@@ -29,19 +29,19 @@ void printPlane(Plane_t plane){
         printf(" = 0\n");
 }
 
-// TODO: important: unify the getInvariant functions.....
+/* TODO: important: unify the getInvariant functions..... */
 
 fraction_t getConicCubicInvariant(fraction_t matrix[3][3]) {
-//printMatrix(3, 3, matrix);printf("\n");
+/*printMatrix(3, 3, matrix);printf("\n"); */
 
     return getMatrixDeterminant(3, matrix);
 }
 fraction_t getConicQuadraticInvariant(fraction_t matrix[3][3]) {
-//printMatrix(2, 2, matrix);printf("\n");
+/*printMatrix(2, 2, matrix);printf("\n"); */
     return getMatrixDeterminant(2, matrix);
 }
 fraction_t getConicLinearInvariant(fraction_t matrix[3][3]) {
-//printMatrix(2, 2, matrix);printf("\n");
+/*printMatrix(2, 2, matrix);printf("\n"); */
 
     return getMatrixTrace(2, matrix);
 }
@@ -72,7 +72,7 @@ fraction_t getQuadraticLinearInvariant(fraction_t matrix[4][4]) {
 }
 
 
-// TODO: define enum types for conics? and make a different function for the output
+/* TODO: define enum types for conics? and make a different function for the output */
 void printConicType(fraction_t matrix[3][3]) {
     int compairsonResult;
     fraction_t cubicInvariant, quadraticInvariant, linearInvariant, product, zeroFraction;
@@ -86,8 +86,8 @@ printf("\nqi: ");printFraction(quadraticInvariant);
 printf("\nli: ");printFraction(linearInvariant);
 
     compairsonResult = compareFractions(quadraticInvariant, zeroFraction);
-    // we are not considering the case 0/0
-    // we need to make sure that every fraction (0 / x) with x not equal 0, is reduced to 0/1
+    /* we are not considering the case 0/0 */
+    /* we need to make sure that every fraction (0 / x) with x not equal 0, is reduced to 0/1 */
     printf("\nConic type: ");
     if(compareFractions(cubicInvariant, getFraction(0, 1)) == 0) {
         if(compairsonResult > 0) {

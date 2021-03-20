@@ -21,7 +21,7 @@ int main(void){
     printf("\n");
     printFraction(sampleValue->nextElement->value);
 
-// yeah, I know, this doesn't look very good lol
+/* yeah, I know, this doesn't look very good lol */
 /*    printf("\nx\n%d\n", sampleValue);
 //printf("sampleValue numerator: %d\n", (*sampleValue).value.numerator);
 /*printf("first numerator %d\n", (sampleValue->value).numerator);

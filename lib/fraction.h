@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-// defines a new type for fractions
+/* defines a new type for fractions */
 typedef struct fraction_t{
     int numerator;
     int denominator;
@@ -33,7 +33,7 @@ fraction_t readFraction();
 fraction_t invertFractionSign(fraction_t x);
 void printFraction(fraction_t x);
 
-// expression functions:
+/* expression functions: */
 char *readString(size_t size);
 stringElement_t *parseString(char *expression);
 bool in_array(void *lookfor, void *array[], int arraySize);
@@ -46,4 +46,4 @@ fraction_t powerFractionByDouble(fraction_t x, double y);
 fraction_t powerFraction(fraction_t x, fraction_t y);
 fraction_t rootFractionByInteger(fraction_t x, int y);
 fraction_t sqrtFraction(fraction_t x);
-#endif //GAL_FRACTION_H
+#endif /* GAL_FRACTION_H */
