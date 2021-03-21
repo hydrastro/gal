@@ -26,7 +26,6 @@ void printMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
         }
         printf("\n");
     }
-printf("\n");
 }
 
 /* copies a bi-dimensional array into another variable */

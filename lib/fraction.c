@@ -31,6 +31,7 @@ fraction_t getFraction(int numerator, int denominator){
     return x;
 }
 
+/* TODO: overflow check */
 /* adds two fraction types and returns the result reduced to the lowest terms */
 fraction_t addFractions(fraction_t x, fraction_t y){
     int c = gcd(x.denominator, y.denominator);
