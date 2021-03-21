@@ -118,6 +118,7 @@ fraction_t invertFractionSign(fraction_t x){
 
 /* prints a fraction on the screen */
 void printFraction(fraction_t x){
+    //printf("%f", (double)x.numerator/(double)x.denominator); return;
     if(x.numerator == 0 || x.denominator == 1){
         if(x.denominator == 0){
             printf("undefined");
@@ -260,6 +261,7 @@ int compareFractions(fraction_t x, fraction_t y){
 }
 
 /* gets the fraction from a given float */
+// TODO: IMPORTANT: set a limit for the digits (too high precision makes matrix functions overflow)
 fraction_t floatToFraction(float f){
     int numerator, denominator;
     denominator = 1;

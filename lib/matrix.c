@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include "matrix.h"
 
-//remove this
-#include <math.h>
 /* given the number of rows and columns, it reads a matrix, element by element as a fraction type */
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j;
@@ -290,12 +288,14 @@ void getMatrixImageBasis(int rows, int columns, int rank, fraction_t matrix[rows
 
 /* transposes a matrix */
 void transposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]){
+    fraction_t tempMatrix[rows][columns];
     int i, j;
     for(i = 0; i < rows; i++){
         for(j = 0; j < columns; j++){
-            resultMatrix[i][j] = matrix[j][i];
+            tempMatrix[i][j] = matrix[j][i];
         }
     }
+    copyMatrix(rows, columns, tempMatrix, resultMatrix);
 }
 
 /* adds two matrix */
@@ -503,7 +503,7 @@ void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[row
     /* adding togheter the vector's components instead of getting the norm and squaring it */
     temp = getFraction(0, 1);
     for(i = 0; i < rows; i++){
-        temp = addFractions(temp, powerFractionByDouble(vector2[i][0], 2.0));
+        temp = addFractions(temp, multiplyFractions(vector2[i][0], vector2[i][0]));
     }
     scalar = divideFractions(scalar, temp);
     multiplyMatrixByScalar(rows, 1, vector2, resultVector, scalar);
@@ -552,8 +552,24 @@ void moorePenrosePseudoinverse(int rows, fraction_t matrix[rows][rows], fraction
     invertMatrix(rows, resultMatrix, resultMatrix);
     transposeMatrix(rows, rows, matrix, tempMatrix);
     multiplyMatrix(rows, rows, rows, resultMatrix, tempMatrix, resultMatrix);
-
 }
 
+/* orthonomalizes a given matrix */
+void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
+    int i, j, k;
+    fraction_t tempMatrix[columns][rows][1], norm;
+    grahmSchmidtOrthogonalization(rows, columns, matrix, resultMatrix);
+    for(i = 0; i < columns; i++){
+        for(j = 0; j < rows; j++){
+            tempMatrix[i][j][0] = matrix[j][i];
+        }
+    }
+    for(i = 0; i < columns; i++){
+        norm = getVectorNorm(rows, tempMatrix[i]);
+        for(j = 0; j < rows; j++){
+            resultMatrix[j][i] = divideFractions(resultMatrix[j][i], norm);
+        }
+    }
+}
 /* TODO: n root */
 /* TODO: large fraction approximation */

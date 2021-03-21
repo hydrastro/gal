@@ -38,4 +38,5 @@ void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[row
 fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]);
 void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
 void moorePenrosePseudoinverse(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
+void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
 #endif /* GAL_MATRIX_H */
