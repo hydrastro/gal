@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "matrix.h"
 
+//remove this
+#include <math.h>
 /* given the number of rows and columns, it reads a matrix, element by element as a fraction type */
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j;
@@ -24,6 +26,7 @@ void printMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
         }
         printf("\n");
     }
+printf("\n");
 }
 
 /* copies a bi-dimensional array into another variable */
@@ -348,6 +351,16 @@ void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][colum
     }
 }
 
+/* divides a matrix by a scalar */
+void divideMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns], fraction_t scalar){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = divideFractions(matrix[i][j], scalar);
+        }
+    }
+}
+
 /* check if a matrix row is filled with zeroes */
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row){
     int i;
@@ -491,7 +504,7 @@ void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[row
     /* adding togheter the vector's components instead of getting the norm and squaring it */
     temp = getFraction(0, 1);
     for(i = 0; i < rows; i++){
-        temp = addFractions(temp, vector2[i][0]);
+        temp = addFractions(temp, powerFractionByDouble(vector2[i][0], 2.0));
     }
     scalar = divideFractions(scalar, temp);
     multiplyMatrixByScalar(rows, 1, vector2, resultVector, scalar);
@@ -501,9 +514,9 @@ void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[row
 fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]){
     fraction_t result;
     int i;
-    result = getFraction(1, 1);
+    result = getFraction(0, 1);
     for(i = 0; i < rows; i++){
-        result = addFractions(result, multiplyFractions(vector[i][1], vector[i][1]));
+        result = addFractions(result, multiplyFractions(vector[i][0], vector[i][0]));
     }
 
     return sqrtFraction(result);

@@ -20,6 +20,7 @@ void sumMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fractio
 void subtractMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]);
 void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1[rows][columns], fraction_t matrix2[columns][resultColumns], fraction_t resultMatrix[rows][resultColumns]);
 void multiplyMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns], fraction_t scalar);
+void divideMatrixByScalar(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns], fraction_t scalar);
 bool isRowEmpty(int rows, int columns, fraction_t matrix[rows][columns], int row);
 
 void invertMatrix(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
