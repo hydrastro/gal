@@ -31,16 +31,43 @@ fraction_t getFraction(int numerator, int denominator){
     return x;
 }
 
-/* TODO: overflow check */
 /* adds two fraction types and returns the result reduced to the lowest terms */
 fraction_t addFractions(fraction_t x, fraction_t y){
-    int c = gcd(x.denominator, y.denominator);
+    int c, l, m, n;
+    c = gcd(x.denominator, y.denominator);
+    if((c != 0 && (c * y.numerator) / c != y.numerator) || (c != 0 && (c * y.denominator) / c != y.denominator)){
+
+        return addFractions(x, approximateFraction(y));
+    }
+    if((c != 0 && (c * x.numerator) / c != x.numerator) || (c != 0 && (c * x.denominator) / c != x.denominator)){
+
+        return addFractions(approximateFraction(x), y);
+    }
+
+    l = x.denominator / c * y.numerator;
+    m = y.denominator / c * x.numerator;
+    n = l + m;
+
+    if((l^m) > 0 && (l^n) < 0){
+        if(abs(l) > abs(m)){
+
+             return addFractions(approximateFraction(x), y);
+        }
+
+        return addFractions(x, approximateFraction(y));
+    }
 
     return getFraction(x.denominator / c * y.numerator + y.denominator / c * x.numerator, x.denominator / c * y.denominator);
 }
 
 /* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
+    int c;
+    c = y * x.numerator;
+    if(y != 0 &&  c / y != x.numerator){
+
+        return multiplyFractionByInteger(approximateFraction(x), y);
+    }
 
     return getFraction(y * x.numerator, x.denominator);
 }
@@ -53,6 +80,25 @@ fraction_t subtractFractions(fraction_t x, fraction_t y){
 
 /* performs the multiplication between two fractions and returns the result reduced to the lowest terms */
 fraction_t multiplyFractions(fraction_t x, fraction_t y){
+    int c, d;
+    c = x.numerator * y.numerator;
+    d = x.denominator * y.denominator;
+    if((x.numerator != 0) && ((c / x.numerator) != y.numerator)){
+        if(abs(x.numerator) > abs(y.numerator)){
+
+            return multiplyFractions(approximateFraction(x), y);
+        }
+
+        return multiplyFractions(x, approximateFraction(y));
+    }
+    if((x.denominator != 0) && ((d / x.denominator) != y.denominator)){
+        if(abs(x.denominator) > abs(y.denominator)){
+
+            return multiplyFractions(approximateFraction(x), y);
+        }
+
+        return multiplyFractions(x, approximateFraction(y));
+    }
 
     return getFraction(x.numerator * y.numerator, x.denominator * y.denominator);
 }
@@ -118,7 +164,7 @@ fraction_t invertFractionSign(fraction_t x){
 
 /* prints a fraction on the screen */
 void printFraction(fraction_t x){
-    //printf("%f", (double)x.numerator/(double)x.denominator); return;
+    //printf("%.8f", (double)x.numerator/(double)x.denominator); return;
     if(x.numerator == 0 || x.denominator == 1){
         if(x.denominator == 0){
             printf("undefined");
@@ -316,4 +362,24 @@ fraction_t rootFractionByInteger(fraction_t x, int y){
 fraction_t sqrtFraction(fraction_t x){
 
     return rootFractionByInteger(x, 2);
+}
+
+/* approximates a fraction */
+fraction_t approximateFraction(fraction_t x){
+    //return getFraction(x.numerator/2,x.denominator/2);
+    int i, j;
+    i = 0;
+    j = 0;
+    if(x.numerator % 10 >= 5){
+        i++;
+    }
+    if(x.denominator % 10 >= 5){
+        j++;
+    }
+    x.numerator /= 10;
+    x.denominator /= 10;
+    x.numerator += i;
+    x.denominator += j;
+
+    return getFraction(x.numerator, x.denominator);
 }
