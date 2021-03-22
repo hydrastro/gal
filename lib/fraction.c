@@ -35,23 +35,14 @@ fraction_t getFraction(int numerator, int denominator){
 fraction_t addFractions(fraction_t x, fraction_t y){
     int c, l, m, n;
     c = gcd(x.denominator, y.denominator);
-    if((c != 0 && (c * y.numerator) / c != y.numerator) || (c != 0 && (c * y.denominator) / c != y.denominator)){
+    l = (x.denominator / c) * y.numerator;
+    m = (y.denominator / c) * x.numerator;
+    n = (x.denominator / c) * y.denominator;
+    if((y.numerator != 0 && (l / y.numerator) != (x.denominator / c)) || (x.numerator != 0 && (m / x.numerator) != (y.denominator / c)) || (y.denominator != 00 && (n / y.denominator) != (x.denominator / c))) {
+        /* overflowing */
+        if((x.numerator > y.numerator && x.numerator > y.denominator) || (x.numerator > y.numerator && x.numerator > y.denominator)) {
 
-        return addFractions(x, approximateFraction(y));
-    }
-    if((c != 0 && (c * x.numerator) / c != x.numerator) || (c != 0 && (c * x.denominator) / c != x.denominator)){
-
-        return addFractions(approximateFraction(x), y);
-    }
-
-    l = x.denominator / c * y.numerator;
-    m = y.denominator / c * x.numerator;
-    n = l + m;
-
-    if((l^m) > 0 && (l^n) < 0){
-        if(abs(l) > abs(m)){
-
-             return addFractions(approximateFraction(x), y);
+            return addFractions(approximateFraction(x), y);
         }
 
         return addFractions(x, approximateFraction(y));
@@ -59,6 +50,8 @@ fraction_t addFractions(fraction_t x, fraction_t y){
 
     return getFraction(x.denominator / c * y.numerator + y.denominator / c * x.numerator, x.denominator / c * y.denominator);
 }
+
+
 
 /* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
@@ -164,7 +157,6 @@ fraction_t invertFractionSign(fraction_t x){
 
 /* prints a fraction on the screen */
 void printFraction(fraction_t x){
-    //printf("%.8f", (double)x.numerator/(double)x.denominator); return;
     if(x.numerator == 0 || x.denominator == 1){
         if(x.denominator == 0){
             printf("undefined");
@@ -307,7 +299,6 @@ int compareFractions(fraction_t x, fraction_t y){
 }
 
 /* gets the fraction from a given float */
-// TODO: IMPORTANT: set a limit for the digits (too high precision makes matrix functions overflow)
 fraction_t floatToFraction(float f){
     int numerator, denominator;
     denominator = 1;
@@ -366,7 +357,6 @@ fraction_t sqrtFraction(fraction_t x){
 
 /* approximates a fraction */
 fraction_t approximateFraction(fraction_t x){
-    //return getFraction(x.numerator/2,x.denominator/2);
     int i, j;
     i = 0;
     j = 0;
