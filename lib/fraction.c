@@ -6,6 +6,13 @@
 #include <string.h>
 #include "fraction.h"
 
+/* if a term of a fraction is greater than this value, it will be printed as a float */
+/* NOTE: it can be set to INT_MAX */
+#define GAL_FRACTION_FLOAT_LIMIT 1000000
+
+/* sets how many digits can be printed after the floating point */
+#define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
+
 /* calculates the greatest common divisor between two integers */
 int gcd(int x, int y){
     int gcd, remainder;
@@ -38,9 +45,9 @@ fraction_t addFractions(fraction_t x, fraction_t y){
     l = (x.denominator / c) * y.numerator;
     m = (y.denominator / c) * x.numerator;
     n = (x.denominator / c) * y.denominator;
-    if((y.numerator != 0 && (l / y.numerator) != (x.denominator / c)) || (x.numerator != 0 && (m / x.numerator) != (y.denominator / c)) || (y.denominator != 00 && (n / y.denominator) != (x.denominator / c))) {
+    if((y.numerator != 0 && (l / y.numerator) != (x.denominator / c)) || (x.numerator != 0 && (m / x.numerator) != (y.denominator / c)) || (y.denominator != 00 && (n / y.denominator) != (x.denominator / c))){
         /* overflowing */
-        if((abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator)) || (abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator))) {
+        if((abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator)) || (abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator))){
 
             return addFractions(approximateFraction(x), y);
         }
@@ -160,16 +167,26 @@ void printFraction(fraction_t x){
     if(x.numerator == 0 || x.denominator == 1){
         if(x.denominator == 0){
             printf("undefined");
-        } else {
-            printf("%d", x.numerator);
+
+            return;
         }
-    } else {
-        if(x.denominator == 0){
-            printf("impossible");
-        } else {
-            printf("%d/%d", x.numerator, x.denominator);
-        }
+        printf("%d", x.numerator);
+
+        return;
     }
+    if(x.denominator == 0){
+        printf("impossible");
+
+        return;
+    }
+    if(x.numerator < GAL_FRACTION_FLOAT_LIMIT && x.denominator < GAL_FRACTION_FLOAT_LIMIT){
+        printf("%d/%d", x.numerator, x.denominator);
+
+        return;
+    }
+    printf("%.*f", GAL_FRACTION_FLOAT_PRINTF_PRECISION, (double)x.numerator / (double)x.denominator);
+
+    return;
 }
 
 char *readString(size_t size){
