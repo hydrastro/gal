@@ -19,7 +19,7 @@ int gcd(int x, int y){
     while(x != 0){
         remainder = y % x;
         y = x;
-            x = remainder;
+        x = remainder;
     }
     gcd = y;
 
@@ -30,7 +30,6 @@ int gcd(int x, int y){
 fraction_t getFraction(int numerator, int denominator){
     fraction_t x;
     denominator = (denominator == 0) ? 1 : denominator;
-
     x.numerator = numerator;
     x.denominator = denominator;
     x = reduceFraction(x);
@@ -130,7 +129,8 @@ fraction_t fractionAbsoluteValue(fraction_t x){
 
 /* reduces a fraction to its minimal terms */
 fraction_t reduceFraction(fraction_t x){
-    int c = gcd(x.numerator, x.denominator);
+    int c;
+    c = gcd(x.numerator, x.denominator);
     if(abs(c) != 1){
         x.numerator /= c;
         x.denominator /= c;
@@ -192,7 +192,8 @@ void printFraction(fraction_t x){
 char *readString(size_t size){
     char *string;
     int character;
-    size_t length = 0;
+    size_t length;
+    length = 0;
     string = realloc(NULL, sizeof(char)*size);
     if(!string){
 
@@ -215,9 +216,10 @@ char *readString(size_t size){
 
 /* creates the string chain */
 stringElement_t *parseString(char *expression){
-    int i, numberCount = 0,di;
+    int i, numberCount, di;
     stringElement_t *currentElement, *previousElement;
     fraction_t numberDigit;
+    numberCount = 0;
     previousElement = NULL;
 
     for(i = strlen(expression) - 1; i >= 0; i--){

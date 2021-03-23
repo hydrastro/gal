@@ -160,7 +160,7 @@ int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int 
 /* performs the Gauss-Jordan elimination on a given matrix */
 int gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
     int i, j, k, pivotColumn, rowSwappingTimes;
-    fraction_t factor, pivotValue, product;\
+    fraction_t factor, pivotValue, product;
     rowSwappingTimes = 0;
     /* check if matrix is in row echelon form, otherwise performs the gaussian elimination */
     if(!isMatrixReduced(rows, columns, matrix, false)){
@@ -571,5 +571,5 @@ void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns
         }
     }
 }
+
 /* TODO: n root */
-/* TODO: large fraction approximation */
