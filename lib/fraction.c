@@ -40,7 +40,7 @@ fraction_t addFractions(fraction_t x, fraction_t y){
     n = (x.denominator / c) * y.denominator;
     if((y.numerator != 0 && (l / y.numerator) != (x.denominator / c)) || (x.numerator != 0 && (m / x.numerator) != (y.denominator / c)) || (y.denominator != 00 && (n / y.denominator) != (x.denominator / c))) {
         /* overflowing */
-        if((x.numerator > y.numerator && x.numerator > y.denominator) || (x.numerator > y.numerator && x.numerator > y.denominator)) {
+        if((abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator)) || (abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator))) {
 
             return addFractions(approximateFraction(x), y);
         }
