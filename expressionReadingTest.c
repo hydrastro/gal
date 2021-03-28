@@ -7,19 +7,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 int main(void){
     setbuf(stdout, NULL);
     char *m;
 
     printf("input string : ");
     m = readString(20);
-    stringElement_t * sampleValue;
+    expressionChainElement_t * sampleValue;
     sampleValue = parseString(m);
     printStringChain(sampleValue);
 
 
     printf("\n");
-    printFraction(sampleValue->nextElement->value);
+    printFraction(sampleValue->nextElement->value.realCoefficient);
 
 /* yeah, I know, this doesn't look very good lol */
 /*    printf("\nx\n%d\n", sampleValue);
