@@ -13,7 +13,7 @@ typedef struct expressionTerm_t{
 
 typedef enum {FUNCTION_SIN, FUNCTION_COS, FUNCTION_TAN, FUNCTION_LOG} expressionFunction_t;
 
-typedef enum {EXPRESSION_STRING_TERM, EXPRESSION_STRING_SYMBOL, EXPRESSION_STRING_FUNCTION} expressionElementType_t;
+typedef enum {EXPRESSION_TERM, EXPRESSION_OPERATOR, EXPRESSION_PARENTHESIS, EXPRESSION_FUNCTION} expressionElementType_t;
 
 typedef struct expressionChainElement_t{
     expressionElementType_t type;
