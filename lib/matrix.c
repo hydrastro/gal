@@ -572,4 +572,22 @@ void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns
     }
 }
 
+void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows]){
+    int i, j;
+    fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows];
+    copyMatrix(rows, rows, matrix, tempMatrix);
+    for(i = 0; i < 13; i++){
+        // calculating the Q matrix
+        grahmSchmidtOrthogonalization(rows, rows, tempMatrix, QMatrix);
+        orthonormalizeMatrix(rows, rows, QMatrix, QMatrix);
+        // calculating the R matrix
+        transposeMatrix(rows, rows, QMatrix, RMatrix);
+        multiplyMatrix(rows, rows, rows, RMatrix, tempMatrix, RMatrix);
+        // calculating the matrix for the next iteration
+        multiplyMatrix(rows, rows, rows, RMatrix, QMatrix, tempMatrix);
+    }
+    // the eigenvalues should be in the diagonal of tempMatrix
+    // TODO: loop exit condition
+}
+
 /* TODO: n root */
