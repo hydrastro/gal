@@ -450,7 +450,7 @@ void getMatrixPower(int rows, fraction_t matrix[rows][rows], int power, fraction
 void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]){
     int i, j;
     for(i = 0; i < rows; i++){
-        for(i = 0; i < rows; i++){
+        for(j = 0; j < rows; j++){
             if(i == j){
                 resultMatrix[i][j] = getFraction(1, 1);
             } else {
@@ -485,8 +485,8 @@ void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], fr
 
 /* calculates the scalar product of two vectors */
 fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1]){
-    int i, j;
-    fraction_t result, product;
+    int i;
+    fraction_t result;
     result = getFraction(0, 1);
     for(i = 0; i < rows; i++){
         result = addFractions(result, multiplyFractions(vector1[i][0], vector2[i][0]));
@@ -556,7 +556,7 @@ void moorePenrosePseudoinverse(int rows, fraction_t matrix[rows][rows], fraction
 
 /* orthonomalizes a given matrix */
 void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
-    int i, j, k;
+    int i, j;
     fraction_t tempMatrix[columns][rows][1], norm;
     grahmSchmidtOrthogonalization(rows, columns, matrix, resultMatrix);
     for(i = 0; i < columns; i++){
@@ -573,7 +573,7 @@ void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns
 }
 
 void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows]){
-    int i, j;
+    int i;
     fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows];
     copyMatrix(rows, rows, matrix, tempMatrix);
     for(i = 0; i < 13; i++){
