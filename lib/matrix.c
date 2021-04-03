@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include "matrix.h"
 
-#define QRALGORITHM_CONVERGENCE_VALUE 1000
-
 /* given the number of rows and columns, it reads a matrix, element by element as a fraction type */
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j;
@@ -578,22 +576,15 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
     int i;
     fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows];
     copyMatrix(rows, rows, matrix, tempMatrix);
-
     for(i = 0; i < 13; i++){
         // calculating the Q matrix
         grahmSchmidtOrthogonalization(rows, rows, tempMatrix, QMatrix);
         orthonormalizeMatrix(rows, rows, QMatrix, QMatrix);
-        printf("\n##############\n\n Q:\n");
-        printMatrix(rows,rows,QMatrix);
         // calculating the R matrix
         transposeMatrix(rows, rows, QMatrix, RMatrix);
         multiplyMatrix(rows, rows, rows, RMatrix, tempMatrix, RMatrix);
-        printf("\n R:\n");
-        printMatrix(rows,rows,RMatrix);
         // calculating the matrix for the next iteration
         multiplyMatrix(rows, rows, rows, RMatrix, QMatrix, tempMatrix);
-        printf("\n M: %d\n", i);
-        printMatrix(rows, rows, tempMatrix);
     }
     // the eigenvalues should be in the diagonal of tempMatrix
 }
