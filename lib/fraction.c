@@ -11,7 +11,7 @@
 #define GAL_FRACTION_FLOAT_LIMIT 0
 
 /* sets how many digits can be printed after the floating point */
-#define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
+#define GAL_FRACTION_FLOAT_PRINTF_PRECISION 8
 
 /* calculates the greatest common divisor between two integers */
 int gcd(int x, int y){
@@ -33,6 +33,11 @@ fraction_t getFraction(int numerator, int denominator){
     x.numerator = numerator;
     x.denominator = denominator;
     x = reduceFraction(x);
+
+//if(numerator > GAL_FRACTION_FLOAT_LIMIT && denominator > GAL_FRACTION_FLOAT_LIMIT){
+//numerator /= 1000;
+//denominator /= 1000;
+//}
 
     return x;
 }
@@ -60,6 +65,7 @@ fraction_t addFractions(fraction_t x, fraction_t y){
 
 
 /* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
+
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
     int c;
     c = y * x.numerator;
@@ -217,7 +223,7 @@ fraction_t doubleToFraction(double d){
     int numerator, denominator;
     denominator = 1;
     numerator = (int)d;
-    while(d - (int)d != 0.0 && (int)(d * 10.0) > 0){
+    while(d - (int)d != 0.0 && (int)(d * 10.0) > 0 && d < 100000){
         d *= 10.0;
         numerator = (int)d;
         denominator *= 10;
