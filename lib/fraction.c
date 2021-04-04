@@ -64,8 +64,6 @@ fraction_t addFractions(fraction_t x, fraction_t y){
     return getFraction(x.denominator / c * y.numerator + y.denominator / c * x.numerator, x.denominator / c * y.denominator);
 }
 
-
-
 /* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
 
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
