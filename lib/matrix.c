@@ -569,29 +569,29 @@ void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns
     for(i = 0; i < columns; i++){
         norm = getVectorNorm(rows, tempMatrix[i]);
         for(j = 0; j < rows; j++){
-            resultMatrix[j][i] = divideFractions(resultMatrix[j][i], norm);
+            resultMatrix[j][i] = divideFractions(matrix[j][i], norm);
         }
     }
 }
 
-void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows]){
+void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows][1]){
     int i;
     fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows], previousMatrix[rows][rows];
     copyMatrix(rows, rows, matrix, tempMatrix);
     do {
         copyMatrix(rows, rows, tempMatrix, previousMatrix);
-        // calculating the Q matrix
+        /* calculating the Q matrix */
         grahmSchmidtOrthogonalization(rows, rows, tempMatrix, QMatrix);
         orthonormalizeMatrix(rows, rows, QMatrix, QMatrix);
-        // calculating the R matrix
+        /* calculating the R matrix */
         transposeMatrix(rows, rows, QMatrix, RMatrix);
         multiplyMatrix(rows, rows, rows, RMatrix, tempMatrix, RMatrix);
-        // calculating the matrix for the next iteration
+        /* calculating the matrix for the next iteration */
         multiplyMatrix(rows, rows, rows, RMatrix, QMatrix, tempMatrix);
     } while(!matrixApproximatelyEquals(rows, rows, previousMatrix, tempMatrix, GAL_MATRIX_QRMETHOD_DIGIT_PRECISION));
-    // the eigenvalues should be in the diagonal of tempMatrix
+    /* the eigenvalues are on the diagonal of the result matrix */
     for(i = 0; i < rows; i++){
-        eigenvalues[i] = tempMatrix[i][i];
+        eigenvalues[i][0] = tempMatrix[i][i];
     }
 }
 

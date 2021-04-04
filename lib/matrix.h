@@ -36,7 +36,7 @@ fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]);
 void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
 void moorePenrosePseudoinverse(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]);
 void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
-void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows]);
+void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows][1]);
 bool matrixEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns]);
 bool matrixApproximatelyEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], int precision);
 

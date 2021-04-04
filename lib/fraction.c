@@ -64,7 +64,7 @@ fraction_t addFractions(fraction_t x, fraction_t y){
 /* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
     int c;
-    double e, g;
+    double e;
     c = y * x.numerator;
     if(y != 0 &&  c / y != x.numerator){
         e = (double)x.numerator/(double)x.denominator;
@@ -88,7 +88,7 @@ fraction_t multiplyFractions(fraction_t x, fraction_t y){
     c = x.numerator * y.numerator;
     d = x.denominator * y.denominator;
     
-    if((x.numerator != 0) && ((c / x.numerator) != y.numerator) || (x.denominator != 0) && ((d / x.denominator) != y.denominator)){
+    if(((x.numerator != 0) && ((c / x.numerator) != y.numerator)) || ((x.denominator != 0) && ((d / x.denominator) != y.denominator))){
         e = (double)x.numerator/(double)x.denominator;
         f = (double)y.numerator/(double)y.denominator;
         
@@ -210,8 +210,7 @@ fraction_t floatToFraction(float f){
 
 /* gets the fraction from a given double */
 fraction_t doubleToFraction(double d){
-    int numerator, denominator, tempInt;
-    double tempDouble;    
+    int numerator, denominator;
     denominator = 1;
     numerator = (int)d;
     d *= 10;

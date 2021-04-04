@@ -84,7 +84,7 @@ int main(void){
     /* orthonormalizes the orthogonal matrix */
     fraction_t orthonormalizedMatrix[rows][columns];
     printf("\nGrahm-Schmidt orthonormalized matrix (Q):\n");
-    orthonormalizeMatrix(rows,columns,orthogonalMatrix,orthonormalizedMatrix);
+    orthonormalizeMatrix(rows, columns, orthogonalMatrix, orthonormalizedMatrix);
     printMatrix(rows, columns, orthonormalizedMatrix);
 
     /* calculates the upper triangular matrix of the QR decomposition */
@@ -94,6 +94,13 @@ int main(void){
     multiplyMatrix(rows, rows, rows, RMatrix, matrix, RMatrix);
     printMatrix(rows, columns, RMatrix);
 
+    /* calculates the eigenvalues of the matrix */
+    fraction_t eigenvalues[rows][1];
+    printf("\nMatrix eigenvalues:\n");
+    findEigenvalues(rows, matrix, eigenvalues);
+    printMatrix(rows, 1, eigenvalues);
+
+    /* calculates the Moore-Penorse pseudoinverse */
     fraction_t pseudoinverse[rows][columns];
     printf("\nMoore-Penorse pseudoinverse matrix:\n");
     moorePenrosePseudoinverse(rows, matrix, pseudoinverse);
