@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "matrix.h"
 
+/* sets how many digits of two consecutive iteration must be equal before stopping the algorithm */
+#define GAL_MATRIX_QRMETHOD_DIGIT_PRECISION 3
+
 /* given the number of rows and columns, it reads a matrix, element by element as a fraction type */
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j;
@@ -573,9 +576,10 @@ void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns
 
 void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows]){
     int i;
-    fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows];
+    fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows], previousMatrix[rows][rows];
     copyMatrix(rows, rows, matrix, tempMatrix);
-    for(i = 0; i < 130; i++){
+    do {
+        copyMatrix(rows, rows, tempMatrix, previousMatrix);
         // calculating the Q matrix
         grahmSchmidtOrthogonalization(rows, rows, tempMatrix, QMatrix);
         orthonormalizeMatrix(rows, rows, QMatrix, QMatrix);
@@ -584,8 +588,39 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
         multiplyMatrix(rows, rows, rows, RMatrix, tempMatrix, RMatrix);
         // calculating the matrix for the next iteration
         multiplyMatrix(rows, rows, rows, RMatrix, QMatrix, tempMatrix);
-    }
+    } while(!matrixApproximatelyEquals(rows, rows, previousMatrix, tempMatrix, GAL_MATRIX_QRMETHOD_DIGIT_PRECISION));
     // the eigenvalues should be in the diagonal of tempMatrix
+    for(i = 0; i < rows; i++){
+        eigenvalues[i] = tempMatrix[i][i];
+    }
+}
+
+bool matrixEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns]){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            if(compareFractions(matrix1[i][j], matrix2[i][j]) != 0){
+
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+bool matrixApproximatelyEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], int precision){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            if(!fractionsApproximatelyEquals(matrix1[i][j], matrix2[i][j], precision)){
+
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 /* TODO: n root */

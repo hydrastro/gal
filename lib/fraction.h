@@ -1,5 +1,6 @@
 #ifndef GAL_FRACTION_H
 #define GAL_FRACTION_H
+#include <stdbool.h>
 #include <stddef.h>
 
 /* defines a new type for fractions */
@@ -30,4 +31,6 @@ fraction_t powerFraction(fraction_t x, fraction_t y);
 fraction_t rootFractionByInteger(fraction_t x, int y);
 fraction_t sqrtFraction(fraction_t x);
 fraction_t approximateFraction(fraction_t x);
+bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision);
+
 #endif /* GAL_FRACTION_H */

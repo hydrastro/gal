@@ -110,7 +110,6 @@ fraction_t divideFractionByInteger(fraction_t x, int y){
     return getFraction(y / x.numerator, x.denominator);
 }
 
-
 /* returns, reduced to the lowest terms, the inverted fraction */
 fraction_t invertFraction(fraction_t x){
 
@@ -275,4 +274,18 @@ fraction_t approximateFraction(fraction_t x){
     x.denominator += j;
 
     return getFraction(x.numerator, x.denominator);
+}
+
+bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision){
+    double lowerBound, upperBound, difference;
+    upperBound = pow(10.0, (double)-precision);
+    lowerBound = -upperBound;
+    difference = (double)x.numerator / (double)x.denominator - (double)y.numerator / (double)y.denominator;
+
+    if(difference > lowerBound && difference < upperBound) {        
+
+        return true;
+    }
+
+    return false;
 }
