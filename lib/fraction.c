@@ -8,7 +8,7 @@
 
 /* if a term of a fraction is greater than this value, it will be printed as a float */
 /* NOTE: it can be set to INT_MAX, for printing only fractions, or to 0, for printing only floats */
-#define GAL_FRACTION_FLOAT_LIMIT 0
+#define GAL_FRACTION_FLOAT_LIMIT 1000
 
 /* sets how many digits can be printed after the floating point */
 #define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
@@ -46,32 +46,30 @@ fraction_t getFraction(int numerator, int denominator){
 
 /* adds two fraction types and returns the result reduced to the lowest terms */
 fraction_t addFractions(fraction_t x, fraction_t y){
-    int c, l, m, n;
-    c = gcd(x.denominator, y.denominator);
-    l = (x.denominator / c) * y.numerator;
-    m = (y.denominator / c) * x.numerator;
-    n = (x.denominator / c) * y.denominator;
-    if((y.numerator != 0 && (l / y.numerator) != (x.denominator / c)) || (x.numerator != 0 && (m / x.numerator) != (y.denominator / c)) || (y.denominator != 00 && (n / y.denominator) != (x.denominator / c))){
-        /* overflowing */
-        if((abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator)) || (abs(x.numerator) > abs(y.numerator) && abs(x.numerator) > abs(y.denominator))){
+    int a, b, c;
+    double e, f;
+    a = x.numerator * y.denominator;
+    b = y.numerator * x.denominator;
+    c = x.denominator * y.denominator;
+    if((a / y.denominator != x.numerator && y.denominator != 0) || (b / x.denominator != y.numerator && x.denominator != 0) || (c / x.denominator != y.denominator && x.denominator != 0) || ((a > 0 && b > INT_MAX - a) || (a < 0 && b < INT_MIN - a))){
+        e = (double)x.numerator/(double)x.denominator;
+        f = (double)y.numerator/(double)y.denominator;
 
-            return addFractions(approximateFraction(x), y);
-        }
-
-        return addFractions(x, approximateFraction(y));
+        return doubleToFraction(e + f);
     }
 
-    return getFraction(x.denominator / c * y.numerator + y.denominator / c * x.numerator, x.denominator / c * y.denominator);
+    return getFraction(x.numerator * y.denominator + x.denominator * y.numerator, x.denominator*y.denominator);
 }
 
 /* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
-
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
     int c;
+    double e, g;
     c = y * x.numerator;
     if(y != 0 &&  c / y != x.numerator){
+        e = (double)x.numerator/(double)x.denominator;
 
-        return multiplyFractionByInteger(approximateFraction(x), y);
+        return doubleToFraction(e * (double)y);
     }
 
     return getFraction(y * x.numerator, x.denominator);
@@ -86,23 +84,15 @@ fraction_t subtractFractions(fraction_t x, fraction_t y){
 /* performs the multiplication between two fractions and returns the result reduced to the lowest terms */
 fraction_t multiplyFractions(fraction_t x, fraction_t y){
     int c, d;
+    double e, f;
     c = x.numerator * y.numerator;
     d = x.denominator * y.denominator;
-    if((x.numerator != 0) && ((c / x.numerator) != y.numerator)){
-        if(abs(x.numerator) > abs(y.numerator)){
-
-            return multiplyFractions(approximateFraction(x), y);
-        }
-
-        return multiplyFractions(x, approximateFraction(y));
-    }
-    if((x.denominator != 0) && ((d / x.denominator) != y.denominator)){
-        if(abs(x.denominator) > abs(y.denominator)){
-
-            return multiplyFractions(approximateFraction(x), y);
-        }
-
-        return multiplyFractions(x, approximateFraction(y));
+    
+    if((x.numerator != 0) && ((c / x.numerator) != y.numerator) || (x.denominator != 0) && ((d / x.denominator) != y.denominator)){
+        e = (double)x.numerator/(double)x.denominator;
+        f = (double)y.numerator/(double)y.denominator;
+        
+        return doubleToFraction(e * f);
     }
 
     return getFraction(x.numerator * y.numerator, x.denominator * y.denominator);
@@ -205,6 +195,7 @@ int compareFractions(fraction_t x, fraction_t y){
 }
 
 /* gets the fraction from a given float */
+/* TODO: rewrite or remove this */
 fraction_t floatToFraction(float f){
     int numerator, denominator;
     denominator = 1;
@@ -220,13 +211,19 @@ fraction_t floatToFraction(float f){
 
 /* gets the fraction from a given double */
 fraction_t doubleToFraction(double d){
-    int numerator, denominator;
+    int numerator, denominator, tempInt;
+    double tempDouble;    
     denominator = 1;
     numerator = (int)d;
-    while(d - (int)d != 0.0 && (int)(d * 10.0) > 0){
-        d *= 10.0;
+    d *= 10;
+    if(d == 0.0){
+
+        return getFraction(0,1);
+    }
+    while((d > (double)INT_MIN) && d < (double)INT_MAX && isfinite(d) && denominator * 10 / denominator == 10){
         numerator = (int)d;
         denominator *= 10;
+        d *= 10;
     }
 
     return getFraction(numerator, denominator);
@@ -252,7 +249,7 @@ fraction_t powerFraction(fraction_t x, fraction_t y){
 /* returns the n-root of a given fraction */
 fraction_t rootFractionByInteger(fraction_t x, int y){
 
-    return powerFractionByDouble(x, 1.0 / (float)y);
+    return powerFractionByDouble(x, 1.0 / (double)y);
 }
 
 /* returns the square root of a given fraction */

@@ -558,7 +558,6 @@ void moorePenrosePseudoinverse(int rows, fraction_t matrix[rows][rows], fraction
 void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
     int i, j;
     fraction_t tempMatrix[columns][rows][1], norm;
-    grahmSchmidtOrthogonalization(rows, columns, matrix, resultMatrix);
     for(i = 0; i < columns; i++){
         for(j = 0; j < rows; j++){
             tempMatrix[i][j][0] = matrix[j][i];
@@ -576,21 +575,15 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
     int i;
     fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows];
     copyMatrix(rows, rows, matrix, tempMatrix);
-    for(i = 0; i < 130; i++){ // <--- here number of iterations
+    for(i = 0; i < 130; i++){
         // calculating the Q matrix
         grahmSchmidtOrthogonalization(rows, rows, tempMatrix, QMatrix);
         orthonormalizeMatrix(rows, rows, QMatrix, QMatrix);
-        printf("\n### Iteration n %d ###\n\nQ:\n", i);
-        printMatrix(rows,rows,QMatrix);
         // calculating the R matrix
         transposeMatrix(rows, rows, QMatrix, RMatrix);
         multiplyMatrix(rows, rows, rows, RMatrix, tempMatrix, RMatrix);
-        printf("\nR:\n");
-        printMatrix(rows,rows,RMatrix);
         // calculating the matrix for the next iteration
         multiplyMatrix(rows, rows, rows, RMatrix, QMatrix, tempMatrix);
-        printf("\nM: %d\n", i);
-        printMatrix(rows, rows, tempMatrix);
     }
     // the eigenvalues should be in the diagonal of tempMatrix
 }
