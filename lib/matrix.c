@@ -578,7 +578,7 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
     int i;
     fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows], previousMatrix[rows][rows];
     copyMatrix(rows, rows, matrix, tempMatrix);
-    do {
+    do {printf("\n\n");printMatrix(rows,rows,tempMatrix);
         copyMatrix(rows, rows, tempMatrix, previousMatrix);
         /* calculating the Q matrix */
         grahmSchmidtOrthogonalization(rows, rows, tempMatrix, QMatrix);

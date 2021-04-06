@@ -46,28 +46,22 @@ fraction_t getFraction(int numerator, int denominator){
 
 /* adds two fraction types and returns the result reduced to the lowest terms */
 fraction_t addFractions(fraction_t x, fraction_t y){
-    int a, b, c;
     double e, f;
-    a = x.numerator * y.denominator;
-    b = y.numerator * x.denominator;
-    c = x.denominator * y.denominator;
-    if((a / y.denominator != x.numerator && y.denominator != 0) || (b / x.denominator != y.numerator && x.denominator != 0) || (c / x.denominator != y.denominator && x.denominator != 0) || ((a > 0 && b > INT_MAX - a) || (a < 0 && b < INT_MIN - a))){
-        e = (double)x.numerator/(double)x.denominator;
-        f = (double)y.numerator/(double)y.denominator;
+    if(!canBeSafelyMultiplied(x.numerator, y.denominator) || !canBeSafelyMultiplied(y.numerator, x.denominator) || !canBeSafelyMultiplied(x.denominator, y.denominator) || !canBeSafelyAdded(x.numerator * y.denominator, y.denominator * x.denominator)){
+        e = (double)x.numerator / (double)x.denominator;
+        f = (double)y.numerator / (double)y.denominator;
 
         return doubleToFraction(e + f);
     }
 
-    return getFraction(x.numerator * y.denominator + x.denominator * y.numerator, x.denominator*y.denominator);
+    return getFraction(x.numerator * y.denominator + x.denominator * y.numerator, x.denominator * y.denominator);
 }
 
 /* multiplies a fraction by an integer number and returns the result reduced to the lowest terms */
 fraction_t multiplyFractionByInteger(fraction_t x, int y){
-    int c;
     double e;
-    c = y * x.numerator;
-    if(y != 0 &&  c / y != x.numerator){
-        e = (double)x.numerator/(double)x.denominator;
+    if(!canBeSafelyMultiplied(x.numerator, y)){
+        e = (double)x.numerator / (double)x.denominator;
 
         return doubleToFraction(e * (double)y);
     }
@@ -83,13 +77,10 @@ fraction_t subtractFractions(fraction_t x, fraction_t y){
 
 /* performs the multiplication between two fractions and returns the result reduced to the lowest terms */
 fraction_t multiplyFractions(fraction_t x, fraction_t y){
-    int c, d;
     double e, f;
-    c = x.numerator * y.numerator;
-    d = x.denominator * y.denominator;
-    if(((x.numerator != 0) && ((c / x.numerator) != y.numerator)) || ((x.denominator != 0) && ((d / x.denominator) != y.denominator))){
-        e = (double)x.numerator/(double)x.denominator;
-        f = (double)y.numerator/(double)y.denominator;
+    if(!canBeSafelyMultiplied(x.numerator, y.numerator) || !canBeSafelyMultiplied(x.denominator, y.denominator)){
+        e = (double)x.numerator / (double)x.denominator;
+        f = (double)y.numerator / (double)y.denominator;
 
         return doubleToFraction(e * f);
     }
@@ -304,3 +295,11 @@ bool canBeSafelyMultiplied(int x, int y){
 
     return true;
 }
+
+
+/* checks the condition for safe adding two integers */
+bool canBeSafelyAdded(int x, int y){
+
+    return ((x > 0 && y > INT_MAX - x) || (x < 0 && y < INT_MIN - x));
+}
+
