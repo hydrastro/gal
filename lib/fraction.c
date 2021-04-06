@@ -275,6 +275,7 @@ fraction_t approximateFraction(fraction_t x){
     return getFraction(x.numerator, x.denominator);
 }
 
+/* checks if two fractions approximately equals */
 bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision){
     double lowerBound, upperBound, difference;
     upperBound = pow(10.0, (double)-precision);
@@ -287,4 +288,20 @@ bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision){
     }
 
     return false;
+}
+
+/* checks the condition for safe multiplying two integers */
+bool canBeSafelyMultiplied(int x, int y){
+    int z;
+    if((x == -1 && y == INT_MIN) || (y == -1 && x == INT_MIN)){
+
+        return false;
+    }
+    z = x * y;
+    if(x != 0 && z / x != y){
+
+       return false;
+    }
+
+    return true;
 }
