@@ -113,7 +113,7 @@ int main(void){
            /* printQuadricType(matrix); */
            break;
         case 3:
-           printConicType(matrix);
+           /* printConicType(matrix); */
            break;
     }
 

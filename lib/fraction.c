@@ -17,10 +17,10 @@
 int gcd(int x, int y){
     int gcd, remainder;
     /* integer overflow fix */
-    if(x == -1 && y == INT_MIN) {
+    if(x == -1 && y == INT_MIN){
         y++;
     }
-    if(y == -1 && x == INT_MIN) {
+    if(y == -1 && x == INT_MIN){
         x++;
     }
     while(x != 0){
@@ -87,11 +87,10 @@ fraction_t multiplyFractions(fraction_t x, fraction_t y){
     double e, f;
     c = x.numerator * y.numerator;
     d = x.denominator * y.denominator;
-    
     if(((x.numerator != 0) && ((c / x.numerator) != y.numerator)) || ((x.denominator != 0) && ((d / x.denominator) != y.denominator))){
         e = (double)x.numerator/(double)x.denominator;
         f = (double)y.numerator/(double)y.denominator;
-        
+
         return doubleToFraction(e * f);
     }
 
@@ -282,7 +281,7 @@ bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision){
     lowerBound = -upperBound;
     difference = (double)x.numerator / (double)x.denominator - (double)y.numerator / (double)y.denominator;
 
-    if(difference > lowerBound && difference < upperBound) {        
+    if(difference > lowerBound && difference < upperBound){
 
         return true;
     }
