@@ -296,7 +296,6 @@ bool canBeSafelyMultiplied(int x, int y){
     return true;
 }
 
-
 /* checks the condition for safe adding two integers */
 bool canBeSafelyAdded(int x, int y){
 

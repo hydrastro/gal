@@ -574,11 +574,12 @@ void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns
     }
 }
 
+/* calculates the eigenvalues of a given square matrix */
 void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows][1]){
     int i;
     fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows], previousMatrix[rows][rows];
     copyMatrix(rows, rows, matrix, tempMatrix);
-    do {printf("\n\n");printMatrix(rows,rows,tempMatrix);
+    do {
         copyMatrix(rows, rows, tempMatrix, previousMatrix);
         /* calculating the Q matrix */
         grahmSchmidtOrthogonalization(rows, rows, tempMatrix, QMatrix);
@@ -595,6 +596,7 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
     }
 }
 
+/* checks if two matrices are the same */
 bool matrixEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns]){
     int i, j;
     for(i = 0; i < rows; i++){
@@ -609,6 +611,7 @@ bool matrixEquals(int rows, int columns, fraction_t matrix1[rows][columns], frac
     return true;
 }
 
+/* checks if two matrices are almost the same */
 bool matrixApproximatelyEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], int precision){
     int i, j;
     for(i = 0; i < rows; i++){
