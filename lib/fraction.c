@@ -208,7 +208,7 @@ fraction_t doubleToFraction(double d){
 
         return getFraction(0,1);
     }
-    while((d > (double)INT_MIN) && d < (double)INT_MAX && isfinite(d) && denominator * 10 / denominator == 10){
+    while((d > (double)INT_MIN) && d < (double)INT_MAX && isfinite(d) && canBeSafelyMultiplied(denominator, 10)){
         numerator = (int)d;
         denominator *= 10;
         d *= 10;
