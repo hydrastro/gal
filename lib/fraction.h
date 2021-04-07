@@ -34,5 +34,6 @@ fraction_t approximateFraction(fraction_t x);
 bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision);
 bool canBeSafelyMultiplied(int x, int y);
 bool canBeSafelyAdded(int x, int y);
+bool isDoubleFinite(double d);
 
 #endif /* GAL_FRACTION_H */

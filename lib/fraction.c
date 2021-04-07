@@ -1,3 +1,4 @@
+#include <float.h>
 #include <limits.h>
 #include <math.h>
 #include <stdbool.h>
@@ -208,7 +209,7 @@ fraction_t doubleToFraction(double d){
 
         return getFraction(0,1);
     }
-    while((d > (double)INT_MIN) && d < (double)INT_MAX && isfinite(d) && canBeSafelyMultiplied(denominator, 10)){
+    while((d > (double)INT_MIN) && d < (double)INT_MAX && isDoubleFinite(d) && canBeSafelyMultiplied(denominator, 10)){
         numerator = (int)d;
         denominator *= 10;
         d *= 10;
@@ -302,3 +303,8 @@ bool canBeSafelyAdded(int x, int y){
     return ((x > 0 && y > INT_MAX - x) || (x < 0 && y < INT_MIN - x));
 }
 
+/* checks if a double is finite (not infinite nor NaN) */
+bool isDoubleFinite(double d){
+
+    return ((d > -DBL_MAX && d < DBL_MAX) && (d == d));
+}
