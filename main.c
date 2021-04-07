@@ -107,14 +107,29 @@ int main(void){
     printMatrix(rows, columns, pseudoinverse);
     printf("\n");
 
+    /* calculating the invariants of the coninc/quadric */
+    fraction_t linearInvariant, quadraticInvariant, cubicInvariant, quarticInvariant;
+    if(rows == 4){
+        printf("\nQuartic invariant:\t");
+        quarticInvariant = getQuarticInvariant(rows, matrix);
+        printFraction(quarticInvariant);
+    }
+    printf("\nCubic invariant:\t");
+    cubicInvariant = getCubicInvariant(rows, matrix);
+    printFraction(cubicInvariant);
+    printf("\nQuadratic invariant:\t");
+    quadraticInvariant = getQuadraticInvariant(rows, matrix);
+    printFraction(quadraticInvariant);
+    printf("\nLinear invariant:\t");
+    linearInvariant = getLinearInvariant(rows, matrix);
+    printFraction(linearInvariant);
+    printf("\n");
+
     /* classifying its type if it's a conic or a quadric */
-    switch(rows){
-        case 4:
-           printQuadricType(matrix);
-           break;
-        case 3:
-           printConicType(matrix);
-           break;
+    if(rows == 4){
+        printQuadricType(matrix);
+    } else {
+        printConicType(matrix);
     }
 
     return(0);

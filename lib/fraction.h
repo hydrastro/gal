@@ -11,7 +11,7 @@
 #define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
 
 /* sets for how many digits two fractions can be considered approximately equal */
-#define GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION 3
+#define GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION 4
 
 /* defines a new type for fractions */
 typedef struct fraction_t{

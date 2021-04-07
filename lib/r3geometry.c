@@ -31,15 +31,18 @@ void printPlane(Plane_t plane){
 }
 
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]){
+    fraction_t submatrix[rows - 1][rows - 1];
+    getSubmatrix(rows, rows, matrix, rows - 1, rows - 1, submatrix);
 
-    return getMatrixTrace(rows - 1, matrix);
+    return getMatrixTrace(rows - 1, submatrix);
 }
 
 fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]){
     int i, j;
     fraction_t tempDeterminant, invariant;
-    for(i = 0; i < rows; i++){
-        for(j = i + 1; j < rows; j++){
+    invariant = getFraction(0, 1);
+    for(i = 0; i < rows - 1; i++){
+        for(j = i + 1; j < rows - 1; j++){
             tempDeterminant = multiplyFractions(matrix[i][i], matrix[j][j]);
             tempDeterminant = subtractFractions(tempDeterminant, multiplyFractions(matrix[i][j], matrix[j][i]));
             invariant = addFractions(invariant, tempDeterminant);
@@ -49,8 +52,20 @@ fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]){
 }
 
 fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]){
-
-    return getMatrixDeterminant(3, matrix);
+    int i, j;
+    fraction_t tempMatrix[rows - 1][rows - 1];
+    if(rows == 3){
+        copyMatrix(rows, rows, matrix, tempMatrix);
+    } else {
+        // not sure if this is suitable for rows > 4
+        for(i = 0; i < 3; i++){
+            for(j = 0; j < 3; j++){
+                tempMatrix[i][j] = matrix[i][j];
+            }
+        }
+    }
+    
+    return getMatrixDeterminant(3, tempMatrix);
 }
 
 fraction_t getQuarticInvariant(int rows, fraction_t matrix[rows][rows]){
@@ -108,8 +123,9 @@ void printQuadricType(fraction_t matrix[4][4]){
     rank = getMatrixRank(4, 4, matrix);
     compairsonResult = compareFractions(quadraticInvariant, zeroFraction);
     multiplicationCompairsonResult = compareFractions(multiplyFractions(linearInvariant, cubicInvariant), zeroFraction);
-    printf("\nConic type: ");
-    if(compareFractions(quadraticInvariant, zeroFraction) == 0){
+
+    printf("\nQuadric type: ");
+    if(compareFractions(quarticInvariant, zeroFraction) == 0){
         switch(rank){
             default:
             case 3:
@@ -152,7 +168,7 @@ void printQuadricType(fraction_t matrix[4][4]){
             case 1:
                 printf("double plane");
             break;
-		}
+        }
     } else {
         if(compareFractions(cubicInvariant, zeroFraction) == 0){
             if(compareFractions(quarticInvariant, zeroFraction) > 0){
