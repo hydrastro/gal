@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "matrix.h"
 #include "fraction.h"
+#include "matrix.h"
 #include "r3geometry.h"
 
 /* code from the old side repository */
@@ -36,7 +36,7 @@ fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]){
 }
 
 fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]){
-    int currentRowsNumber, i, j;
+    int i, j;
     fraction_t tempDeterminant, invariant;
     for(i = 0; i < rows; i++){
         for(j = i + 1; j < rows; j++){
@@ -84,7 +84,7 @@ void printConicType(fraction_t matrix[3][3]){
             product = multiplyFractions(cubicInvariant, linearInvariant);
             compairsonResult = compareFractions(product, zeroFraction);
             if(compairsonResult > 0){
-                printf("imaginary ellipe");
+                printf("imaginary ellipse");
             } else {
                 printf("real ellipse");
             }
@@ -98,8 +98,8 @@ void printConicType(fraction_t matrix[3][3]){
 }
 
 void printQuadricType(fraction_t matrix[4][4]){
-    int compairsonResult, rank, multiplicationCompairsonResult, quadraticRank;
-    fraction_t quarticInvariant, cubicInvariant, quadraticInvariant, linearInvariant, product, zeroFraction, quadraticSubmatrix[3][3], quadraticEigenvalues[3][1], eigenvalueProduct;
+    int compairsonResult, rank, multiplicationCompairsonResult, quadraticRank, i;
+    fraction_t quarticInvariant, cubicInvariant, quadraticInvariant, linearInvariant, zeroFraction, quadraticSubmatrix[3][3], quadraticEigenvalues[3][1], eigenvalueProduct;
     quarticInvariant = getQuarticInvariant(4, matrix);
     cubicInvariant = getCubicInvariant(4, matrix);
     quadraticInvariant = getQuadraticInvariant(4, matrix);
@@ -131,13 +131,13 @@ void printQuadricType(fraction_t matrix[4][4]){
             break;
             case 2:
                 getSubmatrix(4, 4, matrix, 3, 3, quadraticSubmatrix);
-                quadraticRank = getMatrixRank(3, 3, quadraticSubmatrix)
+                quadraticRank = getMatrixRank(3, 3, quadraticSubmatrix);
                 if(quadraticRank == 2){
                     findEigenvalues(3, quadraticSubmatrix, quadraticEigenvalues);
                     eigenvalueProduct = getFraction(1, 1);
                     for(i = 0; i < 3; i++){
                         if(!fractionsApproximatelyEquals(quadraticEigenvalues[i][0], zeroFraction, GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION)){
-                            eigenvalueProduct = multiplyFractions(eigenvalueProduct, );
+                            eigenvalueProduct = multiplyFractions(eigenvalueProduct, quadraticEigenvalues[i][0]);
                         }
                     }
                     if(compareFractions(eigenvalueProduct, zeroFraction) > 0){
@@ -152,6 +152,7 @@ void printQuadricType(fraction_t matrix[4][4]){
             case 1:
                 printf("double plane");
             break;
+		}
     } else {
         if(compareFractions(cubicInvariant, zeroFraction) == 0){
             if(compareFractions(quarticInvariant, zeroFraction) > 0){

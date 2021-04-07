@@ -7,16 +7,6 @@
 #include <string.h>
 #include "fraction.h"
 
-/* if a term of a fraction is greater than this value, it will be printed as a float */
-/* NOTE: it can be set to INT_MAX, for printing only fractions, or to 0, for printing only floats */
-#define GAL_FRACTION_FLOAT_LIMIT 1000
-
-/* sets how many digits can be printed after the floating point */
-#define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
-
-/* sets for how many digits two fractions can be considered approximately equal */
-#define GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION 3
-
 /* calculates the greatest common divisor between two integers */
 int gcd(int x, int y){
     int gcd, remainder;

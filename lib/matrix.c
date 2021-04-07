@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "fraction.h"
 #include "matrix.h"
 
 /* given the number of rows and columns, it reads a matrix, element by element as a fraction type */
