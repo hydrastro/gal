@@ -110,10 +110,10 @@ int main(void){
     /* classifying its type if it's a conic or a quadric */
     switch(rows){
         case 4:
-           /* printQuadricType(matrix); */
+           printQuadricType(matrix);
            break;
         case 3:
-           /* printConicType(matrix); */
+           printConicType(matrix);
            break;
     }
 

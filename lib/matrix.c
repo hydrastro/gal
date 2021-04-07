@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include "matrix.h"
 
-/* sets how many digits of two consecutive iteration must be equal before stopping the algorithm */
-#define GAL_MATRIX_QRMETHOD_DIGIT_PRECISION 3
-
 /* given the number of rows and columns, it reads a matrix, element by element as a fraction type */
 void readMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
     int i, j;
@@ -589,7 +586,7 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
         multiplyMatrix(rows, rows, rows, RMatrix, tempMatrix, RMatrix);
         /* calculating the matrix for the next iteration */
         multiplyMatrix(rows, rows, rows, RMatrix, QMatrix, tempMatrix);
-    } while(!matrixApproximatelyEquals(rows, rows, previousMatrix, tempMatrix, GAL_MATRIX_QRMETHOD_DIGIT_PRECISION));
+    } while(!matrixApproximatelyEquals(rows, rows, previousMatrix, tempMatrix, GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION));
     /* the eigenvalues are on the diagonal of the result matrix */
     for(i = 0; i < rows; i++){
         eigenvalues[i][0] = tempMatrix[i][i];

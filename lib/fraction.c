@@ -14,6 +14,9 @@
 /* sets how many digits can be printed after the floating point */
 #define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
 
+/* sets for how many digits two fractions can be considered approximately equal */
+#define GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION 3
+
 /* calculates the greatest common divisor between two integers */
 int gcd(int x, int y){
     int gcd, remainder;
