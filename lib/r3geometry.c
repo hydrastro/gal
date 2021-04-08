@@ -57,7 +57,7 @@ fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]){
     if(rows == 3){
         copyMatrix(rows, rows, matrix, tempMatrix);
     } else {
-        // not sure if this is suitable for rows > 4
+        /* not sure if this is suitable for rows > 4 */
         for(i = 0; i < 3; i++){
             for(j = 0; j < 3; j++){
                 tempMatrix[i][j] = matrix[i][j];
