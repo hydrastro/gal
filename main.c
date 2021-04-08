@@ -27,6 +27,8 @@ int main(void){
     printf("\nStarting matrix:\n");
     printMatrix(rows, columns, matrix);
 
+    /* algebra functions */
+
     /* performing and displaying the row echelon form */
     gaussElimination(rows, columns, matrix, upperTriangularMatrix);
     printf("\nRow echelon form of the matrix:\n");
@@ -106,6 +108,14 @@ int main(void){
     moorePenrosePseudoinverse(rows, matrix, pseudoinverse);
     printMatrix(rows, columns, pseudoinverse);
     printf("\n");
+
+    /* geometry functions */
+
+    /* checking if the matrix is symmetric */
+    if(!isMatrixSymmetric(rows, rows, matrix)){
+
+        return 0;
+    }
 
     /* calculating the invariants of the coninc/quadric */
     fraction_t linearInvariant, quadraticInvariant, cubicInvariant, quarticInvariant;

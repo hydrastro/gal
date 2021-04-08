@@ -624,4 +624,19 @@ bool matrixApproximatelyEquals(int rows, int columns, fraction_t matrix1[rows][c
     return true;
 }
 
+/* checks if a matrix is symmetric */
+bool isFractionSymmetric(int rows, int columns, fraction_t matrix[rows][rows]){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            if(compareFractions(matrix[i][j], matrix[j][i]) != 0){
+
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 /* TODO: n root */
