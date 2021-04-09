@@ -1,40 +1,16 @@
 #include <stdio.h>
 #include "gal.h"
 
-int main(void){
-    setbuf(stdout, NULL);
-    /* declarations */
-    unsigned int rows, columns;
-    int matrixRank;
-    fraction_t determinant;
-
-    /* getting the matrix size */
-    printf("Matrix rows: ");
-    scanf("%u", &rows);
-    printf("Matrix columns: ");
-    scanf("%u", &columns);
-
-    /* dynamic matrix declaration */
-    fraction_t matrix[rows][columns];
-    fraction_t upperTriangularMatrix[rows][columns];
-
-    /* getting  the matrix values */
-    readMatrix(rows, columns, matrix);
-    copyMatrix(rows, columns, matrix, upperTriangularMatrix);
-
-    /* TODO: put all of this code outside of the main method */
-    /* displaying the input matrix */
-    printf("\nStarting matrix:\n");
-    printMatrix(rows, columns, matrix);
-
-    /* algebra functions */
-
+void algebraFunctions(){
     /* performing and displaying the row echelon form */
+    fraction_t upperTriangularMatrix[rows][columns];
+    copyMatrix(rows, columns, matrix, upperTriangularMatrix);
     gaussElimination(rows, columns, matrix, upperTriangularMatrix);
     printf("\nRow echelon form of the matrix:\n");
     printMatrix(rows, columns, upperTriangularMatrix);
 
     /* getting and displaying the matrix rank */
+    int matrixRank;
     matrixRank = getMatrixRank(rows, columns, matrix);
     printf("\nMatrix rank: %d\n", matrixRank);
 
@@ -63,6 +39,7 @@ int main(void){
     }
 
     /* getting the matrix determinant */
+    fraction_t determinant;
     determinant = getMatrixDeterminant(rows, matrix);
     printf("\nMatrix determinant: ");
     printFraction(determinant);
@@ -109,12 +86,14 @@ int main(void){
     printMatrix(rows, columns, pseudoinverse);
     printf("\n");
 
-    /* geometry functions */
+}
 
+void geometryFunctions(){
     /* checking if the matrix is symmetric */
     if(!isMatrixSymmetric(rows, rows, matrix)){
+        fprintf(stderr, "\nerror: the entered matrix is not symmetric.\n");
 
-        return 0;
+        return -1;
     }
 
     /* calculating the invariants of the coninc/quadric */
@@ -140,7 +119,28 @@ int main(void){
         printQuadricType(matrix);
     } else {
         printConicType(matrix);
-    }
+    }   
+}
 
+int main(void){
+    setbuf(stdout, NULL);
+    unsigned int rows, columns;
+
+    /* getting the matrix size */
+    printf("Matrix rows: ");
+    scanf("%u", &rows);
+    printf("Matrix columns: ");
+    scanf("%u", &columns);
+
+    /* dynamic matrix declaration */
+    fraction_t matrix[rows][columns];
+
+    /* getting  the matrix values */
+    readMatrix(rows, columns, matrix);
+
+    /* displaying the input matrix */
+    printf("\nStarting matrix:\n");
+    printMatrix(rows, columns, matrix);
+   
     return(0);
 }
