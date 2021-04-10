@@ -2,7 +2,6 @@
 #include "gal.h"
 
 int algebraFunctions(){
-    /* TODO: put the matrix reading code into its own function */
     unsigned int rows, columns;
     /* getting the matrix size */
     printf("Matrix rows: ");
@@ -108,7 +107,6 @@ int algebraFunctions(){
 }
 
 int invariantsAndClassificationFunctions(){
-    /* TODO: put the matrix reading code into its own function */
     unsigned int rows, columns;
     /* getting the matrix size */
     printf("Matrix rows: ");
