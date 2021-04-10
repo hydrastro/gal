@@ -1,7 +1,25 @@
 #include <stdio.h>
 #include "gal.h"
 
-void algebraFunctions(){
+int algebraFunctions(){
+    /* TODO: put the matrix reading code into its own function */
+    unsigned int rows, columns;
+    /* getting the matrix size */
+    printf("Matrix rows: ");
+    scanf("%u", &rows);
+    printf("Matrix columns: ");
+    scanf("%u", &columns);
+
+    /* dynamic matrix declaration */
+    fraction_t matrix[rows][columns];
+
+    /* getting  the matrix values */
+    readMatrix(rows, columns, matrix);
+
+    /* displaying the input matrix */
+    printf("\nStarting matrix:\n");
+    printMatrix(rows, columns, matrix);
+
     /* performing and displaying the row echelon form */
     fraction_t upperTriangularMatrix[rows][columns];
     copyMatrix(rows, columns, matrix, upperTriangularMatrix);
@@ -35,7 +53,7 @@ void algebraFunctions(){
 
     if(rows != columns){
 
-        return(0);
+        return 0;
     }
 
     /* getting the matrix determinant */
@@ -86,9 +104,28 @@ void algebraFunctions(){
     printMatrix(rows, columns, pseudoinverse);
     printf("\n");
 
+    return 0;
 }
 
-void geometryFunctions(){
+int invariantsAndClassificationFunctions(){
+    /* TODO: put the matrix reading code into its own function */
+    unsigned int rows, columns;
+    /* getting the matrix size */
+    printf("Matrix rows: ");
+    scanf("%u", &rows);
+    printf("Matrix columns: ");
+    scanf("%u", &columns);
+
+    /* dynamic matrix declaration */
+    fraction_t matrix[rows][columns];
+
+    /* getting  the matrix values */
+    readMatrix(rows, columns, matrix);
+
+    /* displaying the input matrix */
+    printf("\nStarting matrix:\n");
+    printMatrix(rows, columns, matrix);
+
     /* checking if the matrix is symmetric */
     if(!isMatrixSymmetric(rows, rows, matrix)){
         fprintf(stderr, "\nerror: the entered matrix is not symmetric.\n");
@@ -119,28 +156,51 @@ void geometryFunctions(){
         printQuadricType(matrix);
     } else {
         printConicType(matrix);
-    }   
+    }
+
+    return 0;
 }
 
 int main(void){
     setbuf(stdout, NULL);
-    unsigned int rows, columns;
+    unsigned int action;
 
-    /* getting the matrix size */
-    printf("Matrix rows: ");
-    scanf("%u", &rows);
-    printf("Matrix columns: ");
-    scanf("%u", &columns);
+    printf("Yo what are we doing now?\n");
+    printf("\nAlgebra\n");
+    printf("0. Compute everything.\n");
+    printf("\nGeometry\n");
+    printf("1. Calculate the parametric form of a cartesian line.\n");
+    printf("2. Calculate the cartesian form of a parametric line.\n");
+    printf("3. Calculate the intersectoin of a line and a plane.\n");
+    printf("4. Calculate the intersection of two lines.\n");
+    printf("5. Calculate the equation of a plane given three points.\n");
+    printf("6. Calculate the invariants of a conic and classify it.\n");
+    printf("7. Calculate the invariants of a quadric and classify it.\n");
 
-    /* dynamic matrix declaration */
-    fraction_t matrix[rows][columns];
+    /* option menu */
+    action = 0;
+    printf("\nSelect an option (default = 0): ");
 
-    /* getting  the matrix values */
-    readMatrix(rows, columns, matrix);
+    /* scanning and checking wheter the input is valid */
+    /* TODO: read also \n */
+    scanf("%u", &action);
+    printf("\n");
+    if(action > 7){
+        fprintf(stderr, "error: invalid option entered.\n");
+    }
 
-    /* displaying the input matrix */
-    printf("\nStarting matrix:\n");
-    printMatrix(rows, columns, matrix);
-   
-    return(0);
+    switch(action){
+        default:
+        case 0:
+            algebraFunctions();
+
+            break;
+        case 6:
+        case 7:
+            invariantsAndClassificationFunctions();
+
+            break;
+   }
+
+    return 0;
 }
