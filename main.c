@@ -162,8 +162,9 @@ int invariantsAndClassificationFunctions(){
 int main(void){
     setbuf(stdout, NULL);
     unsigned int action;
+    char readChar;
 
-    printf("Yo what are we doing now?\n");
+    printf("Geometry and Linear Algebra\n");
     printf("\nAlgebra\n");
     printf("0. Compute everything.\n");
     printf("\nGeometry\n");
@@ -180,8 +181,10 @@ int main(void){
     printf("\nSelect an option (default = 0): ");
 
     /* scanning and checking wheter the input is valid */
-    /* TODO: read also \n */
-    scanf("%u", &action);
+    readChar = fgetc(stdin);
+    if(readChar != '\n'){
+        action = readChar - '0';
+    }
     printf("\n");
     if(action > 7){
         fprintf(stderr, "error: invalid option entered.\n");
