@@ -164,7 +164,10 @@ int main(void){
     unsigned int action;
     char readChar;
 
-    printf("Geometry and Linear Algebra\n");
+    /* program header */
+    printf("GAL - Linear Algebra and Geometry\n");
+
+    /* option menu */
     printf("\nAlgebra\n");
     printf("0. Compute everything.\n");
     printf("\nGeometry\n");
@@ -176,11 +179,9 @@ int main(void){
     printf("6. Calculate the invariants of a conic and classify it.\n");
     printf("7. Calculate the invariants of a quadric and classify it.\n");
 
-    /* option menu */
+    /* scanning and checking wheter the input is valid */
     action = 0;
     printf("\nSelect an option (default = 0): ");
-
-    /* scanning and checking wheter the input is valid */
     readChar = fgetc(stdin);
     if(readChar != '\n'){
         action = readChar - '0';
