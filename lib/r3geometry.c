@@ -3,8 +3,9 @@
 #include "matrix.h"
 #include "r3geometry.h"
 
-/* code from the old side repository */
-Plane_t readPlane(Plane_t plane){
+/* reads a plane form the user input*/
+Plane_t readPlane(){
+    Plane_t plane;
     printf("ax + by + cz + d = 0\n");
     printf("a: ");
     plane.x = readFraction();
@@ -18,6 +19,7 @@ Plane_t readPlane(Plane_t plane){
     return plane;
 }
 
+/* prints a given plane */
 void printPlane(Plane_t plane){
     printf("(");
     printFraction(plane.x);
@@ -30,6 +32,29 @@ void printPlane(Plane_t plane){
     printf(" = 0\n");
 }
 
+/* reads a line in parametric from */
+/* START TODO */
+lineParametricForm_t readLineParametricForm(){
+    Point_t applicationPoint;
+    Vector_t directionVector;
+}
+
+/* reads a line in cartesian from */
+lineCartesianForm_t readLineCartesianForm(){
+    Plane_t firstPlane;
+    Plane_t secondPlane;
+}
+
+/* reads a point from the user input */
+Point_t readPoint(){
+}
+
+/* reads a vector from the user input */
+Vector_t readVector(){
+}
+/* END TODO */
+
+/* calculates the linear invariant of a given conic or quadric */
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]){
     fraction_t submatrix[rows - 1][rows - 1];
     getSubmatrix(rows, rows, matrix, rows - 1, rows - 1, submatrix);
@@ -37,6 +62,7 @@ fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]){
     return getMatrixTrace(rows - 1, submatrix);
 }
 
+/* calculates the quadratic invariant of a given conic or quadric */
 fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]){
     int i, j;
     fraction_t tempDeterminant, invariant;
@@ -48,9 +74,11 @@ fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]){
             invariant = addFractions(invariant, tempDeterminant);
         }
     }
+
     return invariant;
 }
 
+/* calculates the cubic invariant of a given conic or quadric */
 fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]){
     int i, j;
     fraction_t tempMatrix[rows - 1][rows - 1];
@@ -68,11 +96,11 @@ fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]){
     return getMatrixDeterminant(3, tempMatrix);
 }
 
+/* calculates the quartic invariant of a given quadric */
 fraction_t getQuarticInvariant(int rows, fraction_t matrix[rows][rows]){
 
     return getMatrixDeterminant(4, matrix);
 }
-
 
 /* TODO: define enum types for conics? and make a different function for the output */
 void printConicType(fraction_t matrix[3][3]){
