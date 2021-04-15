@@ -32,14 +32,16 @@ typedef struct lineCartesianForm_t{
     Plane_t secondPlane;
 } lineCartesianForm_t;
 
-Plane_t readPlane(Plane_t plane);
+Plane_t readPlane();
 void printPlane(Plane_t plane);
-
-lineParametricForm_t readLineParametricForm(){
-lineCartesianForm_t readLineCartesianForm(){
-Point_t readPoint(){
-Vector_t readVector(){
-
+lineParametricForm_t readLineParametricForm();
+void printLineParametricForm(lineParametricForm_t line);
+lineCartesianForm_t readLineCartesianForm();
+void printLineCartesianForm(lineCartesianForm_t line);
+Point_t readPoint();
+void printPoint(Point_t point);
+Vector_t readVector();
+void printVector(Vector_t vector);
 
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]);
 fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]);
