@@ -47,6 +47,15 @@ lineCartesianForm_t readLineCartesianForm(){
 
 /* reads a point from the user input */
 Point_t readPoint(){
+    Point_t point;
+    printf("x: ");
+    point.x = readFraction();
+    printf("y: ");
+    point.y = readFraction();
+    printf("z: ");
+    point.z = readFraction();
+
+    return point;
 }
 
 /* reads a vector from the user input */
