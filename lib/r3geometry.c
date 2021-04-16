@@ -60,6 +60,15 @@ Point_t readPoint(){
 
 /* reads a vector from the user input */
 Vector_t readVector(){
+    Vector_t vector;
+    printf("x: ");
+    vector.x = readFraction();
+    printf("y: ");
+    vector.y = readFraction();
+    printf("z: ");
+    vector.z = readFraction();
+
+    return vector;
 }
 /* END TODO */
 
