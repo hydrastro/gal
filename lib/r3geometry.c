@@ -35,8 +35,13 @@ void printPlane(Plane_t plane){
 /* reads a line in parametric from */
 /* START TODO */
 lineParametricForm_t readLineParametricForm(){
-    Point_t applicationPoint;
-    Vector_t directionVector;
+    lineParametricForm_t line;
+    printf("Application point coordinates:\n");
+    line.applicationPoint = readPoint();
+    printf("Direction vector:\n");
+    line.directionVector = readVector();
+
+    return line;
 }
 
 /* reads a line in cartesian from */
