@@ -67,6 +67,17 @@ Point_t readPoint(){
     return point;
 }
 
+/* prints a point */
+void printPoint(Point_t point){
+    printf("(");
+    printFraction(point.x);
+    printf(", ");
+    printFraction(point.y);
+    printf(", ");
+    printFraction(point.z);
+    printf(")\n");    
+}
+
 /* reads a vector from the user input */
 Vector_t readVector(){
     Vector_t vector;
@@ -78,6 +89,17 @@ Vector_t readVector(){
     vector.z = readFraction();
 
     return vector;
+}
+
+/* prints a vector */
+void printVector(Vector_t vector){
+    printf("(");
+    printFraction(vector.x);
+    printf(", ");
+    printFraction(vector.y);
+    printf(", ");
+    printFraction(vector.z);
+    printf(")\n");    
 }
 
 /* calculates the linear invariant of a given conic or quadric */
