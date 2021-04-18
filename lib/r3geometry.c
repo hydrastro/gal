@@ -33,7 +33,6 @@ void printPlane(Plane_t plane){
 }
 
 /* reads a line in parametric from */
-/* START TODO */
 lineParametricForm_t readLineParametricForm(){
     lineParametricForm_t line;
     printf("Application point coordinates:\n");
@@ -80,7 +79,6 @@ Vector_t readVector(){
 
     return vector;
 }
-/* END TODO */
 
 /* calculates the linear invariant of a given conic or quadric */
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]){
