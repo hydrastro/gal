@@ -43,6 +43,14 @@ lineParametricForm_t readLineParametricForm(){
     return line;
 }
 
+/* prints a line in parametric form */
+void printLineParametricForm(lineParametricForm_t line){
+    printf("Application point coordinates:\n");
+    printPoint(line.applicationPoint);
+    printf("Direction vector:\n");
+    printVector(line.directionVector);
+}
+
 /* reads a line in cartesian from */
 lineCartesianForm_t readLineCartesianForm(){
     lineCartesianForm_t line;
@@ -52,6 +60,14 @@ lineCartesianForm_t readLineCartesianForm(){
     line.secondPlane = readPlane();
 
     return line;
+}
+
+/* prints a line in cartesian form */
+void printLineCartesianForm(lineCartesianForm_t line){
+    printf("First plane:\n");
+    printPlane(line.firstPlane);
+    printf("Second plane:\n");
+    printPlane(line.secondPlane);
 }
 
 /* reads a point from the user input */
