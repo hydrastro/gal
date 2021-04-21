@@ -42,12 +42,12 @@ Point_t readPoint();
 void printPoint(Point_t point);
 Vector_t readVector();
 void printVector(Vector_t vector);
-
+lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line);
+lineCartesianForm_t lineParametricToCartesianForm(lineParametricForm_t line);
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]);
 fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]);
 fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]);
 fraction_t getQuarticInvariant(int rows, fraction_t matrix[rows][rows]);
-
 void printConicType(fraction_t matrix[3][3]);
 void printQuadricType(fraction_t matrix[4][4]);
 

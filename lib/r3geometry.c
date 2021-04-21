@@ -118,6 +118,13 @@ void printVector(Vector_t vector){
     printf(")\n");    
 }
 
+lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line){
+    lineParametricForm_t parametricLine;
+}
+lineCartesianForm_t lineParametricToCartesianForm(lineParametricForm_t line){
+    lineCartesianForm_t cartesianLine;
+}
+
 /* calculates the linear invariant of a given conic or quadric */
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]){
     fraction_t submatrix[rows - 1][rows - 1];
@@ -223,7 +230,7 @@ void printQuadricType(fraction_t matrix[4][4]){
             case 3:
                 if(compareFractions(cubicInvariant, zeroFraction) == 0){
                     if(compairsonResult > 0){
-                        printf("cilinder, imaginary (hasn't real points) or elliptic (has real points), idk");
+                        printf("cilinder, either imaginary (hasn't real points) or elliptic (has real points)");
                     } else if(compairsonResult < 0){
                         printf("hyperbolic cylinder");
                     } else {
@@ -254,7 +261,7 @@ void printQuadricType(fraction_t matrix[4][4]){
                         printf("couple of real secant planes.");
                     }
                 } else {
-                    printf("coubple of parallel planes: real (has real points) or imaginary and conjugated (hasn't real points)");
+                    printf("couple of parallel planes: either real and distinct (has real points) or imaginary and conjugated (hasn't real points)");
                 }
             break;
             case 1:
