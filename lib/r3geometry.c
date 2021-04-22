@@ -38,7 +38,7 @@ lineParametricForm_t readLineParametricForm(){
     printf("Application point coordinates:\n");
     line.applicationPoint = readPoint();
     printf("Direction vector:\n");
-    line.directionVector = readVector();
+    readVector(line.directionVector);
 
     return line;
 }
@@ -48,7 +48,7 @@ void printLineParametricForm(lineParametricForm_t line){
     printf("Application point coordinates:\n");
     printPoint(line.applicationPoint);
     printf("Direction vector:\n");
-    printVector(line.directionVector);
+    printMatrix(1, 3, line.directionVector);
 }
 
 /* reads a line in cartesian from */
@@ -94,35 +94,51 @@ void printPoint(Point_t point){
     printf(")\n");    
 }
 
-/* reads a vector from the user input */
-Vector_t readVector(){
-    Vector_t vector;
+/* reads a vector (a 1x3 matrix) from the user input */
+void readVector(fraction_t vector[1][3]){
     printf("x: ");
-    vector.x = readFraction();
+    vector[0][0] = readFraction();
     printf("y: ");
-    vector.y = readFraction();
+    vector[0][1] = readFraction();
     printf("z: ");
-    vector.z = readFraction();
-
-    return vector;
+    vector[0][2] = readFraction();
 }
 
-/* prints a vector */
-void printVector(Vector_t vector){
+/* prints a vector (a 1x3 matrix) */
+void printVector(fraction_t vector[1][3]){
     printf("(");
-    printFraction(vector.x);
+    printFraction(vector[0][0]);
     printf(", ");
-    printFraction(vector.y);
+    printFraction(vector[0][1]);
     printf(", ");
-    printFraction(vector.z);
-    printf(")\n");    
+    printFraction(vector[0][2]);
+    printf(")\n");
 }
 
+/* calculates the parametric form of a given cartesian form line */
 lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line){
     lineParametricForm_t parametricLine;
+    fraction_t matrix[2][4];
 }
+
+/* calculates the cartesian form of a given parametric form line */
 lineCartesianForm_t lineParametricToCartesianForm(lineParametricForm_t line){
     lineCartesianForm_t cartesianLine;
+}
+
+/* calculates the matrix associated with a given plane */
+void getPlaneMatrix(Plane_t plane, fraction_t matrix[1][4]){
+    matrix[0][0] = plane.x;
+    matrix[0][1] = plane.y;
+    matrix[0][2] = plane.z;
+    matrix[0][3] = plane.d;
+}
+
+/* calculates the matrix associated with a given point */
+void getPointMatrix(Point_t point, fraction_t matrix[1][3]){
+    matrix[0][0] = point.x;
+    matrix[0][1] = point.y;
+    matrix[0][2] = point.z;
 }
 
 /* calculates the linear invariant of a given conic or quadric */
