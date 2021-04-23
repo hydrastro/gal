@@ -639,4 +639,31 @@ bool isMatrixSymmetric(int rows, int columns, fraction_t matrix[rows][rows]){
     return true;
 }
 
+void composeMatrices(int rows, int firstMatrixColumns, int secondMatrixColumns, fraction_t firstMatrix[rows][firstMatrixColumns], fraction_t secondMatrix[rows][secondMatrixColumns], fraction_t resultMatrix[rows][firstMatrixColumns + secondMatrixColumns]){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < firstMatrixColumns + secondMatrixColumns; j++){
+            if(j > firstMatrixColumns){
+                resultMatrix[i][j] = secondMatrix[i][j - firstMatrixColumns];
+            } else {
+                resultMatrix[i][j] = firstMatrix[i][j];
+            }
+        }
+    }
+}
+
+void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int columns, fraction_t firstMatrix[firstMatrixRows][columns], fraction_t secondMatrix[secondMatrixRows][columns], fraction_t resultMatrix[firstMatrixRows + secondMatrixRows][columns]){
+    int i, j;
+    for(i = 0; i < firstMatrixRows + secondMatrixRows; i++){
+        for(j = 0; j < columns; j++){
+            if(i > firstMatrixRows){
+                resultMatrix[i][j] = secondMatrix[i - firstMatrixRows][j];
+            } else {
+                resultMatrix[i][j] = firstMatrix[i][j];
+            }
+        }
+    }
+}
+
+
 /* TODO: n root */

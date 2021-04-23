@@ -40,5 +40,7 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
 bool matrixEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns]);
 bool matrixApproximatelyEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], int precision);
 bool isMatrixSymmetric(int rows, int columns, fraction_t matrix[rows][rows]);
+void composeMatrices(int rows, int firstMatrixColumns, int secondMatrixColumns, fraction_t firstMatrix[rows][firstMatrixColumns], fraction_t secondMatrix[rows][secondMatrixColumns], fraction_t resultMatrix[rows][firstMatrixColumns + secondMatrixColumns]);
+void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int columns, fraction_t firstMatrix[firstMatrixRows][columns], fraction_t secondMatrix[secondMatrixRows][columns], fraction_t resultMatrix[firstMatrixRows + secondMatrixRows][columns]);
 
 #endif /* GAL_MATRIX_H */
