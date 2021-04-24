@@ -668,28 +668,40 @@ void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int co
 }
 
 /* completes a given matrix */
-void completeMatrixBasis(int rows, int columns, fraction_t matrix[rows][columns], fraction_t result[columns][columns]){
-    int i, j;
+void completeMatrixBasis(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][columns]){
+    int i, j, k, l, currentPivotColumn, previousPivotColumn, currentResultMatrixRow, difference;
     fraction_t tempMatrix[rows][columns];
+    currentResultMatrixRow = 0;
     for(i = 0; i < columns; i++){
-        for(j = 0; i < columns; j++){
-            if(i < rows){
-                result[i][j] = getFraction(0, 1);
-            } else {
-                result[i][j] = matrix[i][j];
-            }
+        for(j = 0; j < columns; j++){
+            resultMatrix[i][j] = getFraction(0, 1);
         }
     }
     gaussElimination(rows, columns, matrix, tempMatrix);
-    for(i = 0; i < rows; i++){
-        for(j = 0; i < columns; j++){
-/*            if row is not empty, add it to result matrix
-/*            if(*pivot difference > 1*){
-                for(each missed pivot)
-                    add completion row to result matrix
+    previousPivotColumn = -1;
+    /* adding the completion row(s) to the result matrix */
+    for(i = 0; i < columns; i++){
+        currentPivotColumn = getPivotColumn(rows, columns, tempMatrix, i);
+        difference = currentPivotColumn - previousPivotColumn;
+        for(j = previousPivotColumn + 1; j < currentPivotColumn; j++, currentResultMatrixRow++){
+            for(k = 0; k < columns; k++){
+                if(k == j){
+                    resultMatrix[currentResultMatrixRow][k] = getFraction(1, 1);
+                } else {
+                    resultMatrix[currentResultMatrixRow][k] = getFraction(0, 1);
+                }
             }
-*/
         }
+        previousPivotColumn = currentPivotColumn;
+    }
+    /* adding the linearly indipendent row(s) of the input matrix to the result matrix */
+    for(i = 0; i < columns; i++){
+        if(getPivotColumn(rows, columns, tempMatrix, i) != columns){
+            for(j = 0; j < columns; j++){
+                resultMatrix[currentResultMatrixRow][j] = matrix[i][j];
+            }
+        }
+        currentResultMatrixRow++;
     }
 }
 
