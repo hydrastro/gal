@@ -118,7 +118,7 @@ void printVector(fraction_t vector[1][3]){
 /* calculates the parametric form of a given cartesian form line */
 lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line){
     lineParametricForm_t parametricLine;
-    fraction_t matrix[2][4];
+    fraction_t matrix[3][3], completeMatrix[3][5];
 }
 
 /* calculates the cartesian form of a given parametric form line */

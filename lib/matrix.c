@@ -698,7 +698,7 @@ void completeMatrixBasis(int rows, int columns, fraction_t matrix[rows][columns]
     for(i = 0; i < columns; i++){
         if(getPivotColumn(rows, columns, tempMatrix, i) != columns){
             for(j = 0; j < columns; j++){
-                resultMatrix[currentResultMatrixRow][j] = matrix[i][j];
+                resultMatrix[currentResultMatrixRow][j] = tempMatrix[i][j];
             }
         }
         currentResultMatrixRow++;
