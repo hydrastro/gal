@@ -85,7 +85,7 @@ int algebraFunctions(){
 
     /* calculates the upper triangular matrix of the QR decomposition */
     fraction_t RMatrix[rows][columns];
-    printf("\nGrahm-Schmidt upper-triangular matrix(R):\n");
+    printf("\nGrahm-Schmidt upper-triangular matrix (R):\n");
     transposeMatrix(rows, columns, orthonormalizedMatrix, RMatrix);
     multiplyMatrix(rows, rows, rows, RMatrix, matrix, RMatrix);
     printMatrix(rows, columns, RMatrix);

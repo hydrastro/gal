@@ -667,5 +667,31 @@ void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int co
     }
 }
 
+/* completes a given matrix */
+void completeMatrixBasis(int rows, int columns, fraction_t matrix[rows][columns], fraction_t result[columns][columns]){
+    int i, j;
+    fraction_t tempMatrix[rows][columns];
+    for(i = 0; i < columns; i++){
+        for(j = 0; i < columns; j++){
+            if(i < rows){
+                result[i][j] = getFraction(0, 1);
+            } else {
+                result[i][j] = matrix[i][j];
+            }
+        }
+    }
+    gaussElimination(rows, columns, matrix, tempMatrix);
+    for(i = 0; i < rows; i++){
+        for(j = 0; i < columns; j++){
+/*            if row is not empty, add it to result matrix
+/*            if(*pivot difference > 1*){
+                for(each missed pivot)
+                    add completion row to result matrix
+            }
+*/
+        }
+    }
+}
 
-/* TODO: n root */
+/* TODO: n root, getMatrixRow, getMatrixColumn, submatrix removing a row/column only, isLinearSistemSolvable */
+
