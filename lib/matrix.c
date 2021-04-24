@@ -639,6 +639,7 @@ bool isMatrixSymmetric(int rows, int columns, fraction_t matrix[rows][rows]){
     return true;
 }
 
+/* composes two matrices (horizontally) */
 void composeMatrices(int rows, int firstMatrixColumns, int secondMatrixColumns, fraction_t firstMatrix[rows][firstMatrixColumns], fraction_t secondMatrix[rows][secondMatrixColumns], fraction_t resultMatrix[rows][firstMatrixColumns + secondMatrixColumns]){
     int i, j;
     for(i = 0; i < rows; i++){
@@ -652,6 +653,7 @@ void composeMatrices(int rows, int firstMatrixColumns, int secondMatrixColumns, 
     }
 }
 
+/* composes two matrices vertically */
 void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int columns, fraction_t firstMatrix[firstMatrixRows][columns], fraction_t secondMatrix[secondMatrixRows][columns], fraction_t resultMatrix[firstMatrixRows + secondMatrixRows][columns]){
     int i, j;
     for(i = 0; i < firstMatrixRows + secondMatrixRows; i++){
