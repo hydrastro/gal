@@ -710,6 +710,7 @@ void completeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fra
 }
 
 /* performs the gaussian elimination algorithm on a given matrix and returns the times the rows were swapped */
+/* TODO: change gaussElimination method (it should call this and swap rows only) */
 void reduceMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
     int currentRow, currentColumn, otherRow;
     fraction_t subtraction, factor;
@@ -734,4 +735,3 @@ void reduceMatrix(int rows, int columns, fraction_t matrix[rows][columns], fract
 }
 
 /* TODO: n root, getMatrixRow, getMatrixColumn, submatrix removing a row/column only, isLinearSistemSolvable */
-
