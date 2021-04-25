@@ -91,7 +91,7 @@ void printPoint(Point_t point){
     printFraction(point.y);
     printf(", ");
     printFraction(point.z);
-    printf(")\n");    
+    printf(")\n");
 }
 
 /* reads a vector (a 1x3 matrix) from the user input */
@@ -179,7 +179,7 @@ fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]){
             }
         }
     }
-    
+
     return getMatrixDeterminant(3, tempMatrix);
 }
 

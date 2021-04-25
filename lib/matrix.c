@@ -668,7 +668,7 @@ void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int co
 }
 
 /* completes a given matrix */
-void completeMatrixBasis(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][columns]){
+void completeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][columns]){
     int i, j, k, l, currentPivotColumn, previousPivotColumn, currentResultMatrixRow, difference;
     fraction_t tempMatrix[rows][columns];
     currentResultMatrixRow = 0;
@@ -677,7 +677,10 @@ void completeMatrixBasis(int rows, int columns, fraction_t matrix[rows][columns]
             resultMatrix[i][j] = getFraction(0, 1);
         }
     }
-    gaussElimination(rows, columns, matrix, tempMatrix);
+    copyMatrix(rows, columns, matrix, tempMatrix);
+    if(!isMatrixReduced(rows, columns, tempMatrix, false)){
+        gaussElimination(rows, columns, tempMatrix, tempMatrix);
+    }
     previousPivotColumn = -1;
     /* adding the completion row(s) to the result matrix */
     for(i = 0; i < columns; i++){
@@ -695,13 +698,38 @@ void completeMatrixBasis(int rows, int columns, fraction_t matrix[rows][columns]
         previousPivotColumn = currentPivotColumn;
     }
     /* adding the linearly indipendent row(s) of the input matrix to the result matrix */
-    for(i = 0; i < columns; i++){
+    reduceMatrix(rows, columns, matrix, tempMatrix);
+    for(i = 0; i < rows; i++){
         if(getPivotColumn(rows, columns, tempMatrix, i) != columns){
             for(j = 0; j < columns; j++){
-                resultMatrix[currentResultMatrixRow][j] = tempMatrix[i][j];
+                resultMatrix[currentResultMatrixRow][j] = matrix[i][j];
+            }
+            currentResultMatrixRow++;
+        }
+    }
+}
+
+/* performs the gaussian elimination algorithm on a given matrix and returns the times the rows were swapped */
+void reduceMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
+    int currentRow, currentColumn, otherRow;
+    fraction_t subtraction, factor;
+    copyMatrix(rows, columns, matrix, resultMatrix);
+    /* starts loop for each matrix's row */
+    for(currentRow = 0; currentRow < rows - 1; currentRow++){
+        /* starts a loop to compare the current row to the next ones, this first loop just orders the rows of the matrix */
+        for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
+            /* calculates the difference between the the pivot of the current rows and the elements below the pivot */
+            subtraction = subtractFractions(fractionAbsoluteValue(resultMatrix[otherRow][currentRow]), fractionAbsoluteValue(resultMatrix[currentRow][currentRow]));
+            /* rows are swapped and zero(s) are placed down the pivot */
+        }
+        /* starts a loop to perform the elimination */
+        for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
+            factor = divideFractions(resultMatrix[otherRow][currentRow], resultMatrix[currentRow][currentRow]);
+            for(currentColumn = 0; currentColumn < columns; currentColumn++){
+                /* each element of each row below the pivot is replaced */
+                resultMatrix[otherRow][currentColumn] = subtractFractions(resultMatrix[otherRow][currentColumn], multiplyFractions(factor, resultMatrix[currentRow][currentColumn]));
             }
         }
-        currentResultMatrixRow++;
     }
 }
 
