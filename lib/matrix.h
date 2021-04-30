@@ -13,7 +13,7 @@ bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns], bo
 int getPivotColumn(int rows, int columns, fraction_t matrix[rows][columns], int row);
 int gaussJordanElimination(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
 fraction_t getMatrixDeterminant(int rows, fraction_t matrix[rows][rows]);
-void getMatrixKernelBasis(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t bases[columns - rank][columns]);
+void getMatrixKernelBasis(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t basis[columns - rank][columns]);
 void getMatrixImageBasis(int rows, int columns, int rank, fraction_t matrix[rows][columns], fraction_t basis[rank][rows]);
 void transposeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][rows]);
 void sumMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]);
@@ -28,8 +28,8 @@ void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int r
 fraction_t getMatrixTrace(int rows, fraction_t matrix[rows][rows]);
 void getMatrixPower(int rows, fraction_t matrix[rows][rows], int power, fraction_t resultMatrix[rows][rows]);
 void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]);
-void addMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], fraction_t row[1][columns], fraction_t resultMatrix[rows + 1][columns]);
-void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], fraction_t column[rows][1], fraction_t resultMatrix[rows][columns + 1]);
+void addMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int position, fraction_t rowMatrix[1][columns], fraction_t resultMatrix[rows + 1][columns]);
+void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], int position, fraction_t columnMatrix[rows][1], fraction_t resultMatrix[rows][columns + 1]);
 fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1]);
 void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1], fraction_t resultVector[rows][1]);
 fraction_t getVectorNorm(int rows, fraction_t vector[rows][1]);
@@ -40,9 +40,16 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
 bool matrixEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns]);
 bool matrixApproximatelyEquals(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], int precision);
 bool isMatrixSymmetric(int rows, int columns, fraction_t matrix[rows][rows]);
-void composeMatrices(int rows, int firstMatrixColumns, int secondMatrixColumns, fraction_t firstMatrix[rows][firstMatrixColumns], fraction_t secondMatrix[rows][secondMatrixColumns], fraction_t resultMatrix[rows][firstMatrixColumns + secondMatrixColumns]);
+void composeMatricesHorizontally(int rows, int firstMatrixColumns, int secondMatrixColumns, fraction_t firstMatrix[rows][firstMatrixColumns], fraction_t secondMatrix[rows][secondMatrixColumns], fraction_t resultMatrix[rows][firstMatrixColumns + secondMatrixColumns]);
 void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int columns, fraction_t firstMatrix[firstMatrixRows][columns], fraction_t secondMatrix[secondMatrixRows][columns], fraction_t resultMatrix[firstMatrixRows + secondMatrixRows][columns]);
-void completeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][columns]);
+void completeMatrixRows(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][columns]);
 void reduceMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]);
+void splitMatrixVertically(int rows, int columns, fraction_t matrix[rows][columns], int firstMatrixColumns, fraction_t firstResultMatrix[rows][firstMatrixColumns], fraction_t secondResultMatrix[rows][columns - firstMatrixColumns]);
+void changeMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int position, fraction_t rowMatrix[1][columns]);
+void changeMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], int position, fraction_t columnMatrix[rows][1]);
+void expandMatrix(int rows, int columns, fraction_t matrix[rows][columns], int insertRow, int insertColumn, int addRows, int addColumns, fraction_t resultMatrix[rows + addRows][columns + addColumns]);
+void initializeMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
+void getMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int row, fraction_t rowMatrix[1][columns]);
+void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], int column, fraction_t columnMatrix[rows][1]);
 
 #endif /* GAL_MATRIX_H */

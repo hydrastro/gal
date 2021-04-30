@@ -34,12 +34,18 @@ void printPlane(Plane_t plane){
 
 /* reads a line in parametric from */
 lineParametricForm_t readLineParametricForm(){
+    fraction_t zeroFraction;
     lineParametricForm_t line;
     printf("Application point coordinates:\n");
     line.applicationPoint = readPoint();
-    printf("Direction vector:\n");
+    printf("Direction vector (by row, transposed):\n");
     readVector(line.directionVector);
+    zeroFraction = getFraction(0, 1);
+    if(compareFractions(line.directionVector[0][0], zeroFraction) == 0 && compareFractions(line.directionVector[0][1], zeroFraction) == 0 && compareFractions(line.directionVector[0][2], zeroFraction) == 0){
+        fprintf(stderr, "\nerror: invalid direction vector entered\n");
 
+        exit(-1);
+    }
     return line;
 }
 
@@ -53,11 +59,18 @@ void printLineParametricForm(lineParametricForm_t line){
 
 /* reads a line in cartesian from */
 lineCartesianForm_t readLineCartesianForm(){
+    fraction_t planesMatrix[2][4];
     lineCartesianForm_t line;
     printf("First plane:\n");
     line.firstPlane = readPlane();
     printf("Second plane:\n");
     line.secondPlane = readPlane();
+    getCartesianLineMatrix(line, planesMatrix);
+    if(getMatrixRank(2, 4, planesMatrix) == 1){
+        fprintf(stderr, "\nerror: invalid planes entered\n");
+
+        exit(-1);
+    }
 
     return line;
 }
@@ -118,12 +131,34 @@ void printVector(fraction_t vector[1][3]){
 /* calculates the parametric form of a given cartesian form line */
 lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line){
     lineParametricForm_t parametricLine;
-    fraction_t matrix[3][3], completeMatrix[3][5];
+    fraction_t planesMatrix[2][4], completeMatrix[3][5], coefficientsMatrix[3][3], termsMatrix[3][2];
+    getCartesianLineMatrix(line, planesMatrix);
+    expandMatrix(2, 4, planesMatrix, 2, 3, 1, 1, completeMatrix);
+    splitMatrixVertically(3, 5, completeMatrix, 3, coefficientsMatrix, termsMatrix);
+    splitMatrixVertically(3, 5, completeMatrix, 3, coefficientsMatrix, termsMatrix);
+    termsMatrix[0][1] = invertFractionSign(termsMatrix[0][1]);
+    termsMatrix[1][1] = invertFractionSign(termsMatrix[1][1]);
+    termsMatrix[2][0] = getFraction(1, 1);
+    completeMatrixRows(3, 3, coefficientsMatrix, coefficientsMatrix);
+    composeMatricesHorizontally(3, 3, 2, coefficientsMatrix, termsMatrix, completeMatrix);
+    gaussJordanElimination(3, 5, completeMatrix, completeMatrix);
+    /* putting the data in the variable */
+    parametricLine.directionVector[0][0] = completeMatrix[0][3];
+    parametricLine.directionVector[0][1] = completeMatrix[1][3];
+    parametricLine.directionVector[0][2] = completeMatrix[2][3];
+    parametricLine.applicationPoint.x = completeMatrix[0][4];
+    parametricLine.applicationPoint.y = completeMatrix[1][4];
+    parametricLine.applicationPoint.z = completeMatrix[2][4];
+
+    return parametricLine;
 }
 
 /* calculates the cartesian form of a given parametric form line */
 lineCartesianForm_t lineParametricToCartesianForm(lineParametricForm_t line){
     lineCartesianForm_t cartesianLine;
+    cartesianLine.firstPlane.x = getFraction(1, 1);
+
+    return cartesianLine;
 }
 
 /* calculates the matrix associated with a given plane */
@@ -139,6 +174,15 @@ void getPointMatrix(Point_t point, fraction_t matrix[1][3]){
     matrix[0][0] = point.x;
     matrix[0][1] = point.y;
     matrix[0][2] = point.z;
+}
+
+/* calculates the matrix associated with a given cartesian form line */
+void getCartesianLineMatrix(lineCartesianForm_t line, fraction_t matrix[2][4]){
+    fraction_t firstPlaneMatrix[1][4], secondPlaneMatrix[1][4];
+    getPlaneMatrix(line.firstPlane, firstPlaneMatrix);
+    getPlaneMatrix(line.secondPlane, secondPlaneMatrix);
+    changeMatrixRow(2, 4, matrix, 0, firstPlaneMatrix);
+    changeMatrixRow(2, 4, matrix, 1, secondPlaneMatrix);
 }
 
 /* calculates the linear invariant of a given conic or quadric */

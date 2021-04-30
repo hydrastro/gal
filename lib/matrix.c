@@ -461,24 +461,33 @@ void getIdentityMatrix(int rows, fraction_t resultMatrix[rows][rows]){
     }
 }
 
-/* adds a row to a given matrix */
-void addMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], fraction_t row[1][columns], fraction_t resultMatrix[rows + 1][columns]){
-    int i;printMatrix(1,columns,row);
-    copyMatrix(rows, columns, matrix, resultMatrix);
-    for(i = 0; i < columns; i++){
-        resultMatrix[rows][i] = row[0][i];
+/* expands a given matrix by inserting a new row at a given index */
+void addMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int position, fraction_t rowMatrix[1][columns], fraction_t resultMatrix[rows + 1][columns]){
+    int i, j;
+    for(i = 0; i < rows + 1; i++){
+        for(j = 0; j < columns; j++){
+            if(i < position){
+                resultMatrix[i][j] = matrix[i][j];
+            } else if(i == position){
+                resultMatrix[i][j] = rowMatrix[1][j];
+            } else if(i > position){
+                resultMatrix[i][j] = matrix[i - 1][j];
+            }
+        }
     }
 }
 
-/* adds a column to a given matrix */
-void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], fraction_t column[rows][1], fraction_t resultMatrix[rows][columns + 1]){
+/* expands a given matrix by inserting a new row at a given index */
+void addMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], int position, fraction_t columnMatrix[rows][1], fraction_t resultMatrix[rows][columns + 1]){
     int i, j;
     for(i = 0; i < rows; i++){
-        for(j = 0; j <= columns; j++){
-            if(j == columns){
-                resultMatrix[i][j] = column[i][0];
-            } else {
+        for(j = 0; j < columns + 1; j++){
+            if(i < position){
                 resultMatrix[i][j] = matrix[i][j];
+            } else if(i == position){
+                resultMatrix[i][j] = columnMatrix[1][j];
+            } else if(i > position){
+                resultMatrix[i][j] = matrix[i][j - 1];
             }
         }
     }
@@ -640,11 +649,11 @@ bool isMatrixSymmetric(int rows, int columns, fraction_t matrix[rows][rows]){
 }
 
 /* composes two matrices (horizontally) */
-void composeMatrices(int rows, int firstMatrixColumns, int secondMatrixColumns, fraction_t firstMatrix[rows][firstMatrixColumns], fraction_t secondMatrix[rows][secondMatrixColumns], fraction_t resultMatrix[rows][firstMatrixColumns + secondMatrixColumns]){
+void composeMatricesHorizontally(int rows, int firstMatrixColumns, int secondMatrixColumns, fraction_t firstMatrix[rows][firstMatrixColumns], fraction_t secondMatrix[rows][secondMatrixColumns], fraction_t resultMatrix[rows][firstMatrixColumns + secondMatrixColumns]){
     int i, j;
     for(i = 0; i < rows; i++){
         for(j = 0; j < firstMatrixColumns + secondMatrixColumns; j++){
-            if(j > firstMatrixColumns){
+            if(j >= firstMatrixColumns){
                 resultMatrix[i][j] = secondMatrix[i][j - firstMatrixColumns];
             } else {
                 resultMatrix[i][j] = firstMatrix[i][j];
@@ -658,7 +667,7 @@ void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int co
     int i, j;
     for(i = 0; i < firstMatrixRows + secondMatrixRows; i++){
         for(j = 0; j < columns; j++){
-            if(i > firstMatrixRows){
+            if(i >= firstMatrixRows){
                 resultMatrix[i][j] = secondMatrix[i - firstMatrixRows][j];
             } else {
                 resultMatrix[i][j] = firstMatrix[i][j];
@@ -668,61 +677,49 @@ void composeMatricesVertically(int firstMatrixRows, int secondMatrixRows, int co
 }
 
 /* completes a given matrix */
-void completeMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][columns]){
-    int i, j, k, l, currentPivotColumn, previousPivotColumn, currentResultMatrixRow, difference;
-    fraction_t tempMatrix[rows][columns];
+void completeMatrixRows(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[columns][columns]){
+    int i, j, currentResultMatrixRow, countedPivots;
+    fraction_t tempReducedMatrix[rows][columns], tempResultMatrix[columns][columns];
+    initializeMatrix(columns, columns, tempResultMatrix);
     currentResultMatrixRow = 0;
-    for(i = 0; i < columns; i++){
-        for(j = 0; j < columns; j++){
-            resultMatrix[i][j] = getFraction(0, 1);
-        }
-    }
-    copyMatrix(rows, columns, matrix, tempMatrix);
-    if(!isMatrixReduced(rows, columns, tempMatrix, false)){
-        gaussElimination(rows, columns, tempMatrix, tempMatrix);
-    }
-    previousPivotColumn = -1;
-    /* adding the completion row(s) to the result matrix */
-    for(i = 0; i < columns; i++){
-        currentPivotColumn = getPivotColumn(rows, columns, tempMatrix, i);
-        difference = currentPivotColumn - previousPivotColumn;
-        for(j = previousPivotColumn + 1; j < currentPivotColumn; j++, currentResultMatrixRow++){
-            for(k = 0; k < columns; k++){
-                if(k == j){
-                    resultMatrix[currentResultMatrixRow][k] = getFraction(1, 1);
-                } else {
-                    resultMatrix[currentResultMatrixRow][k] = getFraction(0, 1);
-                }
-            }
-        }
-        previousPivotColumn = currentPivotColumn;
-    }
-    /* adding the linearly indipendent row(s) of the input matrix to the result matrix */
-    reduceMatrix(rows, columns, matrix, tempMatrix);
+    reduceMatrix(rows, columns, matrix, tempReducedMatrix);
     for(i = 0; i < rows; i++){
-        if(getPivotColumn(rows, columns, tempMatrix, i) != columns){
+        /* checking if the row is not empty */
+        if(getPivotColumn(rows, columns, tempReducedMatrix, i) != rows){
+            /* copying the matrix row into the result row */
             for(j = 0; j < columns; j++){
-                resultMatrix[currentResultMatrixRow][j] = matrix[i][j];
+                tempResultMatrix[currentResultMatrixRow][j] = matrix[i][j];
             }
             currentResultMatrixRow++;
         }
     }
+    gaussElimination(rows, columns, matrix, tempReducedMatrix);
+    /* completing the result matrix */
+    countedPivots = 0;
+    for(i = 0; i < columns; i++){
+        if(getPivotColumn(rows, columns, tempReducedMatrix, i) + countedPivots != i){
+            for(j = 0; j < columns; j++){
+                if(j == i){
+                    tempResultMatrix[currentResultMatrixRow][j] = getFraction(1, 1);
+                } else {
+                    tempResultMatrix[currentResultMatrixRow][j] = getFraction(0, 1);
+                }
+            }
+            countedPivots++;
+            currentResultMatrixRow++;
+        }
+    }
+    copyMatrix(columns, columns, tempResultMatrix, resultMatrix);
 }
 
-/* performs the gaussian elimination algorithm on a given matrix and returns the times the rows were swapped */
+/* performs the gaussian elimination algorithm on a given matrix without swapping rows */
 /* TODO: change gaussElimination method (it should call this and swap rows only) */
 void reduceMatrix(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
     int currentRow, currentColumn, otherRow;
-    fraction_t subtraction, factor;
+    fraction_t factor;
     copyMatrix(rows, columns, matrix, resultMatrix);
     /* starts loop for each matrix's row */
     for(currentRow = 0; currentRow < rows - 1; currentRow++){
-        /* starts a loop to compare the current row to the next ones, this first loop just orders the rows of the matrix */
-        for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
-            /* calculates the difference between the the pivot of the current rows and the elements below the pivot */
-            subtraction = subtractFractions(fractionAbsoluteValue(resultMatrix[otherRow][currentRow]), fractionAbsoluteValue(resultMatrix[currentRow][currentRow]));
-            /* rows are swapped and zero(s) are placed down the pivot */
-        }
         /* starts a loop to perform the elimination */
         for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
             factor = divideFractions(resultMatrix[otherRow][currentRow], resultMatrix[currentRow][currentRow]);
@@ -734,4 +731,73 @@ void reduceMatrix(int rows, int columns, fraction_t matrix[rows][columns], fract
     }
 }
 
-/* TODO: n root, getMatrixRow, getMatrixColumn, submatrix removing a row/column only, isLinearSistemSolvable */
+/* vertically splits a matrix into two submatrices */
+void splitMatrixVertically(int rows, int columns, fraction_t matrix[rows][columns], int firstMatrixColumns, fraction_t firstResultMatrix[rows][firstMatrixColumns], fraction_t secondResultMatrix[rows][columns - firstMatrixColumns]){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            if(j < firstMatrixColumns){
+                firstResultMatrix[i][j] = matrix[i][j];
+            } else {
+                secondResultMatrix[i][j - firstMatrixColumns] = matrix[i][j];
+            }
+        }
+    }
+}
+
+/* changes a matrix row */
+void changeMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int row, fraction_t rowMatrix[1][columns]){
+    int i;
+    for(i = 0; i < columns; i++){
+        matrix[row][i] = rowMatrix[0][i];
+    }
+}
+
+/* changes a matrix column */
+void changeMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], int column, fraction_t columnMatrix[rows][1]){
+    int i;
+    for(i = 0; i < rows; i++){
+        matrix[i][column] = columnMatrix[i][0];
+    }
+}
+
+/* expands a given matrix by adding new rows and columns at a specified position */
+void expandMatrix(int rows, int columns, fraction_t matrix[rows][columns], int insertRow, int insertColumn, int addRows, int addColumns, fraction_t resultMatrix[rows + addRows][columns + addColumns]){
+    int i, j, currentRow, currentColumn;
+    initializeMatrix(rows + addRows, columns + addColumns, resultMatrix);
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            currentRow = (i < insertRow) ? i : i + addRows;
+            currentColumn = (j < insertColumn) ? j : j + addColumns;
+            resultMatrix[currentRow][currentColumn] = matrix[i][j];
+        }
+    }
+}
+
+/* fills a matrix with zeroes */
+void initializeMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
+    int i, j;
+    for(i = 0; i < rows; i++){
+        for(j = 0; j < columns; j++){
+            matrix[i][j] = getFraction(0, 1);
+        }
+    }
+}
+
+/* gets a matrix row */
+void getMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int row, fraction_t rowMatrix[1][columns]){
+    int i;
+    for(i = 0; i < rows; i++){
+        rowMatrix[0][i] = matrix[row][i];
+    }
+}
+
+/* gets a matrix column */
+void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], int column, fraction_t columnMatrix[rows][1]){
+    int i;
+    for(i = 0; i < rows; i++){
+        columnMatrix[i][0] = matrix[i][column];
+    }
+}
+
+/* TODO: n root, getMatrixRow, getMatrixColumn, submatrix removing a row/column only, isLinearSistemSolvable*/

@@ -197,6 +197,10 @@ int main(void){
             algebraFunctions();
 
             break;
+        case 1:
+             printLineParametricForm(lineCartesianToParametricForm(readLineCartesianForm()));
+
+             break;
         case 6:
         case 7:
             invariantsAndClassificationFunctions();
