@@ -228,11 +228,7 @@ void getMatrixKernelBasis(int rows, int columns, int rank, fraction_t matrix[row
         gaussJordanElimination(rows, columns, matrix, tempMatrix);
     }
     /* emptying the basis array */
-    for(i = 0; i < columns - rank; i++){
-        for(j = 0; j < columns; j++){
-            basis[i][j] = getFraction(0, 1);
-        }
-    }
+    initializeMatrix(columns - rank, columns, basis);
     basisNumber = 0;
     /* looping every matrix row */
     for(i = 1; i <= rows; i++){
@@ -269,11 +265,7 @@ void getMatrixImageBasis(int rows, int columns, int rank, fraction_t matrix[rows
         gaussJordanElimination(rows, columns, matrix, tempMatrix);
     }
     /* emptying the basis array */
-    for(i = 0; i < rank; i++){
-        for(j = 0; j < rows; j++){
-            basis[i][j] = getFraction(0, 1);
-        }
-    }
+    initializeMatrix(rank, rows, basis);
     basisNumber = 0;
     /* looping the reduced matrix rows */
     for(i = 0; i < rows; i++){
@@ -325,11 +317,7 @@ void multiplyMatrix(int rows, int columns, int resultColumns, fraction_t matrix1
     int i, j, k;
     fraction_t product, tempMatrix[rows][columns];
     /* emptying the temp matrix */
-    for(i = 0; i < rows; i++){
-        for(j = 0; j < resultColumns; j++){
-            tempMatrix[i][j] = getFraction(0, 1);
-        }
-    }
+    initializeMatrix(rows, resultColumns, tempMatrix);
     for(i = 0; i < rows; i++){
         for(j = 0; j < resultColumns; j++){
             for(k = 0; k < columns; k++){
@@ -800,4 +788,4 @@ void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], in
     }
 }
 
-/* TODO: n root, getMatrixRow, getMatrixColumn, submatrix removing a row/column only, isLinearSistemSolvable*/
+/* TODO: n root, submatrix removing a row/column only, isLinearSistemSolvable*/
