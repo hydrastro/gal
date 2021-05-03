@@ -788,4 +788,4 @@ void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], in
     }
 }
 
-/* TODO: n root, submatrix removing a row/column only, isLinearSistemSolvable*/
+/* TODO: n root, submatrix removing a row/column only, isLinearSistemSolvable, is matrix symmetrical, insert submatrix into specific position (row / col) or compose matrix vertically/h in specific position */

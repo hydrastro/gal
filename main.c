@@ -201,6 +201,10 @@ int main(void){
              printLineParametricForm(lineCartesianToParametricForm(readLineCartesianForm()));
 
              break;
+        case 2: /* yet TODO */
+             printLineCartesianForm(lineParametricToCartesianForm(readLineParametricForm()));
+
+             break;
         case 6:
         case 7:
             invariantsAndClassificationFunctions();
