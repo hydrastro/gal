@@ -16,17 +16,6 @@ typedef struct Plane_t{
     fraction_t d;
 } Plane_t;
 
-typedef struct line_t{
-    lineForm_t form;
-    lineParametricForm_t lineParametricForm;
-    lineCartesianForm_t lineCartesianForm;
-};
-
-typedef enum{
-    LINE_PARAMETRIC_FORM,
-    LINE_CARTESIAN_FORM
-} lineForm_t;
-
 typedef struct lineParametricForm_t{
     Point_t applicationPoint;
     fraction_t directionVector[1][3];
@@ -37,14 +26,19 @@ typedef struct lineCartesianForm_t{
     Plane_t secondPlane;
 } lineCartesianForm_t;
 
+typedef struct line_t{
+    lineParametricForm_t parametricForm;
+    lineCartesianForm_t cartesianForm;
+} line_t;
+
 Plane_t readPlane();
 void printPlane(Plane_t plane);
-line_t readLine();
-void printLine(line_t line);
 lineParametricForm_t readLineParametricForm();
 void printLineParametricForm(lineParametricForm_t line);
 lineCartesianForm_t readLineCartesianForm();
 void printLineCartesianForm(lineCartesianForm_t line);
+line_t readLine();
+void printLine(line_t line);
 Point_t readPoint();
 void printPoint(Point_t point);
 void readVector(fraction_t vector[1][3]);

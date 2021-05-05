@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "fraction.h"
 #include "matrix.h"
 #include "r3geometry.h"
@@ -81,6 +82,33 @@ void printLineCartesianForm(lineCartesianForm_t line){
     printPlane(line.firstPlane);
     printf("Second plane:\n");
     printPlane(line.secondPlane);
+}
+
+/* reads a line either parametric or cartesian */
+line_t readLine(){
+    line_t line;
+    fraction_t response;
+    printf("In which form is the line?\n0. Parametric form.\n1. Cartesian form.\n");
+    response = readFraction();
+    if(response.numerator == 0){
+        line.parametricForm = readLineParametricForm();
+        line.cartesianForm = lineParametricToCartesianForm(line.parametricForm);
+    } else if(response.numerator == 1){
+        line.cartesianForm = readLineCartesianForm();
+        line.parametricForm = lineCartesianToParametricForm(line.cartesianForm);
+    } else {
+        fprintf(stderr, "\nerror: invalid line form entered.\n");
+
+        exit(-1);
+    }
+
+    return line;
+}
+
+/* prints both parametric and cartesian form of a given line */
+void printLine(line_t line){
+    printLineParametricForm(line.parametricForm);
+    printLineCartesianForm(line.cartesianForm);
 }
 
 /* reads a point from the user input */
