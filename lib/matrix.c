@@ -788,4 +788,17 @@ void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], in
     }
 }
 
+void insertMatrixIntoMatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, int insertMatrixRows, int insertMatrixColumns, fraction_t insertMatrix[insertMatrixRows][insertMatrixColumns]){
+    int i, j;
+    if(row + inserMatrixRows < rows || column + insertMatrixColumns < columns){
+        /* TODO: error handling: here and EVERYWHERE in this class */
+        exit(-1);
+    }
+    for(i = 0; i < insertMatrixRows; i++){
+        for(j = 0; j < insertMatrixColumns; j++){
+            matrix[i + row][j + column] = insertMatrix[i][j];
+        }
+    }
+}
+
 /* TODO: n root, submatrix removing a row/column only, isLinearSistemSolvable, is matrix symmetrical, insert submatrix into specific position (row / col) or compose matrix vertically/h in specific position */

@@ -51,5 +51,6 @@ void expandMatrix(int rows, int columns, fraction_t matrix[rows][columns], int i
 void initializeMatrix(int rows, int columns, fraction_t matrix[rows][columns]);
 void getMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int row, fraction_t rowMatrix[1][columns]);
 void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], int column, fraction_t columnMatrix[rows][1]);
+void insertMatrixIntoMatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, int insertMatrixRows, int insertMatrixColumns, fraction_t insertMatrix[insertMatrixRows][insertMatrixColumns]);
 
 #endif /* GAL_MATRIX_H */
