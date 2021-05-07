@@ -18,7 +18,7 @@ typedef struct Plane_t{
 
 typedef struct lineParametricForm_t{
     Point_t applicationPoint;
-    fraction_t directionVector[1][3];
+    fraction_t directionVector[3][1];
 } lineParametricForm_t;
 
 typedef struct lineCartesianForm_t{
@@ -41,12 +41,12 @@ line_t readLine();
 void printLine(line_t line);
 Point_t readPoint();
 void printPoint(Point_t point);
-void readVector(fraction_t vector[1][3]);
-void printVector(fraction_t vector[1][3]);
+void readVector(fraction_t vector[3][1]);
+void printVector(fraction_t vector[3][1]);
 lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line);
 lineCartesianForm_t lineParametricToCartesianForm(lineParametricForm_t line);
 void getPlaneMatrix(Plane_t plane, fraction_t matrix[1][4]);
-void getPointMatrix(Point_t point, fraction_t matrix[1][3]);
+void getPointMatrix(Point_t point, fraction_t matrix[3][1]);
 void getCartesianLineMatrix(lineCartesianForm_t line, fraction_t matrix[2][4]);
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]);
 fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]);

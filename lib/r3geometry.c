@@ -47,15 +47,19 @@ lineParametricForm_t readLineParametricForm(){
 
         exit(-1);
     }
+    printf("\n");
+
     return line;
 }
 
 /* prints a line in parametric form */
 void printLineParametricForm(lineParametricForm_t line){
-    printf("Application point coordinates:\n");
+    printf("Application point coordinates: ");
     printPoint(line.applicationPoint);
-    printf("Direction vector:\n");
-    printMatrix(1, 3, line.directionVector);
+    printf("\n");
+    printf("Direction vector: ");
+    printVector(line.directionVector);
+    printf("\n");
 }
 
 /* reads a line in cartesian from */
@@ -72,24 +76,27 @@ lineCartesianForm_t readLineCartesianForm(){
 
         exit(-1);
     }
+    printf("\n");
 
     return line;
 }
 
 /* prints a line in cartesian form */
 void printLineCartesianForm(lineCartesianForm_t line){
-    printf("First plane:\n");
+    printf("First plane: ");
     printPlane(line.firstPlane);
-    printf("Second plane:\n");
+    printf("Second plane: ");
     printPlane(line.secondPlane);
+    printf("\n");
 }
 
 /* reads a line either parametric or cartesian */
 line_t readLine(){
     line_t line;
     fraction_t response;
-    printf("In which form is the line?\n0. Parametric form.\n1. Cartesian form.\n");
+    printf("In which form is the line?\n0. Parametric form.\n1. Cartesian form.\n\nSelect an option: ");
     response = readFraction();
+    printf("\n");
     if(response.numerator == 0){
         line.parametricForm = readLineParametricForm();
         line.cartesianForm = lineParametricToCartesianForm(line.parametricForm);
@@ -132,21 +139,21 @@ void printPoint(Point_t point){
     printFraction(point.y);
     printf(", ");
     printFraction(point.z);
-    printf(")\n");
+    printf(")");
 }
 
 /* reads a vector (a 1x3 matrix) from the user input */
-void readVector(fraction_t vector[1][3]){
+void readVector(fraction_t vector[3][1]){
     printf("x: ");
     vector[0][0] = readFraction();
     printf("y: ");
-    vector[0][1] = readFraction();
+    vector[1][0] = readFraction();
     printf("z: ");
-    vector[0][2] = readFraction();
+    vector[2][0] = readFraction();
 }
 
 /* prints a vector (a 1x3 matrix) */
-void printVector(fraction_t vector[1][3]){
+void printVector(fraction_t vector[3][1]){
     printf("(");
     printFraction(vector[0][0]);
     printf(", ");
@@ -172,8 +179,8 @@ lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line){
     gaussJordanElimination(3, 5, completeMatrix, completeMatrix);
     /* putting the data in the variable */
     parametricLine.directionVector[0][0] = completeMatrix[0][3];
-    parametricLine.directionVector[0][1] = completeMatrix[1][3];
-    parametricLine.directionVector[0][2] = completeMatrix[2][3];
+    parametricLine.directionVector[1][0] = completeMatrix[1][3];
+    parametricLine.directionVector[2][0] = completeMatrix[2][3];
     parametricLine.applicationPoint.x = completeMatrix[0][4];
     parametricLine.applicationPoint.y = completeMatrix[1][4];
     parametricLine.applicationPoint.z = completeMatrix[2][4];
@@ -184,7 +191,13 @@ lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line){
 /* calculates the cartesian form of a given parametric form line */
 lineCartesianForm_t lineParametricToCartesianForm(lineParametricForm_t line){
     lineCartesianForm_t cartesianLine;
+    fraction_t completeMatrix[3][5], identityMatrix[3][3], temp[3][1];
+    getIdentityMatrix(3, identityMatrix);
+    insertMatrixIntoMatrix(3, 5, completeMatrix, 0, 1, 3, 3, identityMatrix);
+    getPointMatrix(line.applicationPoint, temp);
+    insertMatrixIntoMatrix(3, 5, completeMatrix, 0, 4, 3, 1, temp);
     cartesianLine.firstPlane.x = getFraction(1, 1);
+    insertMatrixIntoMatrix(3, 5, completeMatrix, 0, 0, 3, 1, line.directionVector);
 
     return cartesianLine;
 }
@@ -198,10 +211,10 @@ void getPlaneMatrix(Plane_t plane, fraction_t matrix[1][4]){
 }
 
 /* calculates the matrix associated with a given point */
-void getPointMatrix(Point_t point, fraction_t matrix[1][3]){
+void getPointMatrix(Point_t point, fraction_t matrix[3][1]){
     matrix[0][0] = point.x;
-    matrix[0][1] = point.y;
-    matrix[0][2] = point.z;
+    matrix[1][0] = point.y;
+    matrix[2][0] = point.z;
 }
 
 /* calculates the matrix associated with a given cartesian form line */

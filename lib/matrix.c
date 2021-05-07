@@ -790,7 +790,7 @@ void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], in
 
 void insertMatrixIntoMatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, int insertMatrixRows, int insertMatrixColumns, fraction_t insertMatrix[insertMatrixRows][insertMatrixColumns]){
     int i, j;
-    if(row + inserMatrixRows < rows || column + insertMatrixColumns < columns){
+    if(row + insertMatrixRows < rows || column + insertMatrixColumns < columns){
         /* TODO: error handling: here and EVERYWHERE in this class */
         exit(-1);
     }
