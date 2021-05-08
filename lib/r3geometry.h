@@ -54,6 +54,8 @@ point_t getLinesIntersectionPoint(line_t firstLine, line_t secondLine);
 plane_t getLinesSharedPlane(line_t firstLine, line_t secondLine);
 void printLinesReciprocalPosition(line_t firstLine, line_t secondLine);
 plane_t getPlaneGivenTwoDirectionVectors(fraction_t v[3][1], fraction_t w[3][1], point_t point);
+plane_t getPlaneGivenThreePoints(point_t a, point_t b, point_t c);
+point_t getLineAndPlaneIntersectionPoint(line_t line, plane_t plane);
 fraction_t getLinearInvariant(int rows, fraction_t matrix[rows][rows]);
 fraction_t getQuadraticInvariant(int rows, fraction_t matrix[rows][rows]);
 fraction_t getCubicInvariant(int rows, fraction_t matrix[rows][rows]);

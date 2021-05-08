@@ -22,41 +22,53 @@ plane_t readPlane(){
 
 /* prints a given plane */
 void printPlane(plane_t plane){
+    int previousTerms, nextTerm;
+    previousTerms = 0;
     if(plane.x.numerator != 0){
         if(plane.x.denominator != 1){
             printf("(");
-        }
-        printFraction(plane.x);
-        if(plane.x.denominator != 1){
+            printFraction(plane.x);
             printf(")");
+        } else {
+            printFraction(plane.x);
         }
-        printf("x + ");
+        printf("x");
+        previousTerms++;
     }
     if(plane.y.numerator != 0){
+        if(previousTerms != 0){
+            printf(" + ");
+        }
         if(plane.y.denominator != 1){
             printf("(");
-        }
-        printFraction(plane.y);
-        if(plane.y.denominator != 1){
+            printFraction(plane.y);
             printf(")");
+        } else {
+            printFraction(plane.y);
         }
-        printf("y + ");
+        printf("y");
+        previousTerms++;
     }
     if(plane.z.numerator != 0){
+        if(previousTerms != 0){
+            printf(" + ");
+        }
         if(plane.z.denominator != 1){
             printf("(");
-        }
-        printFraction(plane.z);
-        if(plane.z.denominator != 1){
+            printFraction(plane.z);
             printf(")");
+        } else {
+            printFraction(plane.z);
         }
-        printf("z ");
+        printf("z");
+        previousTerms++;
     }
-    if(plane.x.denominator != 0){
-        printf("+ ");
+    if(plane.d.numerator != 0){
+        if(previousTerms != 0){
+            printf(" + ");
+        }
         printFraction(plane.d);
     }
-
     printf(" = 0\n");
 }
 
@@ -166,7 +178,7 @@ void printPoint(point_t point){
     printFraction(point.y);
     printf(", ");
     printFraction(point.z);
-    printf(")");
+    printf(")\n");
 }
 
 /* reads a vector (a 1x3 matrix) from the user input */
@@ -229,10 +241,10 @@ lineCartesianForm_t lineParametricToCartesianForm(lineParametricForm_t line){
     cartesianLine.firstPlane.x = getFraction(1, 1);
     insertMatrixIntoMatrix(3, 5, completeMatrix, 0, 0, 3, 1, line.directionVector);
     gaussJordanElimination(3, 5, completeMatrix, completeMatrix);
-    if(getPivotColumn(3, 5, completeMatrix, 0) < getPivotColumn(3, 5, completeMatrix, 1)){
+    if(getPivotColumn(3, 5, completeMatrix, 0) > getPivotColumn(3, 5, completeMatrix, 1)){
         swapRows(3, 5, completeMatrix, 0, 1);
     }
-    if(getPivotColumn(3, 5, completeMatrix, 0) < getPivotColumn(3, 5, completeMatrix, 2)){
+    if(getPivotColumn(3, 5, completeMatrix, 0) > getPivotColumn(3, 5, completeMatrix, 2)){
         swapRows(3, 5, completeMatrix, 0, 2);
     }
     getSubmatrix(3, 5, completeMatrix, 0, 0, resultMatrix);
@@ -409,7 +421,7 @@ plane_t getPlaneGivenTwoDirectionVectors(fraction_t v[3][1], fraction_t w[3][1],
     transposeMatrix(3, 1, w, tempVector);
     insertMatrixIntoMatrix(2, 3, tempVectors, 1, 0, 1, 3, tempVector);
     if(getMatrixRank(2, 3, tempVectors) != 2){
-        fprintf(stderr, "\nerror: the two given direction vectors are not linearly independent.\n");
+        fprintf(stderr, "\nerror: the two given direction vectors or the three given points are not linearly independent.\n");
 
         exit(-1);
     }
@@ -430,6 +442,41 @@ plane_t getPlaneGivenTwoDirectionVectors(fraction_t v[3][1], fraction_t w[3][1],
     getSubmatrix(2, 5, tempResultMatrix, 1, 0, resultMatrix);
 
     return getPlaneFromMatrix(resultMatrix);
+}
+
+/* calculates the equation of a plane, given three unaligned points */
+plane_t getPlaneGivenThreePoints(point_t a, point_t b, point_t c){
+    fraction_t firstVector[3][1], secondVector[3][1], thirdVector[3][1];
+    getPointMatrix(a, firstVector);
+    getPointMatrix(b, secondVector);
+    getPointMatrix(c, thirdVector);
+    subtractMatrix(3, 1, firstVector, thirdVector, firstVector);
+    subtractMatrix(3, 1, secondVector, thirdVector, secondVector);
+
+    return getPlaneGivenTwoDirectionVectors(firstVector, secondVector, c);
+}
+
+/* calculates the intersection point between a given line and a given plane */
+point_t getLineAndPlaneIntersectionPoint(line_t line, plane_t plane){
+    point_t intersectionPoint;
+    fraction_t completeMatrix[3][4], tempPlaneMatrix[1][4];
+    getPlaneMatrix(line.cartesianForm.firstPlane, tempPlaneMatrix);
+    insertMatrixIntoMatrix(3, 4, completeMatrix, 0, 0, 1, 4, tempPlaneMatrix);
+    getPlaneMatrix(line.cartesianForm.secondPlane, tempPlaneMatrix);
+    insertMatrixIntoMatrix(3, 4, completeMatrix, 1, 0, 1, 4, tempPlaneMatrix);
+    getPlaneMatrix(plane, tempPlaneMatrix);
+    insertMatrixIntoMatrix(3, 4, completeMatrix, 2, 0, 1, 4, tempPlaneMatrix);
+    gaussJordanElimination(3, 4, completeMatrix, completeMatrix);
+    if(getMatrixRank(3, 4, completeMatrix) != 3){
+        fprintf(stderr, "\nerror: the given line and plane do not intersect.\n");
+
+        exit(-1);
+    }
+    intersectionPoint.x = invertFractionSign(completeMatrix[0][3]);
+    intersectionPoint.y = invertFractionSign(completeMatrix[1][3]);
+    intersectionPoint.z = invertFractionSign(completeMatrix[2][3]);
+
+    return intersectionPoint;
 }
 
 /* calculates the linear invariant of a given conic or quadric */

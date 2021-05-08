@@ -191,6 +191,9 @@ int main(void){
         fprintf(stderr, "error: invalid option entered.\n");
     }
 
+    point_t firstPoint, secondPoint, thirdPoint;
+    line_t line;
+    plane_t plane;
     switch(action){
         default:
         case 0:
@@ -206,6 +209,10 @@ int main(void){
 
              break;
         case 3:
+             line = readLine();
+             plane = readPlane();
+             printf("\nIntersection point: ");
+             printPoint(getLineAndPlaneIntersectionPoint(line, plane));
 
              break;
         case 4:
@@ -213,6 +220,14 @@ int main(void){
 
              break;
         case 5:
+             printf("\nFirst point coordinates:\n");
+             firstPoint = readPoint();
+             printf("\nSecond point coordinates:\n");
+             secondPoint = readPoint();
+             printf("\nThird point coordinates:\n");
+             thirdPoint = readPoint();
+             printf("\nResult plane: ");
+             printPlane(getPlaneGivenThreePoints(firstPoint, secondPoint, thirdPoint));
 
              break;
         case 6:
