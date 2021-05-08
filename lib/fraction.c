@@ -276,7 +276,7 @@ bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision){
 
 /* checks the condition for safe multiplying two integers */
 bool canBeSafelyMultiplied(int x, int y){
-    int z;
+    volatile int z;
     if((x == -1 && y == INT_MIN) || (y == -1 && x == INT_MIN)){
 
         return false;

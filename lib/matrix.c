@@ -39,33 +39,43 @@ void copyMatrix(int rows, int columns, fraction_t matrix[rows][columns], fractio
 
 /* performs the gaussian elimination algorithm on a given matrix and returns the times the rows were swapped */
 int gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
-    int currentRow, currentColumn, otherRow, rowSwappingTimes;
-    fraction_t subtraction, factor;
-    rowSwappingTimes = 0;
-    copyMatrix(rows, columns, matrix, resultMatrix);
-    /* starts loop for each matrix's row */
-    for(currentRow = 0; currentRow < rows - 1; currentRow++){
-        /* starts a loop to compare the current row to the next ones, this first loop just orders the rows of the matrix */
-        for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
-            /* calculates the difference between the the pivot of the current rows and the elements below the pivot */
-            subtraction = subtractFractions(fractionAbsoluteValue(resultMatrix[otherRow][currentRow]), fractionAbsoluteValue(resultMatrix[currentRow][currentRow]));
-            /* rows are swapped and zero(s) are placed down the pivot */
-            if(subtraction.numerator > 0 && subtraction.denominator > 0){
-                swapRows(rows, columns, resultMatrix, currentRow, otherRow);
-                rowSwappingTimes++;
+    int i_max, i, j, h, k, pivotRow;
+    /* Initialization of the pivot row */
+    h = 0;
+    /* Initialization of the pivot column */
+    k = 0;
+    fraction_t tempValue, zeroFraction, factor, temp;
+    zeroFraction = getFraction(0, 1);
+    copyMatrix(rows,columns,matrix,resultMatrix);
+    while(h < rows && k < columns){
+        /* Find the k-th pivot: */
+        i_max = h;
+        for(i = h; i < rows; i++){
+            if( (i_max != rows && compareFractions(fractionAbsoluteValue(resultMatrix[i][k]), fractionAbsoluteValue(resultMatrix[i_max][k])) > 0) || compareFractions(resultMatrix[i][k], zeroFraction) != 0){
+                i_max = i;
             }
         }
-        /* starts a loop to perform the elimination */
-        for(otherRow = currentRow + 1; otherRow < rows; otherRow++){
-            factor = divideFractions(resultMatrix[otherRow][currentRow], resultMatrix[currentRow][currentRow]);
-            for(currentColumn = 0; currentColumn < columns; currentColumn++){
-                /* each element of each row below the pivot is replaced */
-                resultMatrix[otherRow][currentColumn] = subtractFractions(resultMatrix[otherRow][currentColumn], multiplyFractions(factor, resultMatrix[currentRow][currentColumn]));
+        if( compareFractions(resultMatrix[i_max][k], zeroFraction) == 0){
+            /* No pivot in this column, pass to next column */
+            k++;
+        } else {
+        swapRows(rows, columns, resultMatrix, h, i_max);
+            /* Do for all rows below pivot: */
+            for(i = h + 1; i < rows; i++){
+                factor = divideFractions(resultMatrix[i][k], resultMatrix[h][k]);
+                /* Fill with zeros the lower part of pivot column: */
+                resultMatrix[i][k] = zeroFraction;
+                /* Do for all remaining elements in current row: */
+                for(j = k + 1; j < columns; j++){
+                    temp = subtractFractions(resultMatrix[i][j], multiplyFractions(resultMatrix[h][j], factor));
+                    resultMatrix[i][j] = temp;
+                }
             }
+            /* Increase pivot row and column */
+            h++;
+            k++;
         }
     }
-
-    return rowSwappingTimes;
 }
 
 /* swap to rows of bi-dimensional array */
@@ -304,12 +314,13 @@ void addMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fractio
 /* subtracts two matrix */
 void subtractMatrix(int rows, int columns, fraction_t matrix1[rows][columns], fraction_t matrix2[rows][columns], fraction_t resultMatrix[rows][columns]){
     int i, j;
+    fraction_t tempResultMatrix[rows][columns];
     for(i = 0; i < rows; i++){
         for(j = 0; j < columns; j++){
-            resultMatrix[i][j] = subtractFractions(matrix1[i][j], matrix2[i][j]);
+            tempResultMatrix[i][j] = subtractFractions(matrix1[i][j], matrix2[i][j]);
         }
     }
-
+    copyMatrix(rows, columns, tempResultMatrix, resultMatrix);
 }
 
 /* multiplies two matrix */
@@ -391,16 +402,22 @@ fraction_t getMatrixMinor(int rows, fraction_t matrix[rows][rows], int row, int 
 /* NOTE: the row numbering starts from 0 */
 void getSubmatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, fraction_t resultMatrix[rows - 1][columns - 1]){
     int i, j, k, l;
-    for(i = 0, j = 0; i < rows; i++, j++){
-        if(i == row){
-            i++;
+    k = 0;
+    for(i = 0; i < rows - 1; i++){
+        l = 0;
+        if(k == row){
+            k++;
         }
-        for(k = 0, l = 0; k < columns; k++, l++){
-            if(k == column){
-                k++;
+        for(j = 0; j < columns - 1; j++){
+            if(l == column){
+                l++;
             }
-            resultMatrix[j][l] = matrix[i][k];
+            if(k != row && l != column){
+                resultMatrix[i][j] = matrix[k][l];
+            }
+            l++;
         }
+        k++;
     }
 }
 
@@ -775,7 +792,7 @@ void initializeMatrix(int rows, int columns, fraction_t matrix[rows][columns]){
 /* gets a matrix row */
 void getMatrixRow(int rows, int columns, fraction_t matrix[rows][columns], int row, fraction_t rowMatrix[1][columns]){
     int i;
-    for(i = 0; i < rows; i++){
+    for(i = 0; i < columns; i++){
         rowMatrix[0][i] = matrix[row][i];
     }
 }
@@ -788,10 +805,12 @@ void getMatrixColumn(int rows, int columns, fraction_t matrix[rows][columns], in
     }
 }
 
+/* inserts a matrix into another matrix */
 void insertMatrixIntoMatrix(int rows, int columns, fraction_t matrix[rows][columns], int row, int column, int insertMatrixRows, int insertMatrixColumns, fraction_t insertMatrix[insertMatrixRows][insertMatrixColumns]){
     int i, j;
-    if(row + insertMatrixRows < rows || column + insertMatrixColumns < columns){
-        /* TODO: error handling: here and EVERYWHERE in this class */
+    if(row + insertMatrixRows > rows || column + insertMatrixColumns > columns){
+        fprintf(stderr, "\nerror: the insert matrix doesn't fit in the main matrix.\n");
+
         exit(-1);
     }
     for(i = 0; i < insertMatrixRows; i++){

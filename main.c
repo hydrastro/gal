@@ -173,8 +173,8 @@ int main(void){
     printf("\nGeometry\n");
     printf("1. Calculate the parametric form of a cartesian line.\n");
     printf("2. Calculate the cartesian form of a parametric line.\n");
-    printf("3. Calculate the intersectoin of a line and a plane.\n");
-    printf("4. Calculate the intersection of two lines.\n");
+    printf("3. Calculate the intersection of a line and a plane.\n");
+    printf("4. Calculate the reciprocal position of two lines.\n");
     printf("5. Calculate the equation of a plane given three points.\n");
     printf("6. Calculate the invariants of a conic and classify it.\n");
     printf("7. Calculate the invariants of a quadric and classify it.\n");
@@ -201,8 +201,18 @@ int main(void){
              printLineParametricForm(lineCartesianToParametricForm(readLineCartesianForm()));
 
              break;
-        case 2: /* yet TODO */
+        case 2:
              printLineCartesianForm(lineParametricToCartesianForm(readLineParametricForm()));
+
+             break;
+        case 3:
+
+             break;
+        case 4:
+             printLinesReciprocalPosition(readLine(), readLine());
+
+             break;
+        case 5:
 
              break;
         case 6:

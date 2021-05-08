@@ -5,13 +5,13 @@
 
 /* if a term of a fraction is greater than this value, it will be printed as a float */
 /* NOTE: it can be set to INT_MAX, for printing only fractions, or to 0, for printing only floats */
-#define GAL_FRACTION_FLOAT_LIMIT 1000
+#define GAL_FRACTION_FLOAT_LIMIT 100000
 
 /* sets how many digits can be printed after the floating point */
 #define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
 
 /* sets for how many digits two fractions can be considered approximately equal */
-#define GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION 4
+#define GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION 6
 
 /* defines a new type for fractions */
 typedef struct fraction_t{
