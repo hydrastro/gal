@@ -144,7 +144,6 @@ bool isMatrixReduced(int rows, int columns, fraction_t matrix[rows][columns], bo
                     return false;
                 }
             }
-
         }
     }
 
@@ -588,8 +587,26 @@ void orthonormalizeMatrix(int rows, int columns, fraction_t matrix[rows][columns
 
 /* calculates the eigenvalues of a given square matrix */
 void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows][1]){
+    int rank, i;
+    fraction_t upperTriangularMatrix[rows][rows];
+    rank = getMatrixRank(rows, rows, matrix);
+    if(rank == rows){
+
+        return QRAlgorithm(rows, matrix, eigenvalues);
+    }
+    gaussElimination(rows, rows, matrix, upperTriangularMatrix);
+    for(i = 0; i < rows; i++){
+        eigenvalues[i][0] = upperTriangularMatrix[i][i];
+    }
+
+    return;
+}
+
+/* performs the QR algorithm to a given matrix */
+void QRAlgorithm(int rows, fraction_t matrix[rows][rows], fraction_t eigenvalues[rows][1]){
     int i;
-    fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows], previousMatrix[rows][rows];
+    fraction_t tempMatrix[rows][rows], QMatrix[rows][rows], RMatrix[rows][rows], previousMatrix[rows][rows], identity[rows][rows];
+    getIdentityMatrix(rows, identity);
     copyMatrix(rows, rows, matrix, tempMatrix);
     do {
         copyMatrix(rows, rows, tempMatrix, previousMatrix);
@@ -601,7 +618,7 @@ void findEigenvalues(int rows, fraction_t matrix[rows][rows], fraction_t eigenva
         multiplyMatrix(rows, rows, rows, RMatrix, tempMatrix, RMatrix);
         /* calculating the matrix for the next iteration */
         multiplyMatrix(rows, rows, rows, RMatrix, QMatrix, tempMatrix);
-    } while(!matrixApproximatelyEquals(rows, rows, previousMatrix, tempMatrix, GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION));
+    } while(!matrixApproximatelyEquals(rows, rows, QMatrix, identity, GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION) && !matrixApproximatelyEquals(rows, rows, previousMatrix, tempMatrix, GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION));
     /* the eigenvalues are on the diagonal of the result matrix */
     for(i = 0; i < rows; i++){
         eigenvalues[i][0] = tempMatrix[i][i];

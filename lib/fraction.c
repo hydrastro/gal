@@ -261,12 +261,11 @@ fraction_t approximateFraction(fraction_t x){
 
 /* checks if two fractions approximately equals */
 bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision){
-    double lowerBound, upperBound, difference;
+    double upperBound, difference, temp;
     upperBound = pow(10.0, (double)-precision);
-    lowerBound = -upperBound;
-    difference = (double)x.numerator / (double)x.denominator - (double)y.numerator / (double)y.denominator;
-
-    if(difference > lowerBound && difference < upperBound){
+    difference = getDoubleAbsoluteValue((double)x.numerator / (double)x.denominator) - getDoubleAbsoluteValue((double)y.numerator / (double)y.denominator);
+    difference = getDoubleAbsoluteValue(difference);
+    if(difference < upperBound){
 
         return true;
     }
@@ -300,4 +299,9 @@ bool canBeSafelyAdded(int x, int y){
 bool isDoubleFinite(double d){
 
     return ((d > -DBL_MAX && d < DBL_MAX) && (d == d));
+}
+
+double getDoubleAbsoluteValue(double d){
+
+    return (d < 0) ? -d : d;
 }

@@ -5,12 +5,13 @@
 
 /* if a term of a fraction is greater than this value, it will be printed as a float */
 /* NOTE: it can be set to INT_MAX, for printing only fractions, or to 0, for printing only floats */
-#define GAL_FRACTION_FLOAT_LIMIT 100000
+#define GAL_FRACTION_FLOAT_LIMIT 10000
 
 /* sets how many digits can be printed after the floating point */
 #define GAL_FRACTION_FLOAT_PRINTF_PRECISION 4
 
 /* sets for how many digits two fractions can be considered approximately equal */
+/* NOTE: too high values may stuck the program, especially when performing the QR algorithm */
 #define GAL_FRACTION_APPROXIMATION_DIGIT_PRECISION 6
 
 /* defines a new type for fractions */
@@ -45,5 +46,6 @@ bool fractionsApproximatelyEquals(fraction_t x, fraction_t y, int precision);
 bool canBeSafelyMultiplied(int x, int y);
 bool canBeSafelyAdded(int x, int y);
 bool isDoubleFinite(double d);
+double getDoubleAbsoluteValue(double d);
 
 #endif /* GAL_FRACTION_H */
