@@ -301,6 +301,7 @@ bool isDoubleFinite(double d){
     return ((d > -DBL_MAX && d < DBL_MAX) && (d == d));
 }
 
+/* returns the absoulte value of a given double */
 double getDoubleAbsoluteValue(double d){
 
     return (d < 0) ? -d : d;
