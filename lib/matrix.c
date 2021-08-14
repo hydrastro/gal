@@ -55,7 +55,7 @@ int gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], fr
                 i_max = i;
             }
         }
-        if( compareFractions(resultMatrix[i_max][k], zeroFraction) == 0){
+        if(compareFractions(resultMatrix[i_max][k], zeroFraction) == 0){
             /* No pivot in this column, pass to next column */
             k++;
         } else {
