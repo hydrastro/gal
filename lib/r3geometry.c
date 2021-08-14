@@ -529,34 +529,34 @@ fraction_t getQuarticInvariant(int rows, fraction_t matrix[rows][rows]){
 
 /* TODO: define enum types for conics? and make a different function for the output */
 void printConicType(fraction_t matrix[3][3]){
-    int compairsonResult;
+    int comparisonResult;
     fraction_t cubicInvariant, quadraticInvariant, linearInvariant, product, zeroFraction;
     cubicInvariant = getCubicInvariant(3, matrix);
     quadraticInvariant = getQuadraticInvariant(3, matrix);
     linearInvariant = getLinearInvariant(3, matrix);
     zeroFraction = getFraction(0, 1);
 
-    compairsonResult = compareFractions(quadraticInvariant, zeroFraction);
+    comparisonResult = compareFractions(quadraticInvariant, zeroFraction);
     /* we are not considering the case 0/0; we need to make sure that every fraction (0 / x) with x not equal 0, is reduced to 0/1 */
     printf("\nConic type: ");
     if(compareFractions(cubicInvariant, zeroFraction) == 0){
-        if(compairsonResult > 0){
-            printf("conic which degenerates in two secand lines, imaginary and conjugated");
-        } else if(compairsonResult < 0){
+        if(comparisonResult > 0){
+            printf("conic which degenerates in two secant lines, imaginary and conjugated");
+        } else if(comparisonResult < 0){
             printf("conic which degenerates in two secant lines, real and distinct");
         } else {
-            printf("conic which degenereates in two parallel lines");
+            printf("conic which degenerates in two parallel lines");
         }
     } else {
-        if(compairsonResult > 0){
+        if(comparisonResult > 0){
             product = multiplyFractions(cubicInvariant, linearInvariant);
-            compairsonResult = compareFractions(product, zeroFraction);
-            if(compairsonResult > 0){
+            comparisonResult = compareFractions(product, zeroFraction);
+            if(comparisonResult > 0){
                 printf("imaginary ellipse");
             } else {
                 printf("real ellipse");
             }
-        } else if(compairsonResult < 0){
+        } else if(comparisonResult < 0){
             printf("hyperbola");
         } else {
             printf("parabola");
@@ -566,7 +566,7 @@ void printConicType(fraction_t matrix[3][3]){
 }
 
 void printQuadricType(fraction_t matrix[4][4]){
-    int compairsonResult, rank, multiplicationCompairsonResult, quadraticRank, i;
+    int comparisonResult, rank, multiplicationComparisonResult, quadraticRank, i;
     fraction_t quarticInvariant, cubicInvariant, quadraticInvariant, linearInvariant, zeroFraction, quadraticSubmatrix[3][3], quadraticEigenvalues[3][1], eigenvalueProduct;
     quarticInvariant = getQuarticInvariant(4, matrix);
     cubicInvariant = getCubicInvariant(4, matrix);
@@ -574,8 +574,8 @@ void printQuadricType(fraction_t matrix[4][4]){
     linearInvariant = getLinearInvariant(4, matrix);
     zeroFraction = getFraction(0, 1);
     rank = getMatrixRank(4, 4, matrix);
-    compairsonResult = compareFractions(quadraticInvariant, zeroFraction);
-    multiplicationCompairsonResult = compareFractions(multiplyFractions(linearInvariant, cubicInvariant), zeroFraction);
+    comparisonResult = compareFractions(quadraticInvariant, zeroFraction);
+    multiplicationComparisonResult = compareFractions(multiplyFractions(linearInvariant, cubicInvariant), zeroFraction);
 
     printf("\nQuadric type: ");
     if(compareFractions(quarticInvariant, zeroFraction) == 0){
@@ -583,15 +583,15 @@ void printQuadricType(fraction_t matrix[4][4]){
             default:
             case 3:
                 if(compareFractions(cubicInvariant, zeroFraction) == 0){
-                    if(compairsonResult > 0){
-                        printf("cilinder, either imaginary (hasn't real points) or elliptic (has real points)");
-                    } else if(compairsonResult < 0){
+                    if(comparisonResult > 0){
+                        printf("cylinder, either imaginary (hasn't real points) or elliptic (has real points)");
+                    } else if(comparisonResult < 0){
                         printf("hyperbolic cylinder");
                     } else {
                         printf("parabolic cylinder");
                     }
                 } else {
-                    if(compairsonResult > 0 &&  multiplicationCompairsonResult > 0){
+                    if(comparisonResult > 0 &&  multiplicationComparisonResult > 0){
                         printf("imaginary cone");
                     } else {
                         printf("real cone");
@@ -631,13 +631,13 @@ void printQuadricType(fraction_t matrix[4][4]){
             }
         } else {
             if(compareFractions(quarticInvariant, zeroFraction) > 0){
-                if(compairsonResult > 0 &&  multiplicationCompairsonResult > 0){
+                if(comparisonResult > 0 &&  multiplicationComparisonResult > 0){
                     printf("imaginary ellipsoid");
                 } else {
                     printf("one-sheet hyperboloid");
                 }
             } else {
-                if(compairsonResult > 0 &&  multiplicationCompairsonResult > 0){
+                if(comparisonResult > 0 &&  multiplicationComparisonResult > 0){
                     printf("real ellipsoid");
                 } else {
                     printf("two-sheet hyperboloid");

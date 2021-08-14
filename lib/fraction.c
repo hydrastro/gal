@@ -220,7 +220,7 @@ fraction_t powerFractionByDouble(fraction_t x, double y){
     return doubleToFraction(temp);
 }
 
-/* calcualtes the fractional power of a given fraction */
+/* calculates the fractional power of a given fraction */
 fraction_t powerFraction(fraction_t x, fraction_t y){
     double temp;
     temp = (double)y.numerator / (double)y.denominator;
@@ -301,7 +301,7 @@ bool isDoubleFinite(double d){
     return ((d > -DBL_MAX && d < DBL_MAX) && (d == d));
 }
 
-/* returns the absoulte value of a given double */
+/* returns the absolute value of a given double */
 double getDoubleAbsoluteValue(double d){
 
     return (d < 0) ? -d : d;

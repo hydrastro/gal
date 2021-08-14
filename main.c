@@ -179,7 +179,7 @@ int main(void){
     printf("6. Calculate the invariants of a conic and classify it.\n");
     printf("7. Calculate the invariants of a quadric and classify it.\n");
 
-    /* scanning and checking wheter the input is valid */
+    /* scanning and checking whether the input is valid */
     action = 0;
     printf("\nSelect an option (default = 0): ");
     readChar = fgetc(stdin);

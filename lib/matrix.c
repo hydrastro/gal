@@ -220,7 +220,7 @@ fraction_t getMatrixDeterminant(int rows, fraction_t matrix[rows][rows]){
     for(i = 0; i < rows; i++){
         determinant = multiplyFractions(determinant, tempMatrix[i][i]);
     }
-    /* changing the sign due the rows swapping occured during the gaussian elimination */
+    /* changing the sign due the rows swapping occurred during the gaussian elimination */
     if(rowSwappingTimes % 2 != 0){
         determinant = invertFractionSign(determinant);
     }
@@ -509,12 +509,12 @@ fraction_t vectorScalarProduct(int rows, fraction_t vector1[rows][1], fraction_t
     return result;
 }
 
-/* calculates the orthogoal projection of vector1 on vector2 */
+/* calculates the orthogonal projection of vector1 on vector2 */
 void projectVector(int rows, fraction_t vector1[rows][1], fraction_t vector2[rows][1], fraction_t resultVector[rows][1]){
     int i;
     fraction_t scalar, temp;
     scalar = vectorScalarProduct(rows, vector1, vector2);
-    /* adding togheter the vector's components instead of getting the norm and squaring it */
+    /* adding together the vector's components instead of getting the norm and squaring it */
     temp = getFraction(0, 1);
     for(i = 0; i < rows; i++){
         temp = addFractions(temp, multiplyFractions(vector2[i][0], vector2[i][0]));
@@ -558,7 +558,7 @@ void grahmSchmidtOrthogonalization(int rows, int columns, fraction_t matrix[rows
     }
 }
 
-/* calcualtes the Moore-Penrose pseudoinverse */
+/* calculates the Moore-Penrose pseudoinverse */
 void moorePenrosePseudoinverse(int rows, fraction_t matrix[rows][rows], fraction_t resultMatrix[rows][rows]){
     fraction_t tempMatrix[rows][rows];
     transposeMatrix(rows, rows, matrix, resultMatrix);
@@ -837,4 +837,4 @@ void insertMatrixIntoMatrix(int rows, int columns, fraction_t matrix[rows][colum
     }
 }
 
-/* TODO: n root, submatrix removing a row/column only, isLinearSistemSolvable, is matrix symmetrical, insert submatrix into specific position (row / col) or compose matrix vertically/h in specific position */
+/* TODO: n root, submatrix removing a row/column only, isLinearSystemSolvable, is matrix symmetrical, insert submatrix into specific position (row / col) or compose matrix vertically/h in specific position */
