@@ -39,11 +39,12 @@ void copyMatrix(int rows, int columns, fraction_t matrix[rows][columns], fractio
 
 /* performs the gaussian elimination algorithm on a given matrix and returns the times the rows were swapped */
 int gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], fraction_t resultMatrix[rows][columns]){
-    int i_max, i, j, h, k, pivotRow;
+    int i_max, i, j, h, k, pivotRow, rowSwappingTimes;
     /* Initialization of the pivot row */
     h = 0;
     /* Initialization of the pivot column */
     k = 0;
+    rowSwappingTimes = 0;
     fraction_t tempValue, zeroFraction, factor, temp;
     zeroFraction = getFraction(0, 1);
     copyMatrix(rows,columns,matrix,resultMatrix);
@@ -59,7 +60,10 @@ int gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], fr
             /* No pivot in this column, pass to next column */
             k++;
         } else {
-        swapRows(rows, columns, resultMatrix, h, i_max);
+            if(h != i_max){
+                swapRows(rows, columns, resultMatrix, h, i_max);
+                rowSwappingTimes++;
+            }
             /* Do for all rows below pivot: */
             for(i = h + 1; i < rows; i++){
                 factor = divideFractions(resultMatrix[i][k], resultMatrix[h][k]);
@@ -76,6 +80,8 @@ int gaussElimination(int rows, int columns, fraction_t matrix[rows][columns], fr
             k++;
         }
     }
+
+    return rowSwappingTimes;
 }
 
 /* swap to rows of bi-dimensional array */
