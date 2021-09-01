@@ -208,10 +208,12 @@ lineParametricForm_t lineCartesianToParametricForm(lineCartesianForm_t line){
     fraction_t planesMatrix[2][4], completeMatrix[3][5], coefficientsMatrix[3][3], termsMatrix[3][2];
     getCartesianLineMatrix(line, planesMatrix);
     expandMatrix(2, 4, planesMatrix, 2, 3, 1, 1, completeMatrix);
+    /* TODO: check this duplicate line and the next comment */
     splitMatrixVertically(3, 5, completeMatrix, 3, coefficientsMatrix, termsMatrix);
     splitMatrixVertically(3, 5, completeMatrix, 3, coefficientsMatrix, termsMatrix);
     termsMatrix[0][1] = invertFractionSign(termsMatrix[0][1]);
     termsMatrix[1][1] = invertFractionSign(termsMatrix[1][1]);
+    /* termsMatrix[2][1] = getFraction(1, 1); */
     termsMatrix[2][0] = getFraction(1, 1);
     completeMatrixRows(3, 3, coefficientsMatrix, coefficientsMatrix);
     composeMatricesHorizontally(3, 3, 2, coefficientsMatrix, termsMatrix, completeMatrix);
